@@ -79,6 +79,7 @@ export default class Map extends React.Component {
     }
 
     getMarkers(){
+        $.get('/api/markers')
         return [{
             coords:{
                 lat:55.7702012,
@@ -93,7 +94,7 @@ export default class Map extends React.Component {
     render(){
         console.log('render MAP!!!');
         //check component view state
-        var style={height:screen.height};
+        var style={height:screen.availHeight};
         return <div id="map" style={style}></div>
         // return <div className="map_panel" id="map_canvas" >
         //     <div id="map_canvas1"><img src="img/map_example.jpg" className="max_example" alt=""/></div>

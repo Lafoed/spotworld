@@ -1,3 +1,7 @@
 {
-  "port":"3333"
+  "port":"3333",
+  "mongoose":{
+    "url":"mongodb://localhost",
+    "options":{}
+  }
 }

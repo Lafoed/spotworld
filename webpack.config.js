@@ -44,6 +44,7 @@ module.exports = {
             'ReactRedux':'react-redux',
             'Redux' : 'redux',
             'ReactDom' : 'react-dom',
+            "$": 'jquery'
         }),
         // new webpack.DefinePlugin({
         //     'process.env': {
