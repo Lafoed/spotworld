@@ -6,17 +6,20 @@ export default class Map extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            coords:[55,37]
+            coords:[0,0]
         }
     }
 
     componentDidMount(){
+        this.getCurrentLocation();
+    }
+    componentDidUpdate(){
         this.addMap();
     }
 
     getCurrentLocation(){
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position=>this.setState({coords:[position.coords.latitude, position.coords.longitude]}));
+            navigator.geolocation.getCurrentPosition(position=>this.setState({coords:[position.coords.longitude, position.coords.latitude ]}));
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
@@ -24,7 +27,7 @@ export default class Map extends React.Component {
 
     addMap(){
         var iconFeature = new ol.Feature({
-            geometry: new ol.geom.Point([55,37]),
+            geometry: new ol.geom.Point(ol.proj.fromLonLat(this.state.coords)),
             name: 'first icon'
         });
 
@@ -51,8 +54,8 @@ export default class Map extends React.Component {
             layers: [mapLayer, vectorLayer],
             target: document.getElementById('map'),
             view: new ol.View({
-                center: [55,37],
-                zoom: 4
+                center: ol.proj.fromLonLat(this.state.coords),
+                zoom: 5
             })
         });
 
