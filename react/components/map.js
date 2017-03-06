@@ -55,7 +55,7 @@ export default class Map extends React.Component {
             target: document.getElementById('map'),
             view: new ol.View({
                 center: ol.proj.fromLonLat(this.state.coords),
-                zoom: 5
+                zoom: 14
             })
         });
 
