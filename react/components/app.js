@@ -27,8 +27,6 @@ class App extends React.Component {
         this.props.dataAction.setData({browser:sBrowser});
     }
 
-
-
     render() {
         return <Map/>
     }

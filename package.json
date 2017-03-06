@@ -28,5 +28,8 @@
     "redux-logger": "^2.7.4",
     "redux-thunk": "^2.1.0",
     "webpack": "^1.14.0"
+  },
+  "devDependencies": {
+    "openlayers": "^4.0.1"
   }
 }
