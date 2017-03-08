@@ -11,7 +11,7 @@ export default class Interface extends React.Component {
         var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
         var drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
         document.addEventListener('mousemove', evt =>{
-            drawer.open = true || evt.clientX < 200;
+            drawer.open = evt.clientX < 200;
         });
     }
 
@@ -29,31 +29,16 @@ export default class Interface extends React.Component {
                     </header>
                     <nav className="mdc-temporary-drawer__content mdc-list-group">
                         <div id="icon-with-text-demo" className="mdc-list">
-                            <a className="mdc-list-item mdc-temporary-drawer--selected" href="#">
-                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+                            <a className="mdc-list-item" href="#">
+                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">add_location</i>Добавить событие
                             </a>
                             <a className="mdc-list-item" href="#">
-                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">my_location</i>Мои события
                             </a>
                             <a className="mdc-list-item" href="#">
-                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
-                            </a>
-                            <a className="mdc-list-item" href="#">
-                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
+                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">info</i>О проекте
                             </a>
                         </div>
-
-                            <div className="mdc-list">
-                                <a className="mdc-list-item" href="#">
-                                    <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
-                                </a>
-                                <a className="mdc-list-item" href="#">
-                                    <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
-                                </a>
-                                <a className="mdc-list-item" href="#">
-                                    <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
-                                </a>
-                            </div>
                         </nav>
                     </nav>
                 </aside>

@@ -1,6 +1,9 @@
 html {margin:0; padding:0;}
 body {margin:0; padding:0; background-color:#ffffff;}
 
+
+
+/*mapcontrol*/
 #map .ol-zoom .ol-zoom-out {
     margin-top: 204px;
     /*right:0.5em;*/
@@ -31,13 +34,27 @@ body {margin:0; padding:0; background-color:#ffffff;}
     top: 3px;
 }
 
+#map .ol-zoom-out.ol-has-tooltip:hover [role=tooltip],
+#map .ol-zoom-out.ol-has-tooltip:focus [role=tooltip] {
+    top: 232px;
+}
+
+
+/*leftmenu*/
+
 nav.mdc-temporary-drawer__drawer{
     background:rgba(0,0,0,0);
     box-shadow: none;
 
 }
 
-#map .ol-zoom-out.ol-has-tooltip:hover [role=tooltip],
-#map .ol-zoom-out.ol-has-tooltip:focus [role=tooltip] {
-    top: 232px;
+.mdc-temporary-drawer__header{
+    opacity:0;
+}
+
+.mdc-temporary-drawer a.mdc-list-item{
+    color:white;
+}
+i.material-icons.mdc-list-item__start-detail{
+    color:white;
 }

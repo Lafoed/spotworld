@@ -34,7 +34,43 @@ export default class Map extends React.Component {
             })
         });
 
-        map.on('click', this.mapClick.bind(this) );
+        var element = document.getElementById('popup');
+        var popup = new ol.Overlay({
+            element: element,
+            positioning: 'bottom-center',
+            stopEvent: false,
+            offset: [0, -50]
+        });
+        map.addOverlay(popup);
+
+        //map.on('click', this.mapClick.bind(this) );
+        map.on('click', (evt)=>{
+            console.log('map click');
+            var feature = map.forEachFeatureAtPixel(evt.pixel,
+                function(feature) {
+                    return feature;
+                });
+            if (feature) {
+                var coordinates = feature.getGeometry().getCoordinates();
+                popup.setPosition(coordinates);
+                //jquery bootstrap shit
+                $(element).popover({
+                    'placement': 'top',
+                    'html': true,
+                    'content': feature.get('name')
+                });
+                $(element).popover('show');
+            } else {
+                $(element).popover('destroy');
+            }
+            var body = {
+                coords:[37,50],
+                author:'id'
+            };
+            $.post( 'api/createMarker',body )
+                .done(resp=>console.log(resp))
+                .fail(err=>console.log('marker create fail'))
+        } );
         var zoomslider = new ol.control.ZoomSlider();
         map.addControl(zoomslider);
     }
@@ -49,6 +85,7 @@ export default class Map extends React.Component {
         var iconFeature = new ol.Feature({
             geometry: new ol.geom.Point(ol.proj.fromLonLat(this.state.userPosition)),
             name: 'first icon'
+            //info get here
         });
 
         var iconStyle = new ol.style.Style({
@@ -58,6 +95,17 @@ export default class Map extends React.Component {
         });
 
         iconFeature.setStyle(iconStyle);
+
+
+        //var iconStyle = new ol.style.Style({
+        //    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+        //        anchor: [0.5, 46],
+        //        anchorXUnits: 'fraction',
+        //        anchorYUnits: 'pixels',
+        //        src: 'https://openlayers.org/en/v4.0.1/examples/data/icon.png'
+        //    }))
+        //});
+
 
         var vectorSource = new ol.source.Vector({
             features: [iconFeature]
@@ -75,9 +123,16 @@ export default class Map extends React.Component {
                 return feature;
             });
         if (feature) {
-            console.log('feature');
+            var coordinates = feature.getGeometry().getCoordinates();
+            popup.setPosition(coordinates);
+            $(element).popover({
+                'placement': 'top',
+                'html': true,
+                'content': feature.get('name')
+            });
+            $(element).popover('show');
         } else {
-            console.log('no feature');
+            $(element).popover('destroy');
         }
         var body = {
             coords:[37,50],
@@ -93,7 +148,7 @@ export default class Map extends React.Component {
         console.log('render MAP!!!');
         var style={height:screen.availHeight};
         return <div>
-            <div id="map" style={style}></div>
+            <div id="map" style={style}><div id="popup"></div></div>
 
         </div>
     }
