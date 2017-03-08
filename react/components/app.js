@@ -1,6 +1,7 @@
 import * as request from '../actions/data'
 
 import Map from './map'
+import Interface from './interface.js'
 
 class App extends React.Component {
     constructor(props){
@@ -28,7 +29,10 @@ class App extends React.Component {
     }
 
     render() {
-        return <Map/>
+        return <div>
+            <Map/>
+            <Interface/>
+            </div>
     }
 }
 

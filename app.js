@@ -6,8 +6,6 @@ var routes = require('./modules/routes');
 
 app.use(express.static(__dirname +'/static'));
 
-
-
 app.use('/api', routes.api);
 
 app.use('/',(req,res,err)=>{

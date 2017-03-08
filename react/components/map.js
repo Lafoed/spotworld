@@ -1,33 +1,53 @@
 import { render } from 'react-dom'
 
 
-
 export default class Map extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            coords:[0,0]
+            userPosition:[0,0]
         }
     }
 
     componentDidMount(){
-        this.getCurrentLocation();
+        this.getUserLocation();
     }
     componentDidUpdate(){
         this.addMap();
     }
 
-    getCurrentLocation(){
+    getUserLocation(){
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position=>this.setState({coords:[position.coords.longitude, position.coords.latitude ]}));
+            navigator.geolocation.getCurrentPosition(position=>this.setState({userPosition:[position.coords.longitude, position.coords.latitude ]}));
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
     }
 
     addMap(){
+        var map = new ol.Map({
+            layers: [this.mapLayer(), this.vectorLayer()],
+            target: document.getElementById('map'),
+            view: new ol.View({
+                center: ol.proj.fromLonLat(this.state.userPosition),
+                zoom: 14
+            })
+        });
+
+        map.on('click', this.mapClick.bind(this) );
+        var zoomslider = new ol.control.ZoomSlider();
+        map.addControl(zoomslider);
+    }
+
+    mapLayer(){
+        return new ol.layer.Tile({
+            source: new ol.source.OSM()
+        });
+    }
+
+    vectorLayer(){
         var iconFeature = new ol.Feature({
-            geometry: new ol.geom.Point(ol.proj.fromLonLat(this.state.coords)),
+            geometry: new ol.geom.Point(ol.proj.fromLonLat(this.state.userPosition)),
             name: 'first icon'
         });
 
@@ -43,55 +63,30 @@ export default class Map extends React.Component {
             features: [iconFeature]
         });
 
-        var vectorLayer = new ol.layer.Vector({
+        return new ol.layer.Vector({
             source: vectorSource
         });
+    }
 
-        var mapLayer = new ol.layer.Tile({
-            source: new ol.source.OSM()
-        });
-        var map = new ol.Map({
-            layers: [mapLayer, vectorLayer],
-            target: document.getElementById('map'),
-            view: new ol.View({
-                center: ol.proj.fromLonLat(this.state.coords),
-                zoom: 14
-            })
-        });
+    mapClick(evt){
+        console.log('map click');
+        var feature = map.forEachFeatureAtPixel(evt.pixel,
+            function(feature) {
+                return feature;
+            });
+        if (feature) {
+            console.log('feature');
+        } else {
+            console.log('no feature');
+        }
+        var body = {
+            coords:[37,50],
+            author:'id'
+        };
+        $.post( 'api/createMarker',body )
+            .done(resp=>console.log(resp))
+            .fail(err=>console.log('marker create fail'))
 
-        var element = document.getElementById('popup');
-
-        var popup = new ol.Overlay({
-            element: element,
-            positioning: 'bottom-center',
-            stopEvent: false,
-            offset: [37, 50]
-        });
-        map.addOverlay(popup);
-
-        // display popup on click
-        map.on('click', function(evt) {
-            var feature = map.forEachFeatureAtPixel(evt.pixel,
-                function(feature) {
-                    return feature;
-                });
-            if (feature) {
-                console.log('feature');
-            } else {
-                console.log('no feature');
-            }
-        });
-
-        // change mouse cursor when over marker
-        map.on('pointermove', function(e) {
-            if (e.dragging) {
-                console.log('e.dragging');
-                return;
-            }
-            var pixel = map.getEventPixel(e.originalEvent);
-            var hit = map.hasFeatureAtPixel(pixel);
-            map.getTarget().style.cursor = hit ? 'pointer' : '';
-        });
     }
 
     render(){
@@ -99,7 +94,7 @@ export default class Map extends React.Component {
         var style={height:screen.availHeight};
         return <div>
             <div id="map" style={style}></div>
-            <div id="popup" ></div>
+
         </div>
     }
 }

@@ -62,4 +62,10 @@ module.exports = {
         //     mangle: false
         // })
     ],
+    rules: [
+        {
+            test: /\.css$/,
+            use: [ 'style-loader', 'css-loader' ]
+        }
+    ]
 };
