@@ -5,7 +5,7 @@ const NpmInstallPlugin = require('npm-install-webpack-plugin');
 
 module.exports = {
     context: path.join(__dirname, "react"),
-    entry : "index",
+    entry : ["babel-polyfill","index"],
     // entry: {
     //     app: "index",
     //     vendor: ["../../index.js"],

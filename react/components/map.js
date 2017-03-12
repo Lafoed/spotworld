@@ -1,89 +1,110 @@
 import { render } from 'react-dom'
+import moment from 'moment'
+import ol from 'openlayers/dist/ol-debug.js'
 
 
 export default class Map extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            userPosition:[0,0]
+            userLocation:[0, 0],
+            markers:[]
         }
+        this.mapInstance=null;
     }
 
     componentDidMount(){
-        this.getUserLocation();
+        async function asyncMount() {
+            this.addMap();
+            var position = await this.getUserLocation();
+            var userLocation = [position.coords.longitude,position.coords.latitude];
+            this.mapInstance.setView(new ol.View({
+                center:ol.proj.fromLonLat(userLocation),
+                zoom:12
+            }));
+            this.setState({userLocation:userLocation});
+            var markers = await this.getMarkers();
+            this.setState({markers:markers});
+            this.addMarkers(markers);
+        }
+        asyncMount.call(this).catch(err=>console.error(err))
     }
     componentDidUpdate(){
-        this.addMap();
+        this.addMarkers(this.state.markers);
+    }
+
+    getMarkers(){
+        return new Promise((resolve,reject)=>{
+            $.get( 'api/marker' )
+                .done(resolve)
+                .fail(reject)
+        })
+
+    }
+
+    addMarkers(markers = this.state.markers) {
+        var {markers} = this.state;
+        var markerFeatures = markers.map(marker=> {
+            let markers = this.createMarker(marker.coords);
+            return markers;
+        });
+        var markerLayer = this.vectorLayer(markerFeatures);
+        this.mapInstance.addLayer(markerLayer);
     }
 
     getUserLocation(){
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position=>this.setState({userPosition:[position.coords.longitude, position.coords.latitude ]}));
-        } else {
-            console.log("Geolocation is not supported by this browser.");
-        }
+        return new Promise((resolve,reject)=>{
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(resolve);
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        })
     }
 
     addMap(){
-        var map = new ol.Map({
-            layers: [this.mapLayer(), this.vectorLayer()],
+        var {userLocation} = this.state;
+        this.mapInstance = new ol.Map({
+            layers: [new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })],
             target: document.getElementById('map'),
             view: new ol.View({
-                center: ol.proj.fromLonLat(this.state.userPosition),
+                center: ol.proj.fromLonLat(userLocation),
                 zoom: 14
             })
         });
 
-        var element = document.getElementById('popup');
-        var popup = new ol.Overlay({
-            element: element,
-            positioning: 'bottom-center',
-            stopEvent: false,
-            offset: [0, -50]
-        });
-        map.addOverlay(popup);
+        this.mapInstance.on('click', this.mapClick.bind(this) );
 
-        //map.on('click', this.mapClick.bind(this) );
-        map.on('click', (evt)=>{
-            console.log('map click');
-            var feature = map.forEachFeatureAtPixel(evt.pixel,
-                function(feature) {
-                    return feature;
-                });
-            if (feature) {
-                var coordinates = feature.getGeometry().getCoordinates();
-                popup.setPosition(coordinates);
-                //jquery bootstrap shit
-                $(element).popover({
-                    'placement': 'top',
-                    'html': true,
-                    'content': feature.get('name')
-                });
-                $(element).popover('show');
-            } else {
-                $(element).popover('destroy');
+        this.mapInstance.on('pointermove', (e)=>{
+            if (e.dragging) {
+                console.log('dragging');
+                return;
             }
-            var body = {
-                coords:[37,50],
-                author:'id'
-            };
-            $.post( 'api/createMarker',body )
-                .done(resp=>console.log(resp))
-                .fail(err=>console.log('marker create fail'))
-        } );
-        var zoomslider = new ol.control.ZoomSlider();
-        map.addControl(zoomslider);
-    }
-
-    mapLayer(){
-        return new ol.layer.Tile({
-            source: new ol.source.OSM()
+            var pixel = this.mapInstance.getEventPixel(e.originalEvent);
+            var hit = this.mapInstance.hasFeatureAtPixel(pixel);
+            this.mapInstance.getTarget().style.cursor = hit ? 'pointer' : '';
         });
+
+        var zoomslider = new ol.control.ZoomSlider();
+        this.mapInstance.addControl(zoomslider);
     }
 
-    vectorLayer(){
+    vectorLayer(features = []){
+        var vectorSource = new ol.source.Vector({
+            features: features
+        });
+        var layer = new ol.layer.Vector({
+            source: vectorSource
+        });
+
+        return layer
+    }
+
+    createMarker(coords){
         var iconFeature = new ol.Feature({
-            geometry: new ol.geom.Point(ol.proj.fromLonLat(this.state.userPosition)),
+            geometry: new ol.geom.Point(ol.proj.fromLonLat(coords)),
             name: 'first icon'
             //info get here
         });
@@ -93,62 +114,59 @@ export default class Map extends React.Component {
                 src: 'img/icon1.png'
             }))
         });
-
         iconFeature.setStyle(iconStyle);
-
-
-        //var iconStyle = new ol.style.Style({
-        //    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-        //        anchor: [0.5, 46],
-        //        anchorXUnits: 'fraction',
-        //        anchorYUnits: 'pixels',
-        //        src: 'https://openlayers.org/en/v4.0.1/examples/data/icon.png'
-        //    }))
-        //});
-
-
-        var vectorSource = new ol.source.Vector({
-            features: [iconFeature]
-        });
-
-        return new ol.layer.Vector({
-            source: vectorSource
-        });
+        return iconFeature;
     }
 
     mapClick(evt){
-        console.log('map click');
-        var feature = map.forEachFeatureAtPixel(evt.pixel,
-            function(feature) {
-                return feature;
-            });
+        var feature = this.mapInstance.forEachFeatureAtPixel(evt.pixel,feature=>feature);
         if (feature) {
-            var coordinates = feature.getGeometry().getCoordinates();
-            popup.setPosition(coordinates);
-            $(element).popover({
-                'placement': 'top',
-                'html': true,
-                'content': feature.get('name')
+            //send this shit somewhere else
+            var featureCoords = feature.getGeometry().getCoordinates();
+            var popup = new ol.Overlay({
+                element: document.getElementById('popup'),
+                position: featureCoords,
+                positioning: "top-right"
             });
-            $(element).popover('show');
+            this.mapInstance.addOverlay(popup);
+            this.mapInstance.setView(new ol.View({
+                center:featureCoords.map(coord=>coord+100)
+            }));
+            console.log('this code to show popup');
         } else {
-            $(element).popover('destroy');
+            console.log('create marker send to bd and render');
+            async function asyncClick(){
+                var { markers } = this.state;
+                var marker = await this.saveMarker(evt);
+                markers = markers.concat(marker);
+                this.addMarkers(markers);
+                this.setState({markers:markers})
+            }
+            asyncClick.call(this).catch(err=>console.error(err));$(element).popover('destroy');
         }
-        var body = {
-            coords:[37,50],
-            author:'id'
-        };
-        $.post( 'api/createMarker',body )
-            .done(resp=>console.log(resp))
-            .fail(err=>console.log('marker create fail'))
+    }
 
+    saveMarker(evt){
+        return new Promise((resolve,reject)=>{
+            var body = {
+                coords:ol.proj.toLonLat(evt.coordinate),
+                author:'admin',
+                description:"the very first marker",
+                tags:["#first","#tags"],
+                start_time:moment().format(),
+                end_time:moment().format()
+            };
+            $.post( 'api/marker', JSON.stringify(body) )
+                .done(resolve)
+                .fail(reject)
+        })
     }
 
     render(){
         console.log('render MAP!!!');
         var style={height:screen.availHeight};
         return <div>
-            <div id="map" style={style}><div id="popup"></div></div>
+            <div id="map" style={style}></div>
 
         </div>
     }

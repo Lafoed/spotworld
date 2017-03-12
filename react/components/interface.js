@@ -46,6 +46,7 @@ export default class Interface extends React.Component {
                     <h1 className="mdc-typography--display1">Temporary Drawer</h1>
                     <p className="mdc-typography--body1">Click the menu icon above to open.</p>
                 </main>
+            <div id="popup" style={{position:"absolute"}}>hello pop up</div>
 
         </div>
     }
