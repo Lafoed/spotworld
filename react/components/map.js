@@ -8,7 +8,12 @@ export default class Map extends React.Component {
         super(props);
         this.state = {
             userLocation:[0, 0],
-            markers:[]
+            markers:[],
+            info:{
+                author:'admin',
+                description:"the very first marker",
+                tags:["#first","#tags"]
+            }
         }
         this.mapInstance=null;
     }
@@ -105,8 +110,8 @@ export default class Map extends React.Component {
     createMarker(coords){
         var iconFeature = new ol.Feature({
             geometry: new ol.geom.Point(ol.proj.fromLonLat(coords)),
-            name: 'first icon'
-            //info get here
+            name: 'first icon',
+            info: this.state.info
         });
 
         var iconStyle = new ol.style.Style({
@@ -117,22 +122,31 @@ export default class Map extends React.Component {
         iconFeature.setStyle(iconStyle);
         return iconFeature;
     }
+    showPopup(feature){
+        var featureCoords = feature.getGeometry().getCoordinates();
+        var popup = new ol.Overlay({
+            element: document.getElementById('popup'),
+            position: featureCoords,
+            positioning: 'bottom-center',
+            //stopEvent: false,
+            offset: [0, -50]
+        });
+        var popupElem = popup.getElement();
+        var info = feature.get('info');
+        $(popupElem).find('.mdc-card__subtitle').html(info.author);
+        $(popupElem).find('.mdc-card__supporting-text').html(info.description);
+        this.mapInstance.addOverlay(popup);
+        this.mapInstance.getView().animate({
+            //TODO get set view marker in left bottom of screen
+            center:featureCoords
+        });
+        console.log('this code to show popup');
+    }
 
     mapClick(evt){
         var feature = this.mapInstance.forEachFeatureAtPixel(evt.pixel,feature=>feature);
         if (feature) {
-            //send this shit somewhere else
-            var featureCoords = feature.getGeometry().getCoordinates();
-            var popup = new ol.Overlay({
-                element: document.getElementById('popup'),
-                position: featureCoords,
-                positioning: "top-right"
-            });
-            this.mapInstance.addOverlay(popup);
-            this.mapInstance.setView(new ol.View({
-                center:featureCoords.map(coord=>coord+100)
-            }));
-            console.log('this code to show popup');
+            this.showPopup(feature);
         } else {
             console.log('create marker send to bd and render');
             async function asyncClick(){
@@ -148,14 +162,11 @@ export default class Map extends React.Component {
 
     saveMarker(evt){
         return new Promise((resolve,reject)=>{
-            var body = {
+            var body = Object.assign({
                 coords:ol.proj.toLonLat(evt.coordinate),
-                author:'admin',
-                description:"the very first marker",
-                tags:["#first","#tags"],
                 start_time:moment().format(),
                 end_time:moment().format()
-            };
+            }, this.state.info);
             $.post( 'api/marker', JSON.stringify(body) )
                 .done(resolve)
                 .fail(reject)
