@@ -14,7 +14,7 @@ module.exports = {
         path: path.join(__dirname, "static", "js"),
         filename:  "bundle.js"
     },
-    devtool:"inline-module-source-map",
+    //devtool:"inline-module-source-map",
     module: {
         loaders: [{
             test: /\.js$/,
