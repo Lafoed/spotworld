@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var config = require('config');
-// var routes = require('./modules/routes');
+var routes = require('./modules/routes');
 var bodyParser = require('body-parser');
 
 
@@ -12,7 +12,7 @@ app.use(express.static(__dirname +'/static'));
 // parse application/json
 app.use(bodyParser.json({ type : '*/*' }));
 
-// app.use('/api', routes.api);
+app.use('/api', routes.api);
 
 app.use('/',(req,res,err)=>{
     res.send('the last route /');
