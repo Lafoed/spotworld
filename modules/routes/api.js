@@ -15,7 +15,6 @@ api.get( '/marker', (req,res,next)=>{
 });
 
 api.post( '/marker', (req,res,next)=>{
-    console.log(req.body);
     var newMarker = new Marker(req.body);
     newMarker.save()
         .then(resp=>res.send(resp))

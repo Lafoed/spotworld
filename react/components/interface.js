@@ -42,14 +42,12 @@ export default class Interface extends React.Component {
                         </nav>
                     </nav>
                 </aside>
-                <main className="demo-main mdc-toolbar-fixed-adjust">
-                    <h1 className="mdc-typography--display1">Temporary Drawer</h1>
-                    <p className="mdc-typography--body1">Click the menu icon above to open.</p>
-                </main>
+
 
             <div className="mdc-card" id="popup" style={{
                 background:"white",
-                width:"40em"
+                width:"50%",
+                display:"none"
             }}>
                 <section className="mdc-card__primary">
                     <h1 className="mdc-card__title mdc-card__title--large">Marker</h1>

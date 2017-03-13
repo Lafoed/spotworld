@@ -26,7 +26,7 @@ class App extends React.Component {
             sBrowser = "IE";
         }
         this.props.dataAction.setData({browser:sBrowser});
-    }
+}
 
     render() {
         return <div>

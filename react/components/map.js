@@ -1,7 +1,7 @@
 import { render } from 'react-dom'
 import moment from 'moment'
-import ol from 'openlayers'
-//import ol from 'openlayers/dist/ol-debug.js'
+// import ol from 'openlayers'
+import ol from 'openlayers/dist/ol-debug.js'
 
 
 export default class Map extends React.Component {
@@ -31,12 +31,12 @@ export default class Map extends React.Component {
             this.setState({userLocation:userLocation});
             var markers = await this.getMarkers();
             this.setState({markers:markers});
-            this.addMarkers(markers);
+            this.addMarkersOnMap(markers);
         }
         asyncMount.call(this).catch(err=>console.error(err))
     }
     componentDidUpdate(){
-        this.addMarkers(this.state.markers);
+        this.addMarkersOnMap(this.state.markers);
     }
 
     getMarkers(){
@@ -48,8 +48,7 @@ export default class Map extends React.Component {
 
     }
 
-    addMarkers(markers = this.state.markers) {
-        var {markers} = this.state;
+    addMarkersOnMap(markers = this.state.markers) {
         var markerFeatures = markers.map(marker=> {
             let markers = this.createMarker(marker.coords);
             return markers;
@@ -98,6 +97,7 @@ export default class Map extends React.Component {
     }
 
     vectorLayer(features = []){
+        //TODO create too meany vector layers (see shadow on markers);
         var vectorSource = new ol.source.Vector({
             features: features
         });
@@ -136,6 +136,7 @@ export default class Map extends React.Component {
         var info = feature.get('info');
         $(popupElem).find('.mdc-card__subtitle').html(info.author);
         $(popupElem).find('.mdc-card__supporting-text').html(info.description);
+        $(popupElem).css({display:'block'});
         this.mapInstance.addOverlay(popup);
         this.mapInstance.getView().animate({
             //TODO get set view marker in left bottom of screen
@@ -154,10 +155,10 @@ export default class Map extends React.Component {
                 var { markers } = this.state;
                 var marker = await this.saveMarker(evt);
                 markers = markers.concat(marker);
-                this.addMarkers(markers);
+                this.addMarkersOnMap(markers);
                 this.setState({markers:markers})
             }
-            asyncClick.call(this).catch(err=>console.error(err));$(element).popover('destroy');
+            asyncClick.call(this).catch(err=>console.error(err));
         }
     }
 

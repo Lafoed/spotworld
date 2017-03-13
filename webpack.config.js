@@ -4,6 +4,7 @@ const NpmInstallPlugin = require('npm-install-webpack-plugin');
 
 
 module.exports = {
+    devtool:"inline-module-source-map",
     context: path.join(__dirname, "react"),
     entry : ["babel-polyfill","index"],
     // entry: {
@@ -14,7 +15,6 @@ module.exports = {
         path: path.join(__dirname, "static", "js"),
         filename:  "bundle.js"
     },
-    //devtool:"inline-module-source-map",
     module: {
         loaders: [{
             test: /\.js$/,
@@ -37,6 +37,7 @@ module.exports = {
         root: [path.join(__dirname, "react")],
         modulesDirectories: ["node_modules"]
     },
+
     plugins: [
         new NpmInstallPlugin(),
         new webpack.ProvidePlugin({
