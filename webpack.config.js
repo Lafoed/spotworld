@@ -4,7 +4,7 @@ const NpmInstallPlugin = require('npm-install-webpack-plugin');
 
 
 module.exports = {
-    devtool:"inline-module-source-map",
+    // devtool:"inline-module-source-map",
     context: path.join(__dirname, "react"),
     entry : ["babel-polyfill","index"],
     // entry: {

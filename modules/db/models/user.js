@@ -5,37 +5,27 @@ const Schema = mongoose.Schema;
 var schema = new Schema({
     username: {
         type: "String",
-        unique: true,
-        required: true
-    },
-    hashedPassword: {
-        type: "String",
-        required: true
-    },
-    salt: {
-        type: "String",
         required: true
     },
     created: {
         type: Date,
         default: Date.now
+    },
+    profile_id: {
+        type: Number,
+        required: true
+    },
+    photo: {
+        type: "String"
+    },
+    social: {
+        type: "String"
+    },
+    accessToken: {
+        type: "String",
+        required: true
     }
 });
 
-
-
-schema.methods.encryptPassword = function (password) {
-    return crypto.createHmac('sha1', this.salt).update(password).digest('hex')
-};
-
-schema.virtual('password')
-    .set(function(password){
-        this._plainPassword = password;
-        this.salt = Math.random() + '';
-        this.hashedPassword = this.encryptPassword(password);
-    })
-    .get(()=>_this._plainPassword);
-
-schema.methods.checkPassword = (password)=> this.encryptPassword(password) === this.hashedPassword;
 
 module.exports = mongoose.model('User',schema);
