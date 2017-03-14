@@ -132,6 +132,7 @@ class UserPassport extends React.Component {
             </div>
             : <div className="mdc-card" style={style}>
             <section className="mdc-card__primary">
+                <div className="demo-card__avatar"><img src={this.state.user.photo}></img></div>
                 <h1 className="mdc-card__title mdc-card__title--large">UserPassport</h1>
                 <h2 className="mdc-card__subtitle">Вы авторизованны</h2>
             </section>
