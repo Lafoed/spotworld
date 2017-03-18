@@ -1,15 +1,15 @@
 const VKontakteStrategy = require('passport-vkontakte').Strategy;
 var passport = require('passport');
 var db = require('../db');
-var co = require('co');
+var config = require('config');
 
 const User = db.model('User');
 
 passport.use(new VKontakteStrategy(
     {
-        clientID:     5922563,
-        clientSecret: "GSUGxGVeaMe9kW2Uc5vC",
-        callbackURL:  "http://localhost:3333/auth/vkontakte/callback"
+        clientID:     config.get("auth.clientID"),
+        clientSecret: config.get("auth.clientSecret"),
+        callbackURL:  config.get("auth.callbackURL")
     },
     function myVerifyCallbackFn(accessToken, refreshToken, params, profile, done) {
         //here we validate user and send him next by done
