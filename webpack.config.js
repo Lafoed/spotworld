@@ -7,10 +7,7 @@ module.exports = {
     // devtool:"inline-module-source-map",
     context: path.join(__dirname, "react"),
     entry : ["babel-polyfill","index"],
-    // entry: {
-    //     app: "index",
-    //     vendor: ["../../index.js"],
-    // },
+
     output: {
         path: path.join(__dirname, "static", "js"),
         filename:  "bundle.js"
@@ -28,7 +25,6 @@ module.exports = {
                 path.resolve(__dirname, "static/css"),
             ]},
 
-            // { test: /\.(gif|png|woff|woff2|eot|ttf|svg|otf)$/, loader: 'url-loader',  exclude:"node_modules"}
         ]
     },
     resolve: {

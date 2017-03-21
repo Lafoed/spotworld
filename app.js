@@ -1,12 +1,12 @@
 var express = require('express');
 var app = express();
 var config = require('config');
-var routes = require('./modules/routes');
+var routes = require('./services/middleware/routes');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var passport = require('./modules/tools/passport');
-// var passport = require('./modules/tools/local_passport');
+var passport = require('./services/middleware/passport');
+// var passport = require('./services/tools/local_passport');
 var compression = require('compression');
 
 
