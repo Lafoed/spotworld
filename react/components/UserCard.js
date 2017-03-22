@@ -1,6 +1,6 @@
 
 
-export default class UserCard extends React.Component {
+export default class  UserCard extends React.Component {
     constructor(props){
         super(props);
         this.state = {

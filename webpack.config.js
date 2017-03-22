@@ -4,38 +4,40 @@ const NpmInstallPlugin = require('npm-install-webpack-plugin');
 
 
 module.exports = {
-    // devtool:"inline-module-source-map",
+    devtool:"inline-module-source-map",
     context: path.join(__dirname, "react"),
-    entry : ["babel-polyfill","index"],
+    entry: ['babel-polyfill', path.resolve(__dirname, "react")],
 
     output: {
         path: path.join(__dirname, "static", "js"),
         filename:  "bundle.js"
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.js$/,
             loader: "babel-loader?cacheDirectory",
             include: [
                 path.resolve(__dirname, "react"),
             ],
-            exclude:"node_modules"},
-            {test: /\.css$/, loader: 'style!css',
-                include: [
-                path.resolve(__dirname, "static/css"),
-            ]},
-
+            // exclude: "node_modules"
+        },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            }
         ]
     },
     resolve: {
-        // you can now require('file') instead of require('file.coffee')
-        extensions: ["", ".js", ".jsx"],
-        root: [path.join(__dirname, "react")],
-        modulesDirectories: ["node_modules"]
+        extensions: [".js", ".jsx"],
+        modules: [
+            path.join(__dirname, "src"),
+            "node_modules"
+        ]
     },
 
     plugins: [
-        new NpmInstallPlugin(),
+        // new NpmInstallPlugin(),
+
         new webpack.ProvidePlugin({
             'React':  'react',
             'ReactRedux':'react-redux',
@@ -58,11 +60,5 @@ module.exports = {
         //     },
         //     mangle: false
         // })
-    ],
-    rules: [
-        {
-            test: /\.css$/,
-            use: [ 'style-loader', 'css-loader' ]
-        }
     ]
 };

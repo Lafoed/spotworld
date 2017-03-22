@@ -177,7 +177,8 @@ export default class Map extends React.Component {
 
     render(){
         console.log('render MAP!!!');
-        var style={height:screen.availHeight};
+        var availHeight = document.documentElement.clientHeight;
+        var style={height:availHeight};
         return <div>
             <div id="map" style={style}></div>
 
