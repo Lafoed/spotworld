@@ -20,13 +20,11 @@ module.exports = {
                 path.resolve(__dirname, "react"),
             ],
             exclude:"node_modules"},
-            {test: /\.css$/, loader: 'style!css',
-                include: [
-                path.resolve(__dirname, "static/css"),
-            ]},
+            { test: /\.css$/, loader: "style-loader!css-loader" },
 
         ]
     },
+
     resolve: {
         // you can now require('file') instead of require('file.coffee')
         extensions: ["", ".js", ".jsx"],
