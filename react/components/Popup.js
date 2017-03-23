@@ -4,9 +4,9 @@ export default class Popup extends React.Component {
     }
 
     render() {
-        return <div className="mdc-card" id="popup" style={{
-            background:"white",
-            width:"50%",
+        return <div className="mdc-card mdc-card--theme-dark" id="popup" style={{
+            background:"rgba(70,70,100,0.75)",
+            width:"200px",
             display:"none"
         }}>
             <section className="mdc-card__primary">
@@ -21,7 +21,6 @@ export default class Popup extends React.Component {
             </section>
             <section className="mdc-card__actions">
                 <button className="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-                <button className="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
             </section>
         </div>
     }

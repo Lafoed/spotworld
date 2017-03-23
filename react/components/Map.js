@@ -117,7 +117,8 @@ export default class Map extends React.Component {
 
         var iconStyle = new ol.style.Style({
             image: new ol.style.Icon(({
-                src: 'img/icon1.png'
+                src: 'img/marker.png',
+                scale:0.35
             }))
         });
         iconFeature.setStyle(iconStyle);

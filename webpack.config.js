@@ -17,13 +17,14 @@ module.exports = {
             test: /\.js$/,
             loader: "babel-loader?cacheDirectory",
             include: [
-                path.resolve(__dirname, "react"),
+                path.resolve(__dirname, "react")
             ],
             // exclude: "node_modules"
         },
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
+
             }
         ]
     },
