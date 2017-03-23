@@ -3,7 +3,7 @@ import * as request from '../actions/data'
 import Map from './Map'
 import LeftMenu from './LeftMenu'
 import Popup from './Popup'
-import TimeLine from './TimeLine'
+import TimeSlider from './TimeSlider'
 import UserCard from './UserCard'
 
 class App extends React.Component {
@@ -17,7 +17,7 @@ class App extends React.Component {
             <LeftMenu/>
             <UserCard/>
             <Popup/>
-            <Timeline/>
+            <TimeSlider/>
         </div>
     }
 }
