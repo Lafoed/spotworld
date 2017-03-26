@@ -43,66 +43,61 @@ body {margin:0; padding:0; background-color:#ffffff;}
 /*leftmenu*/
 
 nav.mdc-temporary-drawer__drawer{
-    background:rgba(0,0,0,0);
-    box-shadow: none;
-
+    width:200px;
 }
 
-.mdc-temporary-drawer__header{
-    opacity:0;
-}
-
-.mdc-temporary-drawer a.mdc-list-item{
-    color:white;
-}
-i.material-icons.mdc-list-item__start-detail{
-    color:white;
-}
 
 /*user card*/
-.mdc-card.user-card{
-    top: 10px;
-    left: 60px;
-    position: absolute;
-    background: rgba(70,70,100,0.75);
-    border-radius: 3%;
+/*.mdc-card.user-card{*/
+    /*!*top: 10px;*!*/
+    /*!*left: 60px;*!*/
+    /*!*position: absolute;*!*/
+    /*background: rgba(70,70,100,0.75);*/
+    /*border-radius: 3%;*/
+/*}*/
+
+/*.user-card--with-avatar .mdc-card__title,*/
+/*.user-card--with-avatar .mdc-card__subtitle {*/
+    /*color:white;*/
+    /*!*margin-left: 56px;*!*/
+/*}*/
+
+/*h2.mdc-card__subtitle {*/
+    /*color:white;*/
+/*}*/
+/*.user-card .mdc-card__primary{*/
+    /*padding:8px 16px;*/
+    /*padding-bottom: 0px;*/
+/*}*/
+/*.user-card .mdc-card__actions{*/
+    /*padding: 8px 16px;*/
+/*}*/
+
+
+
+/*.user-card .mdc-fab.mdc-fab--mini.material-icons.vk{*/
+    /*background: url("/img/vk_icon.png");*/
+    /*margin-right: 10px;*/
+    /*background-size: cover;*/
+/*}*/
+/*.user-card .mdc-fab.mdc-fab--mini.material-icons.fb{*/
+    /*background: url("/img/facebook-flat.png");*/
+    /*margin-right: 10px;*/
+    /*background-size: cover;*/
+/*}*/
+mdc-toolbar{
+    height:60px;
 }
 
-.user-card--with-avatar .mdc-card__title,
-.user-card--with-avatar .mdc-card__subtitle {
-    color:white;
-    margin-left: 56px;
+img.enterIcon {
+    border-radius: 50%;
+    width:40px;
+    margin-left: 10px;
 }
-
-h2.mdc-card__subtitle {
-    color:white;
-}
-.user-card .mdc-card__primary{
-    padding:8px 16px;
-    padding-bottom: 0px;
-}
-.user-card .mdc-card__actions{
-    padding: 8px 16px;
-}
-
-
-
-.user-card .mdc-fab.mdc-fab--mini.material-icons.vk{
-    background: url("/img/vk_icon.png");
-    margin-right: 10px;
-    background-size: cover;
-}
-.user-card .mdc-fab.mdc-fab--mini.material-icons.fb{
-    background: url("/img/facebook-flat.png");
-    margin-right: 10px;
-    background-size: cover;
-}
-
-.user-card--with-avatar .user-card__avatar img {
-    position: absolute; /* 40sp */
+img.avatar{
     border-radius: 50%;
 }
 
-.user-card--with-avatar .mdc-card__primary:last-child{
-    padding-bottom: 8px;
-}
+/*.user-card--with-avatar .mdc-card__primary:last-child{*/
+    /*padding-bottom: 8px;*/
+/*}*/

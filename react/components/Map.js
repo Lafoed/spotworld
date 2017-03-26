@@ -2,9 +2,10 @@ import { render } from 'react-dom'
 import moment from 'moment'
 // import ol from 'openlayers'
 import ol from 'openlayers/dist/ol-debug.js'
+import Map from '../../services/lib/Map'
 
 
-export default class Map extends React.Component {
+export default class MapReact extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -16,27 +17,33 @@ export default class Map extends React.Component {
                 tags:["#first","#tags"]
             }
         }
-        this.mapInstance=null;
+        this.map=null;
     }
 
     componentDidMount(){
+        console.log('component did mount');
         async function asyncMount() {
-            this.addMap();
-            var position = await this.getUserLocation();
-            var userLocation = [position.coords.longitude,position.coords.latitude];
-            this.mapInstance.setView(new ol.View({
-                center:ol.proj.fromLonLat(userLocation),
-                zoom:12
-            }));
-            this.setState({userLocation:userLocation});
+            var userLocation = await this.getUserLocation();
             var markers = await this.getMarkers();
-            this.setState({markers:markers});
-            this.addMarkersOnMap(markers);
+            var position = [userLocation.coords.longitude, userLocation.coords.latitude];
+
+            this.map = new Map('map');
+            markers.forEach(marker=>{
+                this.map.addMarker(marker.coords, marker.description);
+            });
+
+            this.setState({
+                userLocation:position,
+                markers:markers
+            });
+
+            this.map.setView(position,8);
+            // this.map.on('click', this.mapClick.bind(this) );
         }
         asyncMount.call(this).catch(err=>console.error(err))
     }
     componentDidUpdate(){
-        this.addMarkersOnMap(this.state.markers);
+        // this.addMarkersOnMap(this.state.markers);
     }
 
     getMarkers(){
@@ -46,15 +53,6 @@ export default class Map extends React.Component {
                 .fail(reject)
         })
 
-    }
-
-    addMarkersOnMap(markers = this.state.markers) {
-        var markerFeatures = markers.map(marker=> {
-            let markers = this.createMarker(marker.coords);
-            return markers;
-        });
-        var markerLayer = this.vectorLayer(markerFeatures);
-        this.mapInstance.addLayer(markerLayer);
     }
 
     getUserLocation(){
@@ -67,63 +65,6 @@ export default class Map extends React.Component {
         })
     }
 
-    addMap(){
-        var {userLocation} = this.state;
-        this.mapInstance = new ol.Map({
-            layers: [new ol.layer.Tile({
-                source: new ol.source.OSM()
-            })],
-            target: document.getElementById('map'),
-            view: new ol.View({
-                center: ol.proj.fromLonLat(userLocation),
-                zoom: 14
-            })
-        });
-
-        this.mapInstance.on('click', this.mapClick.bind(this) );
-
-        this.mapInstance.on('pointermove', (e)=>{
-            if (e.dragging) {
-                console.log('dragging');
-                return;
-            }
-            var pixel = this.mapInstance.getEventPixel(e.originalEvent);
-            var hit = this.mapInstance.hasFeatureAtPixel(pixel);
-            this.mapInstance.getTarget().style.cursor = hit ? 'pointer' : '';
-        });
-
-        var zoomslider = new ol.control.ZoomSlider();
-        this.mapInstance.addControl(zoomslider);
-    }
-
-    vectorLayer(features = []){
-        //TODO create too meany vector layers (see shadow on markers);
-        var vectorSource = new ol.source.Vector({
-            features: features
-        });
-        var layer = new ol.layer.Vector({
-            source: vectorSource
-        });
-
-        return layer
-    }
-
-    createMarker(coords){
-        var iconFeature = new ol.Feature({
-            geometry: new ol.geom.Point(ol.proj.fromLonLat(coords)),
-            name: 'first icon',
-            info: this.state.info
-        });
-
-        var iconStyle = new ol.style.Style({
-            image: new ol.style.Icon(({
-                src: 'img/marker.png',
-                scale:0.35
-            }))
-        });
-        iconFeature.setStyle(iconStyle);
-        return iconFeature;
-    }
     showPopup(feature){
         var featureCoords = feature.getGeometry().getCoordinates();
         var popup = new ol.Overlay({
@@ -138,29 +79,30 @@ export default class Map extends React.Component {
         $(popupElem).find('.mdc-card__subtitle').html(info.author);
         $(popupElem).find('.mdc-card__supporting-text').html(info.description);
         $(popupElem).css({display:'block'});
-        this.mapInstance.addOverlay(popup);
-        this.mapInstance.getView().animate({
+        this.map.addOverlay(popup);
+        this.map.getView().animate({
             //TODO get set view marker in left bottom of screen
             center:featureCoords
         });
-        console.log('this code to show popup');
     }
 
     mapClick(evt){
-        var feature = this.mapInstance.forEachFeatureAtPixel(evt.pixel,feature=>feature);
+        var feature = this.map.forEachFeatureAtPixel(evt.pixel,feature=>feature);
         if (feature) {
             this.showPopup(feature);
         } else {
-            console.log('create marker send to bd and render');
-            async function asyncClick(){
-                var { markers } = this.state;
-                var marker = await this.saveMarker(evt);
-                markers = markers.concat(marker);
-                this.addMarkersOnMap(markers);
-                this.setState({markers:markers})
-            }
-            asyncClick.call(this).catch(err=>console.error(err));
+            // this.createMarker();
         }
+    }
+    createMarker(){
+        async function asyncClick(){
+            var { markers } = this.state;
+            var marker = await this.saveMarker(evt);
+            markers = markers.concat(marker);
+            this.addMarkersOnMap(markers);
+            this.setState({markers:markers})
+        }
+        asyncClick.call(this).catch(err=>console.error(err));
     }
 
     saveMarker(evt){
@@ -182,7 +124,6 @@ export default class Map extends React.Component {
         var style={height:availHeight};
         return <div>
             <div id="map" style={style}></div>
-
         </div>
     }
 }

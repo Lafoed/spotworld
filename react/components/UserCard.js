@@ -10,11 +10,7 @@ export default class  UserCard extends React.Component {
 
     componentDidMount(){
         $.get('/getUser')
-            .done(user=>{
-                console.log('USSEEERRR');
-                console.dir(user);
-                this.setState({user:user})
-            })
+            .done(user=>this.setState({user:user}))
             .fail(err=>console.error(err));
     }
 
@@ -26,25 +22,19 @@ export default class  UserCard extends React.Component {
         location.assign("/logout");
     }
 
-    render(){
+    render() {
         console.log('render UserPassport');
-        console.log(this.state.user);
         return !this.state.user ?
-            <div className="mdc-card user-card">
-                <section className="mdc-card__primary">
-                    <h2 className="mdc-card__subtitle">Войти с помощью:</h2>
-                </section>
-                <section className="mdc-card__actions">
-                    <button className="mdc-fab mdc-fab--mini material-icons vk" onClick={this.login.bind(this)}></button>
-                    <button className="mdc-fab mdc-fab--mini material-icons fb" onClick={this.login.bind(this)}></button>
-                </section>
-            </div>
-            : <div className="mdc-card user-card user-card--with-avatar">
-                <section className="mdc-card__primary">
-                    <div className="user-card__avatar"><img src={this.state.user.photo}></img></div>
-                    <h1 className="mdc-card__title ">{this.state.user.username}</h1>
-                    <h2 className="mdc-card__subtitle"><button className="mdc-button mdc-button--theme-dark mdc-button--dense mdc-ripple-upgraded" onClick={this.logout.bind(this)}>Выйти</button></h2>
-                </section>
-            </div>
+            <section className="mdc-toolbar__section mdc-toolbar__section--align-end">
+                Войти:
+                <img src="/img/fb.png" className="enterIcon"></img>
+                <img src="/img/vk.png" className="enterIcon" onClick={this.login.bind(this)}></img>
+            </section>
+            : <section className="mdc-toolbar__section mdc-toolbar__section--align-end">
+                <img className="avatar" src={this.state.user.photo}></img>
+                <button className="mdc-button mdc-button--theme-dark mdc-button--dense mdc-ripple-upgraded"
+                        onClick={this.logout.bind(this)}>Выйти
+                </button>
+            </section>
     }
 }

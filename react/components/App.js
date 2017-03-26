@@ -12,7 +12,7 @@ class App extends React.Component {
     }
 
     render() {
-        return <div class="mdc-theme--dark">
+        return <div>
             <Map/>
             <LeftMenu/>
             <UserCard/>
