@@ -21,7 +21,7 @@ export default class LeftMenu extends React.Component {
                 {/*search field*/}
                 <section className="mdc-toolbar__section mdc-toolbar__section--align-start">
                     <i className="material-icons" >search</i>
-                    <div className="mdc-textfield mdc-textfield--fullwidth mdc-theme-dark">
+                    <div className="mdc-textfield mdc-textfield--fullwidth">
                         <input className="mdc-textfield__input "
                                type="text"
                                placeholder="Поиск адреса"
