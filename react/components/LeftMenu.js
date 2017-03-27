@@ -40,33 +40,16 @@ export default class LeftMenu extends React.Component {
                     </header>
                     <nav className="mdc-temporary-drawer__content mdc-list-group">
                         <div id="icon-with-text-demo" className="mdc-list">
-                            <a className="mdc-list-item mdc-temporary-drawer--selected" href="#">
-                                <i className="material-icons mdc-list-item__start-detail" >inbox</i>Inbox
+                            <a className="mdc-list-item" href="#">
+                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">add_location</i>Добавить событие
                             </a>
                             <a className="mdc-list-item" href="#">
-                                <i className="material-icons mdc-list-item__start-detail" >star</i>Star
+                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">my_location</i>Мои события
                             </a>
                             <a className="mdc-list-item" href="#">
-                                <i className="material-icons mdc-list-item__start-detail" >send</i>Sent Mail
-                            </a>
-                            <a className="mdc-list-item" href="#">
-                                <i className="material-icons mdc-list-item__start-detail" >drafts</i>Drafts
+                                <i className="material-icons mdc-list-item__start-detail" aria-hidden="true">info</i>О проекте
                             </a>
                         </div>
-
-                        <hr className="mdc-list-divider"/>
-
-                            <div className="mdc-list">
-                                <a className="mdc-list-item" href="#">
-                                    <i className="material-icons mdc-list-item__start-detail" >email</i>All Mail
-                                </a>
-                                <a className="mdc-list-item" href="#">
-                                    <i className="material-icons mdc-list-item__start-detail" >delete</i>Trash
-                                </a>
-                                <a className="mdc-list-item" href="#">
-                                    <i className="material-icons mdc-list-item__start-detail" >report</i>Spam
-                                </a>
-                            </div>
                     </nav>
                 </nav>
             </aside>

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import request from './request'
+import api from './api'
 
 export default combineReducers({
-    request
+    api
 })

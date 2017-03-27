@@ -42,7 +42,7 @@ body {margin:0; padding:0; background-color:#ffffff;}
 /*leftmenu*/
 
 nav.mdc-temporary-drawer__drawer {
-    width: 200px;
+    width: 225px;
 }
 
 div.mdc-toolbar.mdc-toolbar--fixed{

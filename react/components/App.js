@@ -6,12 +6,15 @@ import Popup from './Popup'
 import TimeSlider from './TimeSlider'
 import UserCard from './UserCard'
 
+import * as api from '../Actions/api'
+
 class App extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
+        debugger;
         return <div>
             <Map/>
             <LeftMenu/>
@@ -25,13 +28,13 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.data
+        api: state.api
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        request: Redux.bindActionCreators(request, dispatch)
+        api: Redux.bindActionCreators(api, dispatch)
     }
 }
 export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App)
