@@ -1,41 +1,36 @@
-import * as request from '../actions/data'
-
 import Map from './Map'
 import LeftMenu from './LeftMenu'
 import Popup from './Popup'
 import TimeSlider from './TimeSlider'
 import UserCard from './UserCard'
 
-import * as api from '../Actions/api'
+import * as request from '../Actions/request'
 
 class App extends React.Component {
     constructor(props) {
         super(props);
     }
+    componentDidMount(){
+        //TODO refact this urls inside in req lib middleware
+        this.props.request.api('api/marker');
+        this.props.request.api('api/user');
+    }
 
     render() {
-        debugger;
         return <div>
             <Map/>
             <LeftMenu/>
-            <UserCard/>
+            {/*<UserCard/>*/}
             <Popup/>
             <TimeSlider/>
         </div>
     }
 }
 
-
-function mapStateToProps(state) {
-    return {
-        api: state.api
-    }
-}
-
 function mapDispatchToProps(dispatch) {
     return {
-        api: Redux.bindActionCreators(api, dispatch)
+        request: Redux.bindActionCreators(request, dispatch)
     }
 }
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App)
+export default ReactRedux.connect(state=>{return {...state}}, mapDispatchToProps)(App)
 

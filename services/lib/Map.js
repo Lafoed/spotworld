@@ -53,9 +53,7 @@ export default class Map {
 
     getLayer(name){
         var layers = this.map.getLayers().getArray();
-        return layers.find(layer=>{
-            return layer.getProperties().name === name
-        })
+        return layers.find(layer=>layer.getProperties().name === name)
 
     }
 
@@ -83,12 +81,8 @@ export default class Map {
         }));
     }
 
-    getLayers() {
-        return this.map.getLayers();
-    }
-
     on(name,cb){
-        this.map.on.call(this, name, cb);
+        this.map.on(name, cb.bind(this));
     }
 
 }
