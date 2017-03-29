@@ -44,7 +44,8 @@ app.get('/logout', function(req, res){
 
 app.use('/api', routes.api);
 
-app.use('/getUser',(req,res,err)=>{
+//TODO get users somewhere else
+app.use('/user',(req,res,err)=>{
     if (req.user) res.json(req.user);
     else res.sendStatus(404);
 });

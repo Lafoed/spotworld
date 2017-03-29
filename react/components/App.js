@@ -4,7 +4,7 @@ import SideMenu from './SideMenu'
 import Popup from './Popup'
 import TimeSlider from './TimeSlider'
 
-import * as request from '../Actions/request'
+import * as api from '../Actions/api'
 
 class App extends React.Component {
     constructor(props) {
@@ -16,8 +16,9 @@ class App extends React.Component {
     }
 
     render() {
+        debugger;
         return <div>
-            {/*<Map/>*/}
+            <Map/>
             <Header/>
             <SideMenu/>
             <Popup/>
@@ -26,17 +27,10 @@ class App extends React.Component {
     }
 }
 
-
-function mapStateToProps(state) {
-    return {
-        api: state.api
-    }
-}
-
 function mapDispatchToProps(dispatch) {
     return {
         request: Redux.bindActionCreators(request, dispatch)
     }
 }
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App)
+export default ReactRedux.connect(state=>{return {...state}}, mapDispatchToProps)(App)
 
