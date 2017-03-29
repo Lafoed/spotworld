@@ -1,24 +1,25 @@
-import * as request from '../actions/data'
-
 import Map from './Map'
-import LeftMenu from './LeftMenu'
+import Header from './Header'
+import SideMenu from './SideMenu'
 import Popup from './Popup'
 import TimeSlider from './TimeSlider'
-import UserCard from './UserCard'
 
-import * as api from '../Actions/api'
+import * as request from '../Actions/request'
 
 class App extends React.Component {
     constructor(props) {
-        super(props);
+        super();
+    }
+    componentDidMount(){
+        this.props.request.api('user');
+        this.props.request.api('marker');
     }
 
     render() {
-        debugger;
         return <div>
-            <Map/>
-            <LeftMenu/>
-            <UserCard/>
+            {/*<Map/>*/}
+            <Header/>
+            <SideMenu/>
             <Popup/>
             <TimeSlider/>
         </div>
@@ -34,7 +35,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        api: Redux.bindActionCreators(api, dispatch)
+        request: Redux.bindActionCreators(request, dispatch)
     }
 }
 export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App)

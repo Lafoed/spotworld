@@ -3,7 +3,7 @@ const qs = require('qs');
 
 
 class AxiosFacade {
-    constructor(url, config, middleware) {
+    constructor(url, config, middleware=[]) {
         var noUrlArg = typeof url === "object";
         this.url = noUrlArg ? '' : url;
         this.config = noUrlArg ?

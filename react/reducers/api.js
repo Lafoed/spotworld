@@ -1,21 +1,24 @@
 const initialState = {
-    api: [],
+    user: null,
+    markers: []
 };
 
 export default function api(state = initialState, action) {
     switch (action.type) {
 
         case "API_WAIT":
-            return Object.assign({}, state);
+            return {...state}
 
         case "API_OK":
-            //do smth with action.payload, then return to state
-            return Object.assign({}, state);
+            var {payload, name} = action;
+            return {...state, [name]:payload}
 
         case "API_ERR":
-            return Object.assign({}, state);
+            console.error(action.payload);
+            return {...state}
 
         default:
             return state
     }
 }
+
