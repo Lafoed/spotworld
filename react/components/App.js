@@ -4,6 +4,7 @@ import SideMenu from './SideMenu'
 import Popup from './Popup'
 import TimeSlider from './TimeSlider'
 
+
 import * as request from '../Actions/request'
 import * as ui from '../Actions/ui'
 import * as map from '../Actions/map'
@@ -22,13 +23,12 @@ class App extends React.Component {
     }
 
     render() {
-        debugger;
         return <div>
-            <Map markers={this.props.api.markers} userLocation={this.props.ui.userLocation}/>
+            {/*<Map markers={this.props.api.markers} userLocation={this.props.ui.userLocation}/>*/}
             <Header/>
-            <SideMenu/>
-            <Popup/>
-            <TimeSlider/>
+            {/*<SideMenu/>*/}
+            {/*<Popup/>*/}
+            {/*<TimeSlider/>*/}
         </div>
     }
 }

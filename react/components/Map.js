@@ -1,5 +1,6 @@
 import { render } from 'react-dom'
 import moment from 'moment'
+
 // import ol from 'openlayers'
 import ol from 'openlayers/dist/ol-debug.js'
 import Map from '../../services/lib/Map'
