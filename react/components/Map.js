@@ -9,8 +9,6 @@ export default class MapReact extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            userLocation:[0, 0],
-            markers:[],
             info:{
                 author:'admin',
                 description:"the very first marker",
@@ -20,50 +18,18 @@ export default class MapReact extends React.Component {
         this.map=null;
     }
 
-    componentDidMount(){
-        console.log('component did mount');
-        async function asyncMount() {
-            var userLocation = await this.getUserLocation();
-            var markers = await this.getMarkers();
-            var position = [userLocation.coords.longitude, userLocation.coords.latitude];
-
-            this.map = new Map('map');
-            markers.forEach(marker=>{
-                this.map.addMarker(marker.coords, marker.description);
-            });
-
-            this.setState({
-                userLocation:position,
-                markers:markers
-            });
-
-            this.map.setView(position,8);
-            // this.map.on('click', this.mapClick.bind(this) );
-        }
-        asyncMount.call(this).catch(err=>console.error(err))
+    componentWillReceiveProps(props){
+        debugger;
+        this.props.markers.forEach(marker=> {
+            this.map.addMarker(marker.coords, marker.description);
+        });
+        this.map.setView(this.props.userLocation, 8);
     }
-    componentDidUpdate(){
-        // this.addMarkersOnMap(this.state.markers);
+    componentDidMount() {
+        this.map = new Map('map');
+        // this.map.on('click', this.mapClick.bind(this) );
     }
 
-    getMarkers(){
-        return new Promise((resolve,reject)=>{
-            $.get( 'api/marker' )
-                .done(resolve)
-                .fail(reject)
-        })
-
-    }
-
-    getUserLocation(){
-        return new Promise((resolve,reject)=>{
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(resolve);
-            } else {
-                console.log("Geolocation is not supported by this browser.");
-            }
-        })
-    }
 
     showPopup(feature){
         var featureCoords = feature.getGeometry().getCoordinates();
@@ -96,7 +62,7 @@ export default class MapReact extends React.Component {
     }
     createMarker(){
         async function asyncClick(){
-            var { markers } = this.state;
+            var { markers } = this.props;
             var marker = await this.saveMarker(evt);
             markers = markers.concat(marker);
             this.addMarkersOnMap(markers);

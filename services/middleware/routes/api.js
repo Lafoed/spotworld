@@ -4,7 +4,7 @@ var db = require('../../db');
 
 const Marker = db.model('Marker');
 
-api.get( '/marker', (req,res,next)=>{
+api.get( '/markers', (req,res,next)=>{
 
     Marker.find()
         .then(resp=>res.send(resp))
@@ -14,7 +14,7 @@ api.get( '/marker', (req,res,next)=>{
         })
 });
 
-api.post( '/marker', (req,res,next)=>{
+api.post( '/markers', (req,res,next)=>{
     var newMarker = new Marker(req.body);
     newMarker.save()
         .then(resp=>res.send(resp))
@@ -24,7 +24,7 @@ api.post( '/marker', (req,res,next)=>{
         })
 });
 
-api.put( '/marker', (req,res,next)=>{
+api.put( '/markers', (req,res,next)=>{
 
     Marker.find().save()
         .then(resp=>res.send(resp))
@@ -34,7 +34,7 @@ api.put( '/marker', (req,res,next)=>{
         })
 });
 
-api.delete( '/marker', (req,res,next)=>{
+api.delete( '/markers', (req,res,next)=>{
 
     Marker.delete()
         .then(resp=>res.send('users count' + resp))

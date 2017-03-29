@@ -4,7 +4,12 @@ import SideMenu from './SideMenu'
 import Popup from './Popup'
 import TimeSlider from './TimeSlider'
 
-import * as api from '../Actions/api'
+import * as request from '../Actions/request'
+import * as ui from '../Actions/ui'
+import * as map from '../Actions/map'
+
+
+
 
 class App extends React.Component {
     constructor(props) {
@@ -12,13 +17,14 @@ class App extends React.Component {
     }
     componentDidMount(){
         this.props.request.api('user');
-        this.props.request.api('marker');
+        this.props.request.api('markers');
+        this.props.ui.getUserLocation();
     }
 
     render() {
         debugger;
         return <div>
-            <Map/>
+            <Map markers={this.props.api.markers} userLocation={this.props.ui.userLocation}/>
             <Header/>
             <SideMenu/>
             <Popup/>
@@ -27,10 +33,24 @@ class App extends React.Component {
     }
 }
 
-function mapDispatchToProps(dispatch) {
+
+
+
+function mapStateToProps (state) {
+    let {api,ui,map} = state;
+    debugger;
     return {
-        request: Redux.bindActionCreators(request, dispatch)
+        api: api,
+        userLocation: ui.userLocation
     }
 }
-export default ReactRedux.connect(state=>{return {...state}}, mapDispatchToProps)(App)
+
+function mapDispatchToProps(dispatch) {
+    return {
+        request: Redux.bindActionCreators(request, dispatch),
+        ui: Redux.bindActionCreators(ui, dispatch),
+        map: Redux.bindActionCreators(map, dispatch),
+    }
+}
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App)
 
