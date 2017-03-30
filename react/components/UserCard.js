@@ -1,8 +1,13 @@
-
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
+import IconButton from 'material-ui/IconButton';
 
 export default class  UserCard extends React.Component {
     constructor(){
         super();
+        this.state = {
+            isDialog:false
+        }
     }
 
     login(e){
@@ -12,20 +17,62 @@ export default class  UserCard extends React.Component {
     logout(e){
         location.assign("/logout");
     }
+    logIcons(){
+        return [
+            <IconButton
+                iconClassName="fa fa-vk"
+                onTouchTap={this.dialogAction.bind(this,'close')}
+            />,
+            <IconButton
+                iconClassName="fa fa-facebook"
+                onTouchTap={this.dialogAction.bind(this,'close')}
+            />,
+        ];
+    }
+    style(name) {
+        switch (name) {
+            case 'dialog':
+                return {
+                    width: '50%'
+                }
+            case 'icon':
+                return{
+                    width: "48px",
+                    height: "48px",
+                }
+        }
+    }
+    dialogAction(cmd){
+        switch (cmd){
+            case 'open':
+                this.setState({open:true});
+                break;
+            case "close":
+                this.setState({open:false});
+                break;
+            default:
+                this.setState({open:!this.state.open});
+
+        }
+    }
 
     render() {
         console.log('render UserPassport');
-        return !this.props.user ?
-            <section className="mdc-toolbar__section mdc-toolbar__section--align-end">
-                Войти:
-                <img src="/img/fb.png" className="enterIcon"></img>
-                <img src="/img/vk.png" className="enterIcon" onClick={this.login}></img>
-            </section>
-            : <section className="mdc-toolbar__section mdc-toolbar__section--align-end">
-                <img className="avatar" src={this.props.user.photo}></img>
-                <button className="mdc-button mdc-button--theme-dark mdc-button--dense mdc-ripple-upgraded"
-                        onClick={this.logout}>Выйти
-                </button>
-            </section>
+        return !this.props.user ?<div>
+                <FlatButton label="Enter" onTouchTap={ this.dialogAction.bind(this,'open') } />
+                <Dialog
+                title="Login"
+                modal={false}
+                contentStyle={this.style('dialog')}
+                open={this.state.open}
+                onRequestClose={this.dialogAction.bind(this,'close')}
+            >
+                    {this.logIcons()}
+            </Dialog>
+            </div>
+            : <div>
+
+            </div>
     }
 }
+

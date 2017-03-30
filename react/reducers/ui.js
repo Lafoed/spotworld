@@ -10,7 +10,6 @@ export default function getUserLocation(state = initialState, action) {
 
         case "LOCATION_OK":
             var {payload} = action;
-            debugger;
             return {...state}
 
         case "LOCATION_ERR":

@@ -20,7 +20,6 @@ export default class MapReact extends React.Component {
     }
 
     componentWillReceiveProps(props){
-        debugger;
         this.props.markers.forEach(marker=> {
             this.map.addMarker(marker.coords, marker.description);
         });

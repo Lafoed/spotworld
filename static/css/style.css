@@ -1,8 +1,6 @@
 html {margin:0; padding:0;}
 body {margin:0; padding:0; background-color:#ffffff;}
 
-
-
 /*mapcontrol*/
 #map .ol-zoom .ol-zoom-out {
     margin-top: 204px;
@@ -38,27 +36,10 @@ body {margin:0; padding:0; background-color:#ffffff;}
     top: 232px;
 }
 
-
-/*leftmenu*/
-
-nav.mdc-temporary-drawer__drawer {
-    width: 225px;
+.toolbar-header{
+    position: absolute;
+    width:100%;
+    top: 0px;
 }
 
-div.mdc-toolbar.mdc-toolbar--fixed{
-    height:40px;
-}
 
-img.enterIcon {
-    border-radius: 50%;
-    width:40px;
-    margin-left: 10px;
-}
-img.avatar{
-    border-radius: 50%;
-    width:40px;
-}
-
-/*.user-card--with-avatar .mdc-card__primary:last-child{*/
-    /*padding-bottom: 8px;*/
-/*}*/
