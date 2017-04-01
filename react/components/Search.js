@@ -23,6 +23,8 @@ export default class Search extends React.Component {
     render() {
         return (
             <ChipInput
+                style={{overflow:"auto"}}
+                fullWidth={true}
                 value={this.state.value}
                 dataSource={this.state.tags}
                 onRequestAdd={this.chipAdd.bind(this)}

@@ -4,14 +4,13 @@ export function getUserLocation() {
 
     return (dispatch) => {
         dispatch({
-            type: "LOCATION_WAIT",
-            payload: name
+            type: "LOCATION_WAIT"
         });
         userGeolocation()
-            .then(data=>{
+            .then(location=>{
                 dispatch({
                     type: "LOCATION_OK",
-                    payload: data
+                    location: location
                 });
             })
             .catch(err=>{

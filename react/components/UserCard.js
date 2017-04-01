@@ -20,10 +20,12 @@ export default class  UserCard extends React.Component {
     logIcons(){
         return [
             <IconButton
+                key={Math.random()}
                 iconClassName="fa fa-vk"
                 onTouchTap={this.dialogAction.bind(this,'close')}
             />,
             <IconButton
+                key={Math.random()}
                 iconClassName="fa fa-facebook"
                 onTouchTap={this.dialogAction.bind(this,'close')}
             />,
@@ -33,12 +35,18 @@ export default class  UserCard extends React.Component {
         switch (name) {
             case 'dialog':
                 return {
-                    width: '50%'
+                    width: 'auto',
+                    textAlign:"center",
+                    maxWidth:"30%"
                 }
             case 'icon':
                 return{
                     width: "48px",
                     height: "48px",
+                }
+            case 'title':
+                return{
+                    textAlign:"center"
                 }
         }
     }
@@ -58,18 +66,20 @@ export default class  UserCard extends React.Component {
 
     render() {
         console.log('render UserPassport');
-        return !this.props.user ?<div>
+        return !this.props.user ?(
+            <div>
                 <FlatButton label="Enter" onTouchTap={ this.dialogAction.bind(this,'open') } />
                 <Dialog
                 title="Login"
                 modal={false}
                 contentStyle={this.style('dialog')}
-                open={this.state.open}
+                open={this.state.isDialog}
+                titleStyle={this.style('title')}
                 onRequestClose={this.dialogAction.bind(this,'close')}
             >
                     {this.logIcons()}
             </Dialog>
-            </div>
+            </div>)
             : <div>
 
             </div>

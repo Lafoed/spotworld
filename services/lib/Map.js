@@ -8,7 +8,11 @@ export default class Map {
 
     createMap(elemId) {
         //config map here
-        var map = new ol.Map({
+        return new ol.Map({
+            view: new ol.View({
+                center: [0,0],
+                zoom: 1
+            }),
             layers: [
                 // new ol.layer.Tile({
                 //     source: new ol.source.OSM()
@@ -35,10 +39,6 @@ export default class Map {
             ],
             target: elemId,
         });
-
-
-        return map;
-
     }
 
     addMarker(coords, info) {
@@ -75,10 +75,11 @@ export default class Map {
 
     setView(coords, zoom) {
         console.log(this.map);
-        this.map.setView(new ol.View({
+        var view = this.map.getView();
+        view.animate({
             center: ol.proj.fromLonLat(coords),
             zoom: zoom
-        }));
+        });
     }
 
     on(name,cb){

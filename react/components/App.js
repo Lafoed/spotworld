@@ -1,18 +1,15 @@
 import Map from './Map'
 import SideMenu from './SideMenu'
 import Popup from './Popup'
-import TimeSlider from './TimeSlider'
+import BottomNav from './BottomNav'
 import UserCard from './UserCard'
 import Search from './Search'
 
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 
 
 import * as request from '../Actions/request'
-import * as ui from '../Actions/ui'
-import * as map from '../Actions/map'
-
-
+import * as uiAction from '../Actions/ui'
 
 
 class App extends React.Component {
@@ -20,49 +17,48 @@ class App extends React.Component {
         super();
     }
     componentDidMount(){
-        // this.props.request.api('user');
-        // this.props.request.api('markers');
-        // this.props.ui.getUserLocation();
+        this.props.request.api('user');
+        this.props.request.api('markers');
+        this.props.uiAction.getUserLocation();
     }
 
     render() {
         return <div>
-            <Map markers={this.props.api.markers} userLocation={this.props.ui.userLocation}/>
-            <Toolbar className="toolbar-header">
+            <Map {...this.props.map}/>
+            <Toolbar className="toolbar-header"
+                    style={{maxHeight: "120px", height:"auto"}}>
                 <ToolbarGroup>
                     <SideMenu firstChild={true}/>
                 </ToolbarGroup>
 
-                <ToolbarGroup>
+                <ToolbarGroup
+                    style={{width:"100%",overflow:"auto"}}
+                >
                     <Search/>
                 </ToolbarGroup>
 
                 <ToolbarGroup lastChild={true}>
-                    <UserCard/>
+                    <UserCard {...this.props.user}/>
                 </ToolbarGroup>
             </Toolbar>
             {/*<Popup/>*/}
-            {/*<TimeSlider/>*/}
+            <BottomNav/>
         </div>
     }
 }
 
-
-
-
 function mapStateToProps (state) {
-    let {api,ui,map} = state;
+    var {api,ui} = state;
     return {
-        api: api,
-        userLocation: ui.userLocation
+        map: {markers:api.markers, userLocation:ui.userLocation},
+        user: {user:api.user}
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         request: Redux.bindActionCreators(request, dispatch),
-        ui: Redux.bindActionCreators(ui, dispatch),
-        map: Redux.bindActionCreators(map, dispatch),
+        uiAction: Redux.bindActionCreators(uiAction, dispatch),
     }
 }
 export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App)
