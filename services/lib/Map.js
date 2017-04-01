@@ -17,21 +17,11 @@ export default class Map {
                 // new ol.layer.Tile({
                 //     source: new ol.source.OSM()
                 // }),
-                // new ol.layer.Tile({
-                //     source: new ol.source.XYZ({
-                //         url: 'https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGFmb2VkIiwiYSI6ImNqMHA2MHk5ODAwMDgzMnFxamQyNmVha3IifQ.8r9fW0pPDrNW7iwBqkVhhg'
-                //     })
-                // }),
                 new ol.layer.Tile({
                     source: new ol.source.XYZ({
                         url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGFmb2VkIiwiYSI6ImNqMHA2MHk5ODAwMDgzMnFxamQyNmVha3IifQ.8r9fW0pPDrNW7iwBqkVhhg'
                         })
                 }),
-                // new ol.layer.Tile({
-                //     source: new ol.source.XYZ({
-                //         url: 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGFmb2VkIiwiYSI6ImNqMHA2MHk5ODAwMDgzMnFxamQyNmVha3IifQ.8r9fW0pPDrNW7iwBqkVhhg'
-                //     })
-                // }),
                 new ol.layer.Vector({
                     source: new ol.source.Vector(),
                     name:'markers'
@@ -57,11 +47,10 @@ export default class Map {
 
     }
 
-    createMarker(coords, info){
+    createMarker(coords, data){
         var marker = new ol.Feature({
             geometry: new ol.geom.Point(ol.proj.fromLonLat(coords)),
-            name: 'first icon',
-            info: info
+            data: data
         });
         var markerStyle = new ol.style.Style({
             image: new ol.style.Icon(({
@@ -83,7 +72,7 @@ export default class Map {
     }
 
     on(name,cb){
-        this.map.on(name, cb.bind(this));
+        this.map.on(name, cb.bind(this, this.map));
     }
 
 }

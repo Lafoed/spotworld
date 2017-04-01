@@ -21,3 +21,14 @@ export function getUserLocation() {
             })
     }
 }
+
+export function openPopup(data, pixel) {
+
+    return (dispatch) => {
+        dispatch({
+            type: "POPUP_SHOW",
+            payload:data,
+            pixel:pixel
+        });
+    }
+}

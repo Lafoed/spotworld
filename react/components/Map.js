@@ -1,6 +1,5 @@
 import {render} from 'react-dom'
 import moment from 'moment'
-import ol from 'openlayers/dist/ol-debug.js'
 import Map from '../../services/lib/Map'
 
 
@@ -15,16 +14,19 @@ export default class MapReact extends React.Component {
     }
     componentWillReceiveProps(props){
         props.markers.forEach(marker => {
-            this.map.addMarker(marker.coords, marker.description);
+            this.map.addMarker(marker.coords, marker);
         });
         this.map.setView(props.userLocation, 8);
+        this.map.on('click',this.mapClick.bind(this))
     }
 
 
-    mapClick(evt) {
-        var feature = this.map.forEachFeatureAtPixel(evt.pixel, feature => feature);
+    mapClick(map, evt) {
+        var feature = map.forEachFeatureAtPixel(evt.pixel, feature => feature);
         if (feature) {
-            // this.showPopup(feature);
+            var data = feature.get('data');
+            this.map.setView(data.coords, 8);
+            this.props.openPopup(data,evt.pixel);
         } else {
             // this.createMarker();
         }

@@ -22,7 +22,7 @@ export default class  UserCard extends React.Component {
             <IconButton
                 key={Math.random()}
                 iconClassName="fa fa-vk"
-                onTouchTap={this.dialogAction.bind(this,'close')}
+                onTouchTap={this.login}
             />,
             <IconButton
                 key={Math.random()}
@@ -53,13 +53,13 @@ export default class  UserCard extends React.Component {
     dialogAction(cmd){
         switch (cmd){
             case 'open':
-                this.setState({open:true});
+                this.setState({isDialog:true});
                 break;
             case "close":
-                this.setState({open:false});
+                this.setState({isDialog:false});
                 break;
             default:
-                this.setState({open:!this.state.open});
+                this.setState({isDialog:!this.state.isDialog});
 
         }
     }
@@ -81,7 +81,7 @@ export default class  UserCard extends React.Component {
             </Dialog>
             </div>)
             : <div>
-
+                авторизашка всегда няшка
             </div>
     }
 }

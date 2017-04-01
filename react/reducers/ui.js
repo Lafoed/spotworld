@@ -1,8 +1,10 @@
 const initialState = {
-    userLocation: [0,0]
+    userLocation: [0,0],
+    popup:null,
+    pixel:[0,0]
 };
 
-export default function getUserLocation(state = initialState, action) {
+export default function uiAction(state = initialState, action) {
     switch (action.type) {
 
         case "LOCATION_WAIT":
@@ -16,9 +18,14 @@ export default function getUserLocation(state = initialState, action) {
             console.error(action.payload);
             return {...state}
 
+
+        case "POPUP_SHOW":
+            return {...state, popup:action.payload, pixel:action.pixel}
+
         default:
             return state
     }
 }
+
 
 

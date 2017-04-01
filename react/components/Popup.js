@@ -27,13 +27,26 @@ export default class Popup extends React.Component {
     handleReduce ()  {
         this.setState({expanded: false});
     };
+    createStyle({pixel,data}){
+        return {
+            position:"absolute",
+            top:pixel[0]+"px",
+            left:pixel[1]+"px",
+            display:data?"block":"none",
+            position:"absolute"
+        }
+    }
+
 
     render() {
+        var {data,pixel} = this.props;
         return (
-            <Card style={{position:"absolute",top:"100px",left:"100px"}} expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+            <Card style={this.createStyle(this.props)}
+                  expanded={this.state.expanded}
+                  onExpandChange={this.handleExpandChange}>
                 <CardHeader
-                    title="URL Avatar"
-                    subtitle="Subtitle"
+                    title="UserName"
+                    subtitle="avatar"
                     avatar="images/ok-128.jpg"
                     actAsExpander={true}
                     showExpandableButton={true}

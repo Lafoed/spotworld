@@ -24,7 +24,7 @@ class App extends React.Component {
 
     render() {
         return <div>
-            <Map {...this.props.map}/>
+            <Map {...this.props.map} {...this.props.uiAction}/>
             <Toolbar className="toolbar-header"
                     style={{maxHeight: "120px", height:"auto"}}>
                 <ToolbarGroup>
@@ -41,7 +41,7 @@ class App extends React.Component {
                     <UserCard {...this.props.user}/>
                 </ToolbarGroup>
             </Toolbar>
-            <Popup/>
+            <Popup {...this.props.popup}/>
             <BottomNav/>
         </div>
     }
@@ -51,7 +51,8 @@ function mapStateToProps (state) {
     var {api,ui} = state;
     return {
         map: {markers:api.markers, userLocation:ui.userLocation},
-        user: {user:api.user}
+        user: {user:api.user},
+        popup: {data:ui.popup, pixel:ui.pixel},
     }
 }
 
