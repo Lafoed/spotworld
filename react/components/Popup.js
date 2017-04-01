@@ -1,28 +1,69 @@
+import React from 'react';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+
 export default class Popup extends React.Component {
-    constructor(props){
+
+    constructor(props) {
         super(props);
+        this.state = {
+            expanded: false,
+        };
     }
 
+    handleExpandChange(expanded) {
+        this.setState({expanded: expanded});
+    };
+
+    handleToggle (event, toggle)  {
+        this.setState({expanded: toggle});
+    };
+
+    handleExpand ()  {
+        this.setState({expanded: true});
+    };
+
+    handleReduce ()  {
+        this.setState({expanded: false});
+    };
+
     render() {
-        return <div className="mdc-card mdc-card--theme-dark" id="popup" style={{
-            background:"rgba(70,70,100,0.75)",
-            width:"200px",
-            display:"none"
-        }}>
-            <section className="mdc-card__primary">
-                <h1 className="mdc-card__title mdc-card__title--large">Marker</h1>
-                <h2 className="mdc-card__subtitle">Subtitle here</h2>
-            </section>
-            <section className="mdc-card__supporting-text">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                commodo consequat.
-            </section>
-            <section className="mdc-card__actions">
-                <button className="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-            </section>
-        </div>
+        return (
+            <Card style={{position:"absolute",top:"100px",left:"100px"}} expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+                <CardHeader
+                    title="URL Avatar"
+                    subtitle="Subtitle"
+                    avatar="images/ok-128.jpg"
+                    actAsExpander={true}
+                    showExpandableButton={true}
+                />
+                <CardText>
+                    <Toggle
+                        toggled={this.state.expanded}
+                        onToggle={this.handleToggle}
+                        labelPosition="right"
+                        label="This toggle controls the expanded state of the component."
+                    />
+                </CardText>
+                <CardMedia
+                    expandable={true}
+                    overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
+                >
+                    <img src="images/nature-600-337.jpg" />
+                </CardMedia>
+                <CardTitle title="Card title" subtitle="Card subtitle" expandable={true} />
+                <CardText expandable={true}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+                </CardText>
+                <CardActions>
+                    <FlatButton label="Expand" onTouchTap={this.handleExpand} />
+                    <FlatButton label="Reduce" onTouchTap={this.handleReduce} />
+                </CardActions>
+            </Card>)
     }
 }
 

@@ -41,7 +41,7 @@ class App extends React.Component {
                     <UserCard {...this.props.user}/>
                 </ToolbarGroup>
             </Toolbar>
-            {/*<Popup/>*/}
+            <Popup/>
             <BottomNav/>
         </div>
     }
