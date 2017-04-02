@@ -5,19 +5,20 @@ export default class Search extends React.Component {
     constructor() {
         super();
         this.state = {
-            tags: ['tags', 'different'],
-            value:[]
+            autocomplite: ['tags', 'different'],
+            tags: []
         }
     }
-    chipAdd(chip){
-        var {value} = this.state;
-        value.push(chip);
-        this.setState({value:value});
+    chipAdd(text){
+        //TODO for samtarter result use regexp
+        var {tags} = this.state;
+        var newValue = tags.concat(text.split(' ').filter(i=>!!i));
+        this.setState({tags:newValue});
     }
     chipDelete(chip, index){
-        var {value} = this.state;
-        value.slice(index,1);
-        this.setState({value:value});
+        var {tags} = this.state;
+        tags.splice(index,1);
+        this.setState({tags:tags});
     }
 
     render() {
@@ -25,8 +26,8 @@ export default class Search extends React.Component {
             <ChipInput
                 style={{overflow:"auto"}}
                 fullWidth={true}
-                value={this.state.value}
-                dataSource={this.state.tags}
+                value={this.state.tags}
+                dataSource={this.state.autocomplite}
                 onRequestAdd={this.chipAdd.bind(this)}
                 onRequestDelete={this.chipDelete.bind(this)}
             />);
