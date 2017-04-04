@@ -52,7 +52,7 @@ function mapStateToProps (state) {
     return {
         map: {markers:api.markers, userLocation:ui.userLocation},
         user: {user:api.user},
-        popup: {data:ui.popup, pixel:ui.pixel},
+        popup: {data:ui.popup},
     }
 }
 

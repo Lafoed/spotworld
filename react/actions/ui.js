@@ -22,13 +22,12 @@ export function getUserLocation() {
     }
 }
 
-export function openPopup(data, pixel) {
+export function openPopup(data) {
 
     return (dispatch) => {
         dispatch({
             type: "POPUP_SHOW",
-            payload:data,
-            pixel:pixel
+            payload:data
         });
     }
 }

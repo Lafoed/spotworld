@@ -7,17 +7,31 @@ export default class MapReact extends React.Component {
     constructor(props) {
         super(props);
         this.map = null;
+        this.state={
+            markers:true,
+            location:true,
+            click:true
+        }
     }
 
     componentDidMount() {
         this.map = new Map('map');
     }
     componentWillReceiveProps(props){
-        props.markers.forEach(marker => {
-            this.map.addMarker(marker.coords, marker);
-        });
-        this.map.setView(props.userLocation, 8);
-        this.map.on('click',this.mapClick.bind(this))
+        if (props.markers.length && this.state.markers){
+            this.setState({markers:false})
+            props.markers.forEach(marker => {
+                this.map.addMarker(marker.coords, marker);
+            });
+        }
+        if(props.userLocation[0]!=0 && this.state.location){
+            this.setState({location:false})
+            this.map.setView(props.userLocation, 8);
+        }
+        if(this.state.click){
+            this.setState({click:false})
+            this.map.on('click',this.mapClick.bind(this))
+        }
     }
 
 
@@ -26,7 +40,7 @@ export default class MapReact extends React.Component {
         if (feature) {
             var data = feature.get('data');
             this.map.setView(data.coords, 8);
-            this.props.openPopup(data,evt.pixel);
+            this.props.openPopup(data);
         } else {
             // this.createMarker();
         }

@@ -27,11 +27,11 @@ export default class Popup extends React.Component {
     handleReduce ()  {
         this.setState({expanded: false});
     };
-    createStyle({pixel,data}){
+    createStyle({data}){
         return {
             position:"absolute",
-            top:pixel[0]+"px",
-            left:pixel[1]+"px",
+            bottom:"100px",
+            left:"100px",
             display:data?"block":"none",
             position:"absolute"
         }
@@ -39,7 +39,7 @@ export default class Popup extends React.Component {
 
 
     render() {
-        var {data,pixel} = this.props;
+        var {data} = this.props;
         return (
             <Card style={this.createStyle(this.props)}
                   expanded={this.state.expanded}
@@ -47,7 +47,7 @@ export default class Popup extends React.Component {
                 <CardHeader
                     title="UserName"
                     subtitle="avatar"
-                    avatar="images/ok-128.jpg"
+                    avatar="img/icon.png"
                     actAsExpander={true}
                     showExpandableButton={true}
                 />
@@ -63,7 +63,7 @@ export default class Popup extends React.Component {
                     expandable={true}
                     overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
                 >
-                    <img src="images/nature-600-337.jpg" />
+                    <img src="img/fb.png" />
                 </CardMedia>
                 <CardTitle title="Card title" subtitle="Card subtitle" expandable={true} />
                 <CardText expandable={true}>

@@ -20,7 +20,7 @@ export default function uiAction(state = initialState, action) {
 
 
         case "POPUP_SHOW":
-            return {...state, popup:action.payload, pixel:action.pixel}
+            return {...state, popup:action.payload}
 
         default:
             return state
