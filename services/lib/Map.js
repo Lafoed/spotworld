@@ -54,8 +54,8 @@ export default class Map {
         });
         var markerStyle = new ol.style.Style({
             image: new ol.style.Icon(({
-                src: 'img/icon1.png',
-                scale: 1
+                src: 'img/icon.png',
+                scale: 0.7
             }))
         });
         marker.setStyle(markerStyle);

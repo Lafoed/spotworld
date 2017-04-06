@@ -37,18 +37,20 @@ app.get('/auth/vkontakte/callback',
     })
 );
 
+
 app.get('/logout', function(req, res){
     req.logout();
     res.redirect('/');
 });
-
-app.use('/api', routes.api);
-
 //TODO get users somewhere else
-app.use('/user',(req,res,err)=>{
+app.use('/api/user',(req,res,err)=>{
     if (req.user) res.json(req.user);
     else res.sendStatus(404);
 });
+
+app.use('/api', routes.api);
+
+
 
 app.listen(config.get("port"), ()=>{
     console.log(`App listening on port ${config.get("port")}!`);

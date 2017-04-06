@@ -1,22 +1,58 @@
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
+import Avatar from 'material-ui/Avatar';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+
+
+import DropDownMenu from 'material-ui/DropDownMenu';
 
 export default class  UserCard extends React.Component {
     constructor(){
         super();
         this.state = {
-            isDialog:false
+            isDialog:false,
+            value:1
+        }
+        this.style ={
+            menu:{
+                marginRight:"0"
+            },
+            dialog:{
+                width: 'auto',
+                textAlign:"center",
+                maxWidth:"30%"
+            },
+            icon:{
+                width: "48px",
+                height: "48px",
+            },
+            title:{
+                textAlign:"center"
+            },
+            button:{
+                width: `100%`,
+                color: `black`,
+                whiteSpace: `nowrap`,
+                overflow:`none`,
+                height: `auto`
+            }
         }
     }
 
-    login(e){
+    login(){
         location.assign("/auth/vkontakte");
     }
 
-    logout(e){
+    logout(){
         location.assign("/logout");
     }
+
+    handleChange (event, index, value){
+        return this.setState({value});
+    }
+
     logIcons(){
         return [
             <IconButton
@@ -31,25 +67,7 @@ export default class  UserCard extends React.Component {
             />,
         ];
     }
-    style(name) {
-        switch (name) {
-            case 'dialog':
-                return {
-                    width: 'auto',
-                    textAlign:"center",
-                    maxWidth:"30%"
-                }
-            case 'icon':
-                return{
-                    width: "48px",
-                    height: "48px",
-                }
-            case 'title':
-                return{
-                    textAlign:"center"
-                }
-        }
-    }
+
     dialogAction(cmd){
         switch (cmd){
             case 'open':
@@ -65,24 +83,37 @@ export default class  UserCard extends React.Component {
     }
 
     render() {
-        console.log('render UserPassport');
         return !this.props.user ?(
             <div>
-                <FlatButton label="Enter" onTouchTap={ this.dialogAction.bind(this,'open') } />
+                <FlatButton label="ВОЙТИ" onTouchTap={ this.dialogAction.bind(this,'open') } />
                 <Dialog
-                title="Login"
+                title="ВОЙТИ"
                 modal={false}
-                contentStyle={this.style('dialog')}
+                contentStyle={this.style.dialog}
                 open={this.state.isDialog}
-                titleStyle={this.style('title')}
+                titleStyle={this.style.title}
                 onRequestClose={this.dialogAction.bind(this,'close')}
             >
                     {this.logIcons()}
             </Dialog>
             </div>)
-            : <div>
-                авторизашка всегда няшка
-            </div>
+            : <IconMenu
+                style={this.style.menu}
+                iconButtonElement={
+                        <FlatButton
+                            style={this.style.button}
+                            label={this.props.user.username}
+                            labelPosition="before"
+                            primary={true}
+                            icon={<Avatar src={this.props.user.photo}/>}
+                        />}
+                open={this.state.openMenu}
+                onRequestChange={this.handleOnRequestChange}
+                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+            >
+                <MenuItem onTouchTap={this.logout} primaryText="Выйти"/>
+            </IconMenu>
     }
 }
 

@@ -5,7 +5,6 @@ var db = require('../../db');
 const Marker = db.model('Marker');
 
 api.get( '/markers', (req,res,next)=>{
-
     Marker.find()
         .then(resp=>res.send(resp))
         .catch(err=>{

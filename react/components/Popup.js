@@ -43,7 +43,7 @@ export default class Popup extends React.Component {
         return (
             <Card style={this.createStyle(this.props)}
                   expanded={this.state.expanded}
-                  onExpandChange={this.handleExpandChange}>
+                  onExpandChange={this.handleExpandChange.bind(this)}>
                 <CardHeader
                     title="UserName"
                     subtitle="avatar"
@@ -54,7 +54,7 @@ export default class Popup extends React.Component {
                 <CardText>
                     <Toggle
                         toggled={this.state.expanded}
-                        onToggle={this.handleToggle}
+                        onToggle={this.handleToggle.bind(this)}
                         labelPosition="right"
                         label="This toggle controls the expanded state of the component."
                     />
@@ -63,7 +63,7 @@ export default class Popup extends React.Component {
                     expandable={true}
                     overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
                 >
-                    <img src="img/fb.png" />
+                    <img src="img/icon1.png" />
                 </CardMedia>
                 <CardTitle title="Card title" subtitle="Card subtitle" expandable={true} />
                 <CardText expandable={true}>
@@ -73,8 +73,8 @@ export default class Popup extends React.Component {
                     Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
                 </CardText>
                 <CardActions>
-                    <FlatButton label="Expand" onTouchTap={this.handleExpand} />
-                    <FlatButton label="Reduce" onTouchTap={this.handleReduce} />
+                    <FlatButton label="Expand" onTouchTap={this.handleExpand.bind(this)} />
+                    <FlatButton label="Reduce" onTouchTap={this.handleReduce.bind(this)} />
                 </CardActions>
             </Card>)
     }
