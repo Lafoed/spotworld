@@ -6,11 +6,15 @@ import {GridList, GridTile} from 'material-ui/GridList';
 
 export default class TimeFilter extends React.Component {
     style={
-        slider:{
+        block:{
             position:"absolute",
             bottom:"20px",
-            width: "50%",
-            left: "25%"
+            width: "80%",
+            left: "10%",
+            padding:"0"
+        },
+        slider:{
+            padding: "10px 20px"
         }
     }
     componentDidMount(){
@@ -27,19 +31,39 @@ export default class TimeFilter extends React.Component {
 
     render(){
         return(
-            <Paper style={this.style.slider}>
-                <GridList cols={2} >
-                    <GridTile cols={2}>
+            <Paper style={this.style.block}>
+                <GridList cols={2} cellHeight="auto" padding={0}>
+                    <GridTile>
+                        <Datapicker hintText="start"/>
+                    </GridTile>
+                    <GridTile>
+                        <Datapicker hintText="end"/>
+                    </GridTile>
+                    <GridTile cols={2} style={this.style.slider}>
                         <div ref="slider"/>
-                    </GridTile>
-                    <GridTile>
-                        <DatePicker hintText="startDate" container="inline"/>
-                    </GridTile>
-                    <GridTile>
-                        <DatePicker hintText="endDate" container="inline"/>
                     </GridTile>
                 </GridList>
             </Paper>
+        )
+    }
+}
+
+class Datapicker extends React.Component{
+    style={
+        textDate:{
+            width:"100%"
+        }
+    }
+    render(){
+        return (
+            <DatePicker
+                {...this.props}
+                autoOk={true}
+                disableYearSelection={true}
+                hideCalendarDate={true}
+                textFieldStyle={this.style.textDate}
+                container="inline"
+            />
         )
     }
 }
