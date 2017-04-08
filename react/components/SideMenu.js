@@ -9,33 +9,27 @@ export default class SideMenu extends React.Component {
             open:false
         }
     }
-    menuAction(cmd){
-        switch (cmd){
-            case 'open':
-                this.setState({open:true});
-                break;
-            case "close":
-                this.setState({open:false});
-                break;
-            default:
-                this.setState({open:!this.state.open});
-
-        }
+    close=()=>this.setState({open:false})
+    open=()=>this.setState({open:true})
+    createMarker=()=>{
+        this.props.createMarker();
+        this.close();
     }
+
 
     render() {
         return (
             <div>
                 <IconButton
                     iconClassName="fa fa-bars"
-                    onTouchTap={this.menuAction.bind(this,'open')}
+                    onTouchTap={this.open}
                     iconStyle={{
                         width: 36,
                         height: 36,
                     }}
                     style={{
                         width: 72,
-                        height: 72,
+                        height: 50,
                         padding: 16,
                     }}
                 />
@@ -45,8 +39,8 @@ export default class SideMenu extends React.Component {
                 open={this.state.open}
                 onRequestChange={(open) => this.setState({open})}
             >
-                <MenuItem onTouchTap={this.menuAction.bind(this,'close')}>Menu Item</MenuItem>
-                <MenuItem onTouchTap={this.menuAction.bind(this,'close')}>Menu Item 2</MenuItem>
+                <MenuItem onTouchTap={this.createMarker}>Создать метку</MenuItem>
+                <MenuItem onTouchTap={this.close}>Menu Item 2</MenuItem>
             </Drawer>
             </div>)
     }

@@ -51,7 +51,6 @@ export default class TimeFilter extends React.Component {
 class Datapicker extends React.Component{
     style={
         textDate:{
-            width:"100%"
         }
     }
     render(){

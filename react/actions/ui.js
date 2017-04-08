@@ -41,3 +41,11 @@ export function closePopup(data) {
         });
     }
 }
+export function createMarker() {
+
+    return (dispatch) => {
+        dispatch({
+            type: "MARKER_CREATE"
+        });
+    }
+}

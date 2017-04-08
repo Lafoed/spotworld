@@ -1,7 +1,8 @@
 const initialState = {
     userLocation: [0,0],
     popup:null,
-    pixel:[0,0]
+    pixel:[0,0],
+    markerCreate:false
 };
 
 export default function uiAction(state = initialState, action) {
@@ -24,6 +25,9 @@ export default function uiAction(state = initialState, action) {
 
         case "POPUP_CLOSE":
             return {...state, popup:null}
+
+        case "MARKER_CREATE":
+            return {...state, markerCreate:!!state.markerCreate}
 
         default:
             return state

@@ -4,10 +4,8 @@ import Popup from './Popup'
 import BottomNav from './BottomNav'
 import UserCard from './UserCard'
 import Search from './Search'
+import Header from './Header'
 import TimeFilter from './TimeFilter'
-
-import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
-
 
 import * as request from '../Actions/request'
 import * as uiAction from '../Actions/ui'
@@ -24,25 +22,15 @@ class App extends React.Component {
     }
 
     render() {
+        var {map, uiAction, popup, user} = this.props;
         return <div>
-            <Map {...this.props.map} {...this.props.uiAction}/>
-            <Toolbar className="toolbar-header"
-                    style={{maxHeight: "120px", height:"auto"}}>
-                <ToolbarGroup>
-                    <SideMenu firstChild={true}/>
-                </ToolbarGroup>
-
-                <ToolbarGroup
-                    style={{width:"100%",overflow:"auto"}}
-                >
-                    <Search/>
-                </ToolbarGroup>
-
-                <ToolbarGroup lastChild={true}>
-                    <UserCard {...this.props.user}/>
-                </ToolbarGroup>
-            </Toolbar>
-            <Popup {...this.props.popup} {...this.props.uiAction}/>
+            <Map {...map}{...uiAction}/>
+            <Header>
+                <SideMenu firstChild={true} {...uiAction}/>
+                <Search/>
+                <UserCard {...user}/>
+            </Header>
+            <Popup {...popup}{...uiAction}/>
             <TimeFilter/>
             {/*<BottomNav/>*/}
         </div>
@@ -52,9 +40,9 @@ class App extends React.Component {
 function mapStateToProps (state) {
     var {api,ui} = state;
     return {
-        map: {markers:api.markers, userLocation:ui.userLocation},
-        user: {user:api.user},
-        popup: {data:ui.popup},
+        map: {...api,...ui},
+        user: {...api},
+        popup: {...ui},
     }
 }
 
