@@ -49,7 +49,7 @@ export default class Map {
 
     createMarker(coords, data){
         var marker = new ol.Feature({
-            geometry: new ol.geom.Point(ol.proj.fromLonLat(coords)),
+            geometry: new ol.geom.Point(this.coordsTransform(coords)),
             data: data
         });
         var markerStyle = new ol.style.Style({
@@ -66,9 +66,13 @@ export default class Map {
         console.log(this.map);
         var view = this.map.getView();
         view.animate({
-            center: ol.proj.fromLonLat(coords),
+            center: this.coordsTransform(coords),
             zoom: zoom
         });
+    }
+    coordsTransform(coords){
+        if ( coords[0]>180 ) return coords;
+        return ol.proj.fromLonLat(coords);
     }
 
     on(name,cb){

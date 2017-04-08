@@ -7,8 +7,8 @@ import Search from './Search'
 import Header from './Header'
 import TimeFilter from './TimeFilter'
 
-import * as request from '../Actions/request'
-import * as uiAction from '../Actions/ui'
+import * as reqActions from '../Actions/request'
+import * as uiActions from '../Actions/ui'
 
 
 class App extends React.Component {
@@ -16,40 +16,39 @@ class App extends React.Component {
         super();
     }
     componentDidMount(){
-        this.props.request.api('user');
-        this.props.request.api('markers');
-        this.props.uiAction.getUserLocation();
+        this.props.reqActions.get('user');
+        this.props.reqActions.get('markers');
+        this.props.uiActions.getUserLocation();
     }
 
     render() {
-        var {map, uiAction, popup, user} = this.props;
+        var {map, uiActions, reqActions, popup, user} = this.props;
         return <div>
-            <Map {...map}{...uiAction}/>
+            <Map {...map}{...uiActions}{...reqActions}/>
             <Header>
-                <SideMenu firstChild={true} {...uiAction}/>
+                <SideMenu {...uiActions}/>
                 <Search/>
                 <UserCard {...user}/>
             </Header>
-            <Popup {...popup}{...uiAction}/>
+            <Popup {...popup}{...uiActions}/>
             <TimeFilter/>
-            {/*<BottomNav/>*/}
         </div>
     }
 }
 
 function mapStateToProps (state) {
-    var {api,ui} = state;
+    var {request,ui} = state;
     return {
-        map: {...api,...ui},
-        user: {...api},
+        map: {...request,...ui},
+        user: {...request},
         popup: {...ui},
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        request: Redux.bindActionCreators(request, dispatch),
-        uiAction: Redux.bindActionCreators(uiAction, dispatch),
+        reqActions: Redux.bindActionCreators(reqActions, dispatch),
+        uiActions: Redux.bindActionCreators(uiActions, dispatch),
     }
 }
 export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App)

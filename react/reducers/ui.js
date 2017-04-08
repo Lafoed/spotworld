@@ -2,10 +2,10 @@ const initialState = {
     userLocation: [0,0],
     popup:null,
     pixel:[0,0],
-    markerCreate:false
+    markerMode:false
 };
 
-export default function uiAction(state = initialState, action) {
+export default function ui(state = initialState, action) {
     switch (action.type) {
 
         case "LOCATION_WAIT":
@@ -26,8 +26,11 @@ export default function uiAction(state = initialState, action) {
         case "POPUP_CLOSE":
             return {...state, popup:null}
 
-        case "MARKER_CREATE":
-            return {...state, markerCreate:!!state.markerCreate}
+
+        case "SWITCH_MARKER_MODE":
+            return {...state, markerMode:!state.markerMode}
+
+
 
         default:
             return state

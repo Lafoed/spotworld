@@ -13,7 +13,13 @@ export default class MapReact extends React.Component {
             click:true
         }
     }
-
+    marker={
+        author: "i am",
+        description: "the very first marker",
+        end_time: "2017-03-18T21:23:53.000Z",
+        start_time: "2017-03-18T21:23:53.000Z",
+        tags: ["#first", "#tags"]
+    }
     componentDidMount() {
         this.map = new Map('map');
     }
@@ -36,6 +42,14 @@ export default class MapReact extends React.Component {
 
 
     mapClick(map, evt) {
+        if(this.props.markerMode){
+            var marker = {...this.marker};
+            marker.coords = evt.coordinate;
+            this.map.addMarker( evt.coordinate, marker );
+            this.props.switchMarkerMode();
+            this.props.saveMarker(marker);
+            return;
+        }
         var feature = map.forEachFeatureAtPixel(evt.pixel, feature => feature);
         if (feature) {
             var data = feature.get('data');

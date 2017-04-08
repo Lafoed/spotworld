@@ -41,11 +41,11 @@ export function closePopup(data) {
         });
     }
 }
-export function createMarker() {
+export function switchMarkerMode() {
 
     return (dispatch) => {
         dispatch({
-            type: "MARKER_CREATE"
+            type: "SWITCH_MARKER_MODE"
         });
     }
 }

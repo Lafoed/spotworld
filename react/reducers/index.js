@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
-import api from './api'
+import request from './request'
 import ui from './ui'
 
 export default combineReducers({
-    api, ui
+    request, ui
 })
