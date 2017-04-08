@@ -3,16 +3,23 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import App from './components/app'
 import configureStore from './configureStore'
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
+import {cyan500} from 'material-ui/styles/colors';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-
 const store = configureStore();
+
+const muiTheme = getMuiTheme({
+    palette: {
+        textColor: cyan500,
+    },
+    appBar: {
+        height: 50,
+    },
+});
 
 render(
     <MuiThemeProvider>

@@ -19,8 +19,11 @@ export default function uiAction(state = initialState, action) {
             return {...state}
 
 
-        case "POPUP_SHOW":
+        case "POPUP_OPEN":
             return {...state, popup:action.payload}
+
+        case "POPUP_CLOSE":
+            return {...state, popup:null}
 
         default:
             return state

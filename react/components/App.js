@@ -4,6 +4,7 @@ import Popup from './Popup'
 import BottomNav from './BottomNav'
 import UserCard from './UserCard'
 import Search from './Search'
+import TimeFilter from './TimeFilter'
 
 import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 
@@ -41,8 +42,9 @@ class App extends React.Component {
                     <UserCard {...this.props.user}/>
                 </ToolbarGroup>
             </Toolbar>
-            <Popup {...this.props.popup}/>
-            <BottomNav/>
+            <Popup {...this.props.popup} {...this.props.uiAction}/>
+            <TimeFilter/>
+            {/*<BottomNav/>*/}
         </div>
     }
 }

@@ -26,7 +26,17 @@ export function openPopup(data) {
 
     return (dispatch) => {
         dispatch({
-            type: "POPUP_SHOW",
+            type: "POPUP_OPEN",
+            payload:data
+        });
+    }
+}
+
+export function closePopup(data) {
+
+    return (dispatch) => {
+        dispatch({
+            type: "POPUP_CLOSE",
             payload:data
         });
     }

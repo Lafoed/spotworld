@@ -39,7 +39,16 @@ export default class MapReact extends React.Component {
         var feature = map.forEachFeatureAtPixel(evt.pixel, feature => feature);
         if (feature) {
             var data = feature.get('data');
-            this.map.setView(data.coords, 8);
+            var size = map.getSize();
+            var pixelCoords = map.getPixelFromCoordinate(data.coords);
+            console.log(data.coords);
+            console.log(pixelCoords);
+            // var resultPixelCoords = [
+            //     pixelCoords[0]+20,
+            //     pixelCoords[1]
+            // ]
+            var resultCoords = map.getCoordinateFromPixel(pixelCoords);
+            this.map.setView(resultCoords);
             this.props.openPopup(data);
         } else {
             // this.createMarker();
