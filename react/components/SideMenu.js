@@ -12,7 +12,7 @@ export default class SideMenu extends React.Component {
     close=()=>this.setState({open:false})
     open=()=>this.setState({open:true})
     createMarker=()=>{
-        this.props.switchMarkerMode();
+        this.props.uiActions.switchMarkerMode();
         this.close();
     }
 

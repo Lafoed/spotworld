@@ -46,8 +46,8 @@ export default class MapReact extends React.Component {
             var marker = {...this.marker};
             marker.coords = evt.coordinate;
             this.map.addMarker( evt.coordinate, marker );
-            this.props.switchMarkerMode();
-            this.props.saveMarker(marker);
+            this.props.uiActions.switchMarkerMode();
+            this.props.reqActions.saveMarker(marker);
             return;
         }
         var feature = map.forEachFeatureAtPixel(evt.pixel, feature => feature);
@@ -63,7 +63,7 @@ export default class MapReact extends React.Component {
             // ]
             var resultCoords = map.getCoordinateFromPixel(pixelCoords);
             this.map.setView(resultCoords);
-            this.props.openPopup(data);
+            this.props.uiActions.openPopup(data);
         } else {
             // this.createMarker();
         }

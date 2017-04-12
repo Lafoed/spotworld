@@ -4,6 +4,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
 import Dialog from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
+import {Tabs, Tab} from 'material-ui/Tabs';
+import Main from './PopWindows/Main'
+
 
 
 export default class Popup extends React.Component {
@@ -11,13 +14,11 @@ export default class Popup extends React.Component {
         open: false,
     };
     style = {
-        body:{},
-        popup:{},
-        modules:{
-            marginTop:"20px"
-        },
         title:{
             block:"none"
+        },
+        body:{
+             padding:"0px"
         },
         actionContainer:{
             borderTop:"none",
@@ -26,7 +27,7 @@ export default class Popup extends React.Component {
     }
 
     handleClose = () => {
-        this.props.closePopup();
+        this.props.uiActions.closePopup();
     }
 
     render() {
@@ -41,6 +42,7 @@ export default class Popup extends React.Component {
         return (
                 <Dialog
                     titleStyle={this.style.title}
+                    bodyStyle={this.style.body}
                     actionsContainerStyle={this.style.actionContainer}
                     actions={actions}
                     modal={false}
@@ -48,9 +50,17 @@ export default class Popup extends React.Component {
                     onRequestClose={this.handleClose}
                     autoScrollBodyContent={true}
                 >
-                    <Paper style={this.style.modules}>modules</Paper>
-                    <Paper style={this.style.modules}>modules</Paper>
-                    <Paper style={this.style.modules}>modules</Paper>
+                    <Tabs>
+                        <Tab label="Main" >
+                            <Main {...this.props}/>
+                        </Tab>
+                        <Tab label="Another" >
+                            <div>someinfo</div>
+                        </Tab>
+                        <Tab label="Else" >
+                            <div>someinfo</div>
+                        </Tab>
+                    </Tabs>
                 </Dialog>
         );
     }
