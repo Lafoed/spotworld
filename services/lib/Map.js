@@ -11,7 +11,7 @@ export default class Map {
         return new ol.Map({
             view: new ol.View({
                 center: [30,50],
-                zoom: 6
+                zoom: 4
             }),
             layers: [
                 // new ol.layer.Tile({
