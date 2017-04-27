@@ -1,7 +1,6 @@
 import Map from './Map'
 import SideMenu from './SideMenu'
 import Popup from './Popup'
-import BottomNav from './BottomNav'
 import UserCard from './UserCard'
 import Search from './Search'
 import Header from './Header'
@@ -31,6 +30,9 @@ class App extends React.Component {
                 <UserCard {...user}/>
             </Header>
             <Popup {...popup}{...uiActions}/>
+            <TimeFilter/>
+        </div>
+        return <div>
             <TimeFilter/>
         </div>
     }
