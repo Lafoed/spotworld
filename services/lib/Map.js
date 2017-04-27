@@ -10,7 +10,7 @@ export default class Map {
         //config map here
         return new ol.Map({
             view: new ol.View({
-                center: [0,0],
+                center: [30,50],
                 zoom: 6
             }),
             layers: [
