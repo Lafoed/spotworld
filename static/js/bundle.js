@@ -126602,7 +126602,7 @@ var Map = function () {
             return new __WEBPACK_IMPORTED_MODULE_0_openlayers_dist_ol_debug_js___default.a.Map({
                 view: new __WEBPACK_IMPORTED_MODULE_0_openlayers_dist_ol_debug_js___default.a.View({
                     center: [0, 0],
-                    zoom: 1
+                    zoom: 6
                 }),
                 layers: [
                 // new ol.layer.Tile({
