@@ -48,7 +48,7 @@ export default class TimeFilter extends React.Component {
 
     render(){
         return(
-            <Paper style={this.style.block}>
+            <Paper style={this.style.block} className="no-highlight ">
                 <GridList cols={2} cellHeight="auto" padding={0}>
                     <GridTile>
                         <Datapicker

@@ -83,7 +83,7 @@ if (isProd) {
 }
 console.log(jsEntry);
 module.exports = {
-    devtool: isProd ? 'source-map' : 'cheap-module-source-map',
+    // devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     context: sourcePath,
     entry: {
         js: jsEntry,
@@ -131,7 +131,7 @@ module.exports = {
                     {
                         loader: 'babel-loader',
                         query: {
-                            cacheDirectory: true
+                            cacheDirectory: false
                         }
                     }
                 ]
@@ -157,5 +157,8 @@ module.exports = {
         hot: true,
         compress: isProd,
         stats: { colors: true },
+        proxy: {
+            "/api": "http://localhost:3333"
+        }
     }
 };

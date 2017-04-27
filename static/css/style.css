@@ -1,6 +1,24 @@
 html {margin:0; padding:0;}
 body {margin:0; padding:0; background-color:#ffffff;}
 
+.no-highlight {
+    /**
+     * Для эксплорера
+     */
+    -ms-user-select: none;
+    /**
+     * Для мозилы
+     */
+    -moz-user-select: none;
+    /**
+     * Для конкверора
+     */
+    -khtml-user-select: none;
+    /**
+     * Для Сафари и Хрома
+     */
+    -webkit-user-select: none;
+}
 
 /*!*mapcontrol*!*/
 /*#map .ol-zoom .ol-zoom-out {*/

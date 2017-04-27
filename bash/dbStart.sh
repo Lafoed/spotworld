@@ -1,7 +1,7 @@
 #!/usr/bin/expect -f
 
 set USER "PavelN"
-set PATH "/var"
+set PATH "/var/spotworld"
 set GIT "https://github.com/Lafoed/spotworld.git"
 set PASS "epidemicpassword"
 set PASSGIT "*"

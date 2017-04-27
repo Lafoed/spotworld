@@ -17,7 +17,7 @@ send "cd $PATH\n";
 expect "#*";
 send "git pull\n";
 expect "#*";
-send "NODE_ENV=production supervisor start app.js\n";
+send "NODE_ENV=production supervisor restart app.js\n";
 expect "#*";
 interact;
 
