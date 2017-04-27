@@ -21,15 +21,14 @@ class App extends React.Component {
     }
 
     render() {
-        var {map, uiActions, reqActions, popup, user} = this.props;
         return <div>
-            <Map {...map}{...uiActions}{...reqActions}/>
+            <Map {...this.props}/>
             <Header>
-                <SideMenu {...uiActions}/>
+                <SideMenu {...this.props}/>
                 <Search/>
-                <UserCard {...user}/>
+                <UserCard {...this.props}/>
             </Header>
-            <Popup {...popup}{...uiActions}/>
+            <Popup {...this.props}/>
             <TimeFilter/>
         </div>
         return <div>
@@ -40,11 +39,7 @@ class App extends React.Component {
 
 function mapStateToProps (state) {
     var {request,ui} = state;
-    return {
-        map: {...request,...ui},
-        user: {...request},
-        popup: {...ui},
-    }
+    return {...request,...ui}
 }
 
 function mapDispatchToProps(dispatch) {
