@@ -1,8 +1,10 @@
 const initialState = {
     userLocation: [0,0],
-    popup:null,
     pixel:[0,0],
-    markerMode:false
+    popupId:null,
+    markerMode:false,
+    constructorOpen:false,
+    popupOpen:false,
 };
 
 export default function ui(state = initialState, action) {
@@ -20,16 +22,14 @@ export default function ui(state = initialState, action) {
             return {...state}
 
 
-        case "POPUP_OPEN":
-            return {...state, popup:action.payload}
-
-        case "POPUP_CLOSE":
-            return {...state, popup:null}
+        case "SET_UI_STATE":
+            if ( !state.hasOwnProperty(action.field) ) throw `no such state ${action.field}`
+            else return {...state, [action.field]:action.payload}
 
 
-        case "SWITCH_MARKER_MODE":
-            return {...state, markerMode:!state.markerMode}
-
+        case "TOGGLE_UI_STATE":
+            if ( !state.hasOwnProperty(action.field) ) throw `no such state ${action.field}`
+            else return {...state, [action.field]:!state[action.field]}
 
 
         default:

@@ -1,7 +1,6 @@
 import { userGeolocation } from '../../services/lib/tools'
 
 export function getUserLocation() {
-
     return (dispatch) => {
         dispatch({
             type: "LOCATION_WAIT"
@@ -22,30 +21,22 @@ export function getUserLocation() {
     }
 }
 
-export function openPopup(data) {
-
+export function setUiState(field, data) {
     return (dispatch) => {
         dispatch({
-            type: "POPUP_OPEN",
-            payload:data
+            type: "SET_UI_STATE",
+            payload:data,
+            field:field
         });
     }
 }
 
-export function closePopup(data) {
 
+export function toggleState(field) {
     return (dispatch) => {
         dispatch({
-            type: "POPUP_CLOSE",
-            payload:data
-        });
-    }
-}
-export function switchMarkerMode() {
-
-    return (dispatch) => {
-        dispatch({
-            type: "SWITCH_MARKER_MODE"
+            type: "TOGGLE_UI_STATE",
+            field: field
         });
     }
 }

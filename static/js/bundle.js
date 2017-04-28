@@ -126601,8 +126601,8 @@ var Map = function () {
             //config map here
             return new __WEBPACK_IMPORTED_MODULE_0_openlayers_dist_ol_debug_js___default.a.Map({
                 view: new __WEBPACK_IMPORTED_MODULE_0_openlayers_dist_ol_debug_js___default.a.View({
-                    center: [0, 0],
-                    zoom: 6
+                    center: [30, 50],
+                    zoom: 4
                 }),
                 layers: [
                 // new ol.layer.Tile({

@@ -5,7 +5,6 @@ import Avatar from 'material-ui/Avatar';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-
 import DropDownMenu from 'material-ui/DropDownMenu';
 
 export default class  UserCard extends React.Component {
@@ -83,7 +82,8 @@ export default class  UserCard extends React.Component {
     }
 
     render() {
-        return !this.props.user ?(
+        var {user} = this.props.request;
+        return !user ?(
             <div>
                 <FlatButton label="ВОЙТИ" onTouchTap={ this.dialogAction.bind(this,'open') } />
                 <Dialog
@@ -102,10 +102,10 @@ export default class  UserCard extends React.Component {
                 iconButtonElement={
                         <FlatButton
                             style={this.style.button}
-                            label={this.props.user.username}
+                            label={user.username}
                             labelPosition="before"
                             primary={true}
-                            icon={<Avatar src={this.props.user.photo}/>}
+                            icon={<Avatar src={user.photo}/>}
                         />}
                 open={this.state.openMenu}
                 onRequestChange={this.handleOnRequestChange}

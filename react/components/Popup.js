@@ -1,58 +1,41 @@
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import Toggle from 'material-ui/Toggle';
 import Dialog from 'material-ui/Dialog';
-import Paper from 'material-ui/Paper';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Main from './PopWindows/Main'
 
-
+import {popup} from '../style'
 
 export default class Popup extends React.Component {
-    state = {
-        open: false,
-    };
-    style = {
-        title:{
-            block:"none"
-        },
-        body:{
-             padding:"0px"
-        },
-        actionContainer:{
-            borderTop:"none",
-            marginTop:"-30px"
-        }
-    }
-
-    handleClose = () => {
-        this.props.uiActions.closePopup();
-    }
 
     render() {
+        var {toggleState} = this.props.actions;
+        var {popupOpen} = this.props.ui;
+
         const actions = [
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onTouchTap={this.handleClose}
+                onTouchTap={toggleState.bind(null,'popupOpen')}
             />
         ];
 
         return (
                 <Dialog
-                    titleStyle={this.style.title}
-                    bodyStyle={this.style.body}
-                    actionsContainerStyle={this.style.actionContainer}
+                    titleStyle={popup.title}
+                    bodyStyle={popup.body}
+                    actionsContainerStyle={popup.actionContainer}
                     actions={actions}
                     modal={false}
-                    open={!!this.props.popup}
-                    onRequestClose={this.handleClose}
+                    open={popupOpen}
+                    onRequestClose={toggleState.bind(null,'popupOpen')}
                     autoScrollBodyContent={true}
                 >
                     <Tabs>
                         <Tab label="Main" >
+
                             <Main {...this.props}/>
+
                         </Tab>
                         <Tab label="Another" >
                             <div>someinfo</div>

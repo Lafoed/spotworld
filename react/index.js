@@ -23,10 +23,25 @@ const muiTheme = getMuiTheme({
 
 render(
     <MuiThemeProvider>
-    <Provider store={store}>
-            <App />
-    </Provider>
-</MuiThemeProvider>,
+        <Provider store={store}>
+            <App /></Provider>
+    </MuiThemeProvider>,
     document.getElementById('react_root')
 );
+
+if (module.hot) {
+    module.hot.accept('./components/app', () => {
+        const HotApp = require('./components/app').default;
+
+        render(
+            <MuiThemeProvider>
+                <Provider store={store}>
+                    <HotApp />
+                </Provider>
+            </MuiThemeProvider>,
+            document.getElementById('react_root')
+        );
+    });
+}
+
 

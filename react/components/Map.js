@@ -13,6 +13,7 @@ export default class MapReact extends React.Component {
             click:true
         }
     }
+
     marker={
         author: "i am",
         description: "the very first marker",
@@ -20,60 +21,62 @@ export default class MapReact extends React.Component {
         start_time: "2017-03-18T21:23:53.000Z",
         tags: ["#first", "#tags"]
     }
+
     componentDidMount() {
-        this.map = new Map('map');
+        this.map = new Map( 'map' );
+        this.map.on( 'click', this.mapClick.bind( this ) );
+        // this.map.on( 'click', this.props.actions.mapClick );
     }
-    componentWillReceiveProps(props){
-        if (props.markers.length && this.state.markers){
-            this.setState({markers:false})
-            props.markers.forEach(marker => {
-                this.map.addMarker(marker.coords, marker);
+
+    componentWillReceiveProps( props ){
+        var { userLocation } = props.ui;
+        var { markers } = props.request;
+
+        if ( markers.length && this.state.markers ){
+            this.setState( {markers:false} )
+            markers.forEach( marker => {
+                this.map.addMarker(marker.coords, marker._id);
             });
         }
-        if(props.userLocation[0]!=0 && this.state.location){
+        if ( userLocation[0]!=0 && this.state.location ) {
             this.setState({location:false})
-            this.map.setView(props.userLocation, 8);
+            this.map.setView(userLocation, 8);
         }
-        if(this.state.click){
-            this.setState({click:false})
-            this.map.on('click',this.mapClick.bind(this))
-        }
+
     }
 
 
-    mapClick(map, evt) {
-        if(this.props.markerMode){
-            var marker = {...this.marker};
-            marker.coords = evt.coordinate;
-            this.map.addMarker( evt.coordinate, marker );
-            this.props.uiActions.switchMarkerMode();
-            this.props.reqActions.saveMarker(marker);
+    mapClick(Map, evt) {
+        var { actions, ui } = this.props;
+        if ( ui.markerMode ){
+            // var marker = {...this.marker};
+            // marker.coords = evt.coordinate;
+            // Map.addMarker( evt.coordinate, marker );
+            actions.toggleState("constructorOpen");
+            actions.toggleState("markerMode");
+            // this.props.actions.saveMarker(marker);
             return;
         }
-        var feature = map.forEachFeatureAtPixel(evt.pixel, feature => feature);
-        if (feature) {
-            var data = feature.get('data');
-            var size = map.getSize();
-            var pixelCoords = map.getPixelFromCoordinate(data.coords);
-            console.log(data.coords);
-            console.log(pixelCoords);
-            // var resultPixelCoords = [
-            //     pixelCoords[0]+20,
-            //     pixelCoords[1]
-            // ]
-            var resultCoords = map.getCoordinateFromPixel(pixelCoords);
-            this.map.setView(resultCoords);
-            this.props.uiActions.openPopup(data);
-        } else {
-            // this.createMarker();
-        }
+        var feature = Map.getFeatures(evt.pixel);
+        if ( !feature ) return;
+        this.map.setView( feature.getGeometry().flatCoordinates );
+
+        var id = feature.getId();
+        if ( !id ) return;
+
+        actions.setUiState('popupId',id);
+        actions.toggleState("popupOpen");
     }
 
 
     render() {
         return (
             <div>
-                <div id="map" style={{height: document.documentElement.clientHeight}}></div>
+                <div
+                    id="map"
+                    style={{height: document.documentElement.clientHeight}}
+                    className={this.props.ui.markerMode?"cursorMarker":""}
+                ></div>
             </div>)
     }
 }

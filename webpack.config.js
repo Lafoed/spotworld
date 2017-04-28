@@ -81,7 +81,6 @@ if (isProd) {
 
     );
 }
-console.log(jsEntry);
 module.exports = {
     // devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     context: sourcePath,

@@ -5,9 +5,12 @@ import UserCard from './UserCard'
 import Search from './Search'
 import Header from './Header'
 import TimeFilter from './TimeFilter'
+import Constructor from './Constructor'
+
 
 import * as reqActions from '../Actions/request'
 import * as uiActions from '../Actions/ui'
+
 
 
 class App extends React.Component {
@@ -15,9 +18,9 @@ class App extends React.Component {
         super();
     }
     componentDidMount(){
-        this.props.reqActions.get('user');
-        this.props.reqActions.get('markers');
-        this.props.uiActions.getUserLocation();
+        this.props.actions.get('user');
+        this.props.actions.get('markers');
+        this.props.actions.getUserLocation();
     }
 
     render() {
@@ -29,24 +32,20 @@ class App extends React.Component {
                 <UserCard {...this.props}/>
             </Header>
             <Popup {...this.props}/>
-            <TimeFilter/>
-        </div>
-        return <div>
+            <Constructor {...this.props}/>
             <TimeFilter/>
         </div>
     }
 }
 
-function mapStateToProps (state) {
-    var {request,ui} = state;
-    return {...request,...ui}
-}
 
 function mapDispatchToProps(dispatch) {
     return {
-        reqActions: Redux.bindActionCreators(reqActions, dispatch),
-        uiActions: Redux.bindActionCreators(uiActions, dispatch),
+        actions:{
+            ...Redux.bindActionCreators(reqActions, dispatch),
+            ...Redux.bindActionCreators(uiActions, dispatch),
+        }
     }
 }
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App)
+export default ReactRedux.connect(state=>state, mapDispatchToProps)(App)
 

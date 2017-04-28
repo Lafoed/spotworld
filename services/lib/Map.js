@@ -31,8 +31,9 @@ export default class Map {
         });
     }
 
-    addMarker(coords, info) {
-        var marker = this.createMarker(coords, info);
+    addMarker(coords, id) {
+        var marker = this.createMarker(coords, id);
+
 
         var vectorLayer = this.getLayer("markers");
 
@@ -47,10 +48,9 @@ export default class Map {
 
     }
 
-    createMarker(coords, data){
+    createMarker(coords, id){
         var marker = new ol.Feature({
-            geometry: new ol.geom.Point(this.coordsTransform(coords)),
-            data: data
+            geometry: new ol.geom.Point(this.coordsTransform(coords))
         });
         var markerStyle = new ol.style.Style({
             image: new ol.style.Icon(({
@@ -59,24 +59,37 @@ export default class Map {
             }))
         });
         marker.setStyle(markerStyle);
+        marker.setId(id);
         return marker;
     }
 
     setView(coords, zoom) {
-        console.log(this.map);
         var view = this.map.getView();
         view.animate({
             center: this.coordsTransform(coords),
             zoom: zoom
         });
     }
+
     coordsTransform(coords){
+        //TODO shit method
         if ( coords[0]>180 ) return coords;
         return ol.proj.fromLonLat(coords);
     }
 
+    getFeatures(pixel){
+        return this.map.forEachFeatureAtPixel(pixel, feature => feature);
+    }
+
+    getCoords(coords){
+        //TODO shit method
+        var pixelCoords = this.map.getPixelFromCoordinate(coords);
+        var resultCoords = this.map.getCoordinateFromPixel(pixelCoords);
+        return resultCoords;
+    }
+
     on(name,cb){
-        this.map.on(name, cb.bind(this, this.map));
+        this.map.on(name, cb.bind(this, this));
     }
 
 }

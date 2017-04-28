@@ -3,8 +3,6 @@ import Paper from 'material-ui/Paper';
 import DatePicker from 'material-ui/DatePicker';
 import {GridList, GridTile} from 'material-ui/GridList';
 
-
-
 export default class TimeFilter extends React.Component {
     style={
         block:{
