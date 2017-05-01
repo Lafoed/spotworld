@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --config webpack.config.js"
+    "start": "webpack-dev-server --config webpack.config.js",
   },
   "author": "",
   "license": "ISC",
@@ -36,6 +36,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.22.0",
     "css-loader": "^0.26.4",
+    "formsy-react": "^0.19.2",
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",
     "material-components-web": "^0.6.0",
@@ -46,6 +47,7 @@
     "openlayers": "^4.0.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
+    "react-material-ui-form-validator": "^0.3.1",
     "react-redux": "^5.0.1",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",

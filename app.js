@@ -9,6 +9,7 @@ var passport = require('./services/middleware/passport');
 // var passport = require('./services/tools/local_passport');
 var compression = require('compression');
 
+console.log(process.env.NODE_ENV);
 
 app.use(express.static(__dirname +'/static'));
 // parse application/x-www-form-urlencoded

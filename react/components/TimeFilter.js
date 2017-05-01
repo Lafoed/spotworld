@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import DatePicker from 'material-ui/DatePicker';
 import {GridList, GridTile} from 'material-ui/GridList';
+import Datepicker from './Datepicker'
 
 export default class TimeFilter extends React.Component {
     style={
@@ -49,14 +49,14 @@ export default class TimeFilter extends React.Component {
             <Paper style={this.style.block} className="no-highlight ">
                 <GridList cols={2} cellHeight="auto" padding={0}>
                     <GridTile>
-                        <Datapicker
+                        <Datepicker
                             hintText="start"
                             value={this.state.startDate.toDate()}
                             maxDate={this.state.endDate.clone().add(-1,'day').toDate()}
                             onChange={(evt,date)=>this.setState({startDate:moment(date)})}/>
                     </GridTile>
                     <GridTile>
-                        <Datapicker
+                        <Datepicker
                             hintText="end"
                             value={this.state.endDate.toDate()}
                             minDate={this.state.startDate.clone().add(1,'day').toDate()}
@@ -71,29 +71,4 @@ export default class TimeFilter extends React.Component {
     }
 }
 
-class Datapicker extends React.Component{
-    style={
-        textDate:{
-            width:"100px"
-        },
-        date:{
-            fontSize: "10px",
-            textAlign:"center"
-        }
-    }
-    render(){
-        return (
-            <DatePicker
-                {...this.props}
-                style={this.style.date}
-                autoOk={true}
-                disableYearSelection={true}
-                hideCalendarDate={true}
-                textFieldStyle={this.style.textDate}
-                container="inline"
-                formatDate={date=>moment(date).format('DD MMMM YYYY')}
-            />
-        )
-    }
-}
 

@@ -2,20 +2,17 @@ import ChipInput from 'material-ui-chip-input'
 
 export default class Search extends React.Component {
 
-    constructor() {
-        super();
-        this.state = {
-            autocomplite: ['tags', 'different'],
-            tags: []
-        }
+    state = {
+        autocomplite: ['tags', 'different'],
+        tags: []
     }
-    chipAdd(text){
+    chipAdd=(text)=>{
         //TODO for samtarter result use regexp
         var {tags} = this.state;
         var newValue = tags.concat(text.split(' ').filter(i=>!!i));
         this.setState({tags:newValue});
     }
-    chipDelete(chip, index){
+    chipDelete=(chip, index)=>{
         var {tags} = this.state;
         tags.splice(index,1);
         this.setState({tags:tags});
@@ -28,8 +25,8 @@ export default class Search extends React.Component {
                 fullWidth={true}
                 value={this.state.tags}
                 dataSource={this.state.autocomplite}
-                onRequestAdd={this.chipAdd.bind(this)}
-                onRequestDelete={this.chipDelete.bind(this)}
+                onRequestAdd={this.chipAdd}
+                onRequestDelete={this.chipDelete}
             />);
     }
 }
