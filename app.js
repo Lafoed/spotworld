@@ -72,12 +72,12 @@ https.createServer({
     cert: certificate
 }, app).listen(config.get("port"));
 
-if ( config.get("porthttp") ) {
-    https.createServer({
+
+https.createServer({
         key: privateKey,
         cert: certificate
-    }, app).listen(config.get("porthttp"));
-}
+    }, app).listen( config.get("porthttp") );
+
 
 
 // http.createServer(app).listen(80);
