@@ -2,7 +2,6 @@ import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import ChipInput from 'material-ui-chip-input';
 import TimePicker from 'material-ui/TimePicker';
 import Tags from './Tags'
 
