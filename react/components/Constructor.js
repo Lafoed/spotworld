@@ -2,8 +2,9 @@ import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import ChipInput from 'material-ui-chip-input';
 import TimePicker from 'material-ui/TimePicker';
+import Tags from './Tags'
+
 
 import Datepicker from './Datepicker'
 
@@ -11,46 +12,56 @@ import {popup} from '../style'
 
 export default class Constructor extends React.Component {
     state = {
-        autocomplite: ['tags', 'different'],
-        tags: [],
-        startDate: moment(),
-        endDate: moment().add(1, 'd'),
-        startTime: moment(),
-        endTime:moment()
-
+        title:"",
+        description:"",
+        startDate: null,
+        endDate: null,
+        startTime: null,
+        endTime:null,
+        tags:[]
     }
 
-    chipAdd = (text) => {
-        //TODO for samtarter result use regexp
-        var {tags} = this.state;
-        var newValue = tags.concat(text.split(' ').filter(i => !!i));
-        this.setState({tags: newValue});
-    }
 
-    chipDelete = (chip, index) => {
-        var {tags} = this.state;
-        tags.splice(index, 1);
-        this.setState({tags: tags});
-    }
     save = evt =>{
-        toggleState.bind(null, 'constructorOpen')
+        var { user } = this.props.request;
+        if ( !user ) return console.error('no user');
+        var data = Object.assign({}, this.state, {author:user.username}, {coords : [4213168.617498788, 7610311.138545399]} );
+        delete data.startDate;
+        delete data.endDate;
+        delete data.startTime;
+        delete data.endTime;
+        this.props.actions.saveEvent(data);
+        // this.close();
+    }
+
+    close = ()=>{
+        this.props.actions.toggleState('constructorOpen');
+        this.setState({
+            title:"",
+            description:"",
+            startDate: null,
+            endDate: null,
+            startTime: null,
+            endTime:null
+        });
     }
 
     render() {
+        var {  startDate, endDate, startTime, endTime, description, title } = this.state;
         var {toggleState} = this.props.actions;
         var {constructorOpen} = this.props.ui;
-        var isDisabled = true;
+        var isDisabled = !(description && title && startDate && endDate && startTime && endTime);
         const actions = [
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onTouchTap={this.save}
+                onTouchTap={this.close}
             />,
             <FlatButton
                 label="Save"
                 disabled={isDisabled}
                 primary={true}
-                onTouchTap={toggleState.bind(null, 'constructorOpen')}
+                onTouchTap={this.save}
             />
         ];
 
@@ -65,11 +76,15 @@ export default class Constructor extends React.Component {
                 autoScrollBodyContent={true}
             >
                 <TextField
+                    value={this.state.title}
+                    onChange={(evt,val)=>this.setState({title:val})}
                     floatingLabelText={'Event title'}
                     hintText="Enter event title"
                     fullWidth={true}
                 /><br />
                 <TextField
+                    value={this.state.description}
+                    onChange={(evt,val)=>this.setState({description:val})}
                     fullWidth={true}
                     floatingLabelText={'Event description'}
                     hintText="Enter event description"
@@ -77,25 +92,46 @@ export default class Constructor extends React.Component {
                     rows={1}
                     rowsMax={4}
                 /><br />
-                <ChipInput
-                    style={{overflow: "auto"}}
-                    floatingLabelText="tags"
-                    fullWidth={true}
-                    value={this.state.tags}
-                    dataSource={this.state.autocomplite}
-                    onRequestAdd={this.chipAdd}
-                    onRequestDelete={this.chipDelete}
+                <Tags
+                    tagsListener={(tags)=>this.setState({tags:tags})}
                 />
-                <Datepicker
-                    floatingLabelText="Start Date"
+                <div  style={{
+                    display:"inline-block"
+                }}>
+                    <Datepicker
+                        onChange={(evt,val)=>this.setState({startDate:val})}
+                        floatingLabelText="Start Date"
+                        autoOk={true}
+                    />
+                </div>
+                <TimePicker
+                    onChange={(evt,val)=>this.setState({startTime:val})}
+                    style={{
+                        marginLeft:30,
+                        display:"inline-block",
+                    }}
+                    floatingLabelText="Start Time"
+                    format={"24hr"}
                     autoOk={true}
-                /><TimePicker
-                    autoOk={true}
-                    hintText="Start time"/> <br/>
-                <Datepicker
-                    floatingLabelText="End Date"
-                    autoOk={true}
-                /><TimePicker
+                    hintText="Start time"/>
+                <br/>
+                <div  style={{
+                    display:"inline-block"
+                }}>
+                    <Datepicker
+                        onChange={(evt,val)=>this.setState({endDate:val})}
+                        floatingLabelText="End Date"
+                        autoOk={true}
+                    />
+                </div>
+                <TimePicker
+                    onChange={(evt,val)=>this.setState({endTime:val})}
+                    style={{
+                        marginLeft:30,
+                        display:"inline-block"
+                    }}
+                    floatingLabelText="End Time"
+                    format={"24hr"}
                     autoOk={true}
                     hintText="End time"/>
             </Dialog>

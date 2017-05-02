@@ -2,7 +2,7 @@ import Map from './Map'
 import SideMenu from './SideMenu'
 import Popup from './Popup'
 import UserCard from './UserCard'
-import Search from './Search'
+import Tags from './Tags'
 import Header from './Header'
 import TimeFilter from './TimeFilter'
 import Constructor from './Constructor'
@@ -28,7 +28,7 @@ class App extends React.Component {
             <Map {...this.props}/>
             <Header>
                 <SideMenu {...this.props}/>
-                <Search/>
+                <Tags/>
                 <UserCard {...this.props}/>
             </Header>
             <Popup {...this.props}/>

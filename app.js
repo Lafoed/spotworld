@@ -1,11 +1,16 @@
 var express = require('express');
 var app = express();
 var config = require('config');
-var routes = require('./services/middleware/routes');
+var routes = require('./services/routes');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('./services/middleware/passport');
+var fs = require('fs');
+
+
+var https = require('https');
+var http = require('http');
 // var passport = require('./services/tools/local_passport');
 var compression = require('compression');
 
@@ -54,10 +59,24 @@ app.use('/api/user',(req,res,err)=>{
 
 app.use('/api', routes.api);
 
-
-
 app.listen(config.get("port"), ()=>{
     console.log(`App listening on port ${config.get("port")}!`);
     console.log(`http://localhost:${config.get("port")}`);
 });
 
+console.log(`App listening on port ${config.get("port")}!`);
+var privateKey = fs.readFileSync( './sslforfree/private.key' );
+var certificate = fs.readFileSync( './sslforfree/certificate.crt' );
+
+// https.createServer({
+//     key: privateKey,
+//     cert: certificate
+// }, app).listen(config.get("port"));
+
+// https.createServer({
+//     key: privateKey,
+//     cert: certificate
+// }, app).listen(config.get("porthttp"));
+
+// http.createServer(app).listen(80);
+// https.createServer(options, app).listen(config.get("port"));

@@ -4,12 +4,14 @@ const path = require('path');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
-const isProd = nodeEnv === 'production';
+var isProd = nodeEnv === 'production';
 
 const sourcePath = path.join(__dirname, './react');
 const staticsPath = path.join(__dirname, './static/js');
 
 // const extractCSS = new ExtractTextPlugin({ filename: 'style.css', disable: false, allChunks: true });
+
+// isProd=true;
 
 const plugins = [
     new webpack.optimize.CommonsChunkPlugin({
@@ -38,7 +40,7 @@ const jsEntry = [
     // 'webpack-hot-middleware/client'
     // 'pages/Home',
 ];
-
+console.log(isProd);
 if (isProd) {
     plugins.push(
         new webpack.LoaderOptionsPlugin({
@@ -65,10 +67,10 @@ if (isProd) {
         // extractCSS
     );
 
-    jsEntry.unshift(
-        'webpack-dev-server/react?http://localhost:8080',
-        'webpack/hot/only-dev-server'
-    );
+    // jsEntry.unshift(
+    //     'webpack-dev-server/react?http://localhost:8080',
+    //     'webpack/hot/only-dev-server'
+    // );
 } else {
     plugins.push(
         new webpack.HotModuleReplacementPlugin(),

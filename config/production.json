@@ -1,5 +1,6 @@
 {
-  "port":"80",
+  "port":"443",
+  "porthttp":"80",
   "mongoose":{
     "url":"mongodb://localhost",
     "url_local":"mongodb://localhost",
@@ -8,6 +9,6 @@
   "auth":{
     "clientID":     5922563,
     "clientSecret": "GSUGxGVeaMe9kW2Uc5vC",
-    "callbackURL":  "http://spotworld-t.com/auth/vkontakte/callback"
+    "callbackURL":  "https://spotworld-t.com/auth/vkontakte/callback"
   }
 }
