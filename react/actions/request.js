@@ -24,22 +24,22 @@ export function get( name, options ) {
     }
 }
 
-export function saveMarker( marker ) {
+export function saveEvent( event ) {
     return (dispatch) => {
         dispatch({
-            type: "SAVE_MARKER_WAIT",
-            payload: marker
+            type: "SAVE_EVENT_WAIT",
+            payload: event
         });
-        reqst.api( "api/markers", {method:"post",data:marker} )
+        reqst.api( "api/markers", {method:"post",data:event} )
             .then(({data})=>{
                 dispatch({
-                    type: "SAVE_MARKER_OK",
-                    marker: marker
+                    type: "SAVE_EVENT_OK",
+                    payload: event
                 });
             })
             .catch(err=>{
                 dispatch({
-                    type: "SAVE_MARKER_ERR",
+                    type: "SAVE_EVENT_ERR",
                     payload: err
                 })
             })

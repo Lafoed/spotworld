@@ -10,3 +10,7 @@ export var popup={
         marginTop:"-30px"
     }
 }
+
+export var border={
+    border:"1px solid black"
+}

@@ -18,15 +18,14 @@ export default function request(state = initialState, action) {
             return {...state}
 
 
-        case "SAVE_MARKER_WAIT":
+        case "SAVE_EVENT_WAIT":
             return {...state}
 
-        case "SAVE_MARKER_OK":
-            var {marker} = action;
-            state.markers.push(marker);
+        case "SAVE_EVENT_OK":
+            state.markers.push(action.payload);
             return {...state}
 
-        case "SAVE_MARKER_ERR":
+        case "SAVE_EVENT_ERR":
             console.error(action.payload);
             return {...state}
 

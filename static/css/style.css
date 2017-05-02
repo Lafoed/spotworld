@@ -2,8 +2,7 @@ html {margin:0; padding:0;}
 body {margin:0; padding:0; background-color:#ffffff;}
 
 .cursorMarker{
-    cursor:  url(../img/icon.png) 4 12, auto;
-
+    cursor:  url(../img/icon.png) 24 48, auto;
 }
 
 

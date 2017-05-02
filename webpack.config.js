@@ -11,7 +11,7 @@ const staticsPath = path.join(__dirname, './static/js');
 
 // const extractCSS = new ExtractTextPlugin({ filename: 'style.css', disable: false, allChunks: true });
 
-isProd=true;
+// isProd=true;
 
 const plugins = [
     new webpack.optimize.CommonsChunkPlugin({

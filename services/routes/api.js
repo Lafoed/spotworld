@@ -1,6 +1,6 @@
 var express = require('express');
 var api = express.Router();
-var db = require('../../db');
+var db = require('../db');
 
 const Marker = db.model('Marker');
 

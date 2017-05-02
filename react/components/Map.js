@@ -52,6 +52,7 @@ export default class MapReact extends React.Component {
             // var marker = {...this.marker};
             // marker.coords = evt.coordinate;
             // Map.addMarker( evt.coordinate, marker );
+            debugger;
             actions.toggleState("constructorOpen");
             actions.toggleState("markerMode");
             // this.props.actions.saveMarker(marker);
