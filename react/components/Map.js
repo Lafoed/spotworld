@@ -8,18 +8,9 @@ export default class MapReact extends React.Component {
         super(props);
         this.map = null;
         this.state={
-            markers:true,
+            events:true,
             location:true,
-            click:true
         }
-    }
-
-    marker={
-        author: "i am",
-        description: "the very first marker",
-        end_time: "2017-03-18T21:23:53.000Z",
-        start_time: "2017-03-18T21:23:53.000Z",
-        tags: ["#first", "#tags"]
     }
 
     componentDidMount() {
@@ -30,12 +21,13 @@ export default class MapReact extends React.Component {
 
     componentWillReceiveProps( props ){
         var { userLocation } = props.ui;
-        var { markers } = props.request;
+        var { events } = props.request;
 
-        if ( markers.length && this.state.markers ){
-            this.setState( {markers:false} )
-            markers.forEach( marker => {
-                this.map.addMarker(marker.coords, marker._id);
+        if ( events.length && this.state.events ){
+            this.setState( {events:false} )
+
+            events.forEach( event => {
+                this.map.addMarker(event.coords, event._id);
             });
         }
         if ( userLocation[0]!=0 && this.state.location ) {
@@ -49,13 +41,9 @@ export default class MapReact extends React.Component {
     mapClick(Map, evt) {
         var { actions, ui } = this.props;
         if ( ui.markerMode ){
-            // var marker = {...this.marker};
-            // marker.coords = evt.coordinate;
-            // Map.addMarker( evt.coordinate, marker );
-            debugger;
-            actions.toggleState("constructorOpen");
-            actions.toggleState("markerMode");
-            // this.props.actions.saveMarker(marker);
+            actions.setUiState( "coordsClick", evt.coordinate );
+            actions.toggleState( "constructorOpen" );
+            actions.toggleState( "markerMode" );
             return;
         }
         var feature = Map.getFeatures(evt.pixel);

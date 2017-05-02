@@ -5,6 +5,7 @@ const initialState = {
     markerMode:false,
     constructorOpen:false,
     popupOpen:false,
+    coordsClick:null,
 };
 
 export default function ui(state = initialState, action) {

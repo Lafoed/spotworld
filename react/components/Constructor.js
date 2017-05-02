@@ -24,15 +24,23 @@ export default class Constructor extends React.Component {
 
     save = evt =>{
         var { user } = this.props.request;
-        if ( !user ) return console.error('no user');
-        var data = Object.assign({}, this.state, {author:user.username}, {coords : [4213168.617498788, 7610311.138545399]} );
-        delete data.startDate;
-        delete data.endDate;
-        delete data.startTime;
-        delete data.endTime;
+        var { coordsClick } = this.props.ui;
+        var { title, description, startDate, endDate, startTime, endTime, tags} = this.state;
+        var start_time = new Date( this.getFullTime(startDate,startTime).valueOf() );
+        var end_time = new Date( this.getFullTime(endDate,endTime).valueOf() );
+        var data = Object.assign({}, {
+            start_time:start_time,
+            end_time:end_time,
+            user_id:user._id,
+            coords : coordsClick,
+            title: title,
+            description: description,
+        } );
         this.props.actions.saveEvent(data);
-        // this.close();
+        this.close();
     }
+
+    getFullTime=(date,time)=>moment(date).hour( moment(time).get('hour') ).minute( moment(time).get('minute') )
 
     close = ()=>{
         this.props.actions.toggleState('constructorOpen');

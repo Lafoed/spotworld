@@ -30,7 +30,7 @@ export function saveEvent( event ) {
             type: "SAVE_EVENT_WAIT",
             payload: event
         });
-        reqst.api( "api/markers", {method:"post",data:event} )
+        reqst.api( "api/events", {method:"post",data:event} )
             .then(({data})=>{
                 dispatch({
                     type: "SAVE_EVENT_OK",

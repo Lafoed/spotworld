@@ -34,7 +34,6 @@ export default class Map {
     addMarker(coords, id) {
         var marker = this.createMarker(coords, id);
 
-
         var vectorLayer = this.getLayer("markers");
 
         var source = vectorLayer.getSource();

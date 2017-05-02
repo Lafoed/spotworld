@@ -17,17 +17,16 @@ export default class Main extends React.Component {
     }
     chipClick=()=>alert('add chip to search')
 
-
     render() {
         var { popupId } = this.props.ui
-        var {user, markers} = this.props.request;
-        var data = markers.find(mrk=>mrk._id===popupId);
+        var {user, events} = this.props.request;
+        var data = events.find(evt=>evt._id===popupId);
         if ( !data ) return;
         return (
             <Card>
                 <CardHeader
-                    title={data.author}
-                    subtitle={data.author}
+                    title={data.user_id}
+                    subtitle={data.user_id}
                     avatar={"https://pp.userapi.com/c633526/v633526599/1a853/ZXHy0-sh7Eg.jpg" || user && user.photo}
                 />
                 {/*<CardMedia*/}

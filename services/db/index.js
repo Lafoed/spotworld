@@ -3,7 +3,7 @@ const log = require("winston");
 const config = require("config");
 
 const User = require("./models/user");
-const Marker = require("./models/marker");
+const Event = require("./models/event");
 
 mongoose.connection.on('open', () => {
     log.info('Connected to mongo server!');

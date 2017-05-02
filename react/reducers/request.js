@@ -1,6 +1,6 @@
 const initialState = {
     user: null,
-    markers: []
+    events: []
 };
 
 export default function request(state = initialState, action) {
@@ -22,7 +22,7 @@ export default function request(state = initialState, action) {
             return {...state}
 
         case "SAVE_EVENT_OK":
-            state.markers.push(action.payload);
+            state.events.push(action.payload);
             return {...state}
 
         case "SAVE_EVENT_ERR":

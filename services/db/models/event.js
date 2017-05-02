@@ -6,7 +6,7 @@ var schema = new Schema({
         type: ["Number"],
         required: true
     },
-    author: {
+    user_id: {
         type: "String",
         required: true
     },
@@ -29,4 +29,4 @@ var schema = new Schema({
 });
 
 
-module.exports = mongoose.model('Marker',schema);
+module.exports = mongoose.model('Event',schema);

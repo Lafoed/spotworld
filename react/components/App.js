@@ -19,7 +19,7 @@ class App extends React.Component {
     }
     componentDidMount(){
         this.props.actions.get('user');
-        this.props.actions.get('markers');
+        this.props.actions.get('events');
         this.props.actions.getUserLocation();
     }
 

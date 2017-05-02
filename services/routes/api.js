@@ -2,10 +2,10 @@ var express = require('express');
 var api = express.Router();
 var db = require('../db');
 
-const Marker = db.model('Marker');
+const Event = db.model('Event');
 
-api.get( '/markers', (req,res,next)=>{
-    Marker.find()
+api.get( '/events', (req,res,next)=>{
+    Event.find()
         .then(resp=>res.send(resp))
         .catch(err=>{
             console.error(err);
@@ -13,9 +13,9 @@ api.get( '/markers', (req,res,next)=>{
         })
 });
 
-api.post( '/markers', (req,res,next)=>{
-    var newMarker = new Marker(req.body);
-    newMarker.save()
+api.post( '/events', (req,res,next)=>{
+    var newEvent = new Event(req.body);
+    newEvent.save()
         .then(resp=>res.send(resp))
         .catch(err=>{
             console.error(err);
@@ -23,9 +23,9 @@ api.post( '/markers', (req,res,next)=>{
         })
 });
 
-api.put( '/markers', (req,res,next)=>{
+api.put( '/events', (req,res,next)=>{
 
-    Marker.find().save()
+    Event.find().save()
         .then(resp=>res.send(resp))
         .catch(err=>{
             console.error(err);
@@ -33,9 +33,9 @@ api.put( '/markers', (req,res,next)=>{
         })
 });
 
-api.delete( '/markers', (req,res,next)=>{
+api.delete( '/events', (req,res,next)=>{
 
-    Marker.delete()
+    Event.delete()
         .then(resp=>res.send('users count' + resp))
         .catch(err=>{
             console.error(err);
