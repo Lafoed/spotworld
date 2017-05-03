@@ -1,8 +1,8 @@
 var graphql = require('graphql');
 var mod = require('./models');
 
-const User = {
-    type: mod.UserType,
+const Event = {
+    type: mod.EventType,
     args: {
         id: {
             name: 'id',
@@ -10,23 +10,23 @@ const User = {
         }
     },
     resolve (root, args, req) {
-        return mod.UserModel
+        return mod.EventModel
             .findById(args.id)
             .exec()
     }
 };
 
-const Users = {
-    type: new graphql.GraphQLList(mod.UserType),
+const Events = {
+    type: new graphql.GraphQLList(mod.EventType),
     args: {},
     resolve (root, args, req) {
-        return mod.UserModel
+        return mod.EventModel
             .find()
             .exec()
     }
 };
 
 module.exports= {
-    User: User,
-    Users: Users,
+    Event: Event,
+    Events: Events,
 }

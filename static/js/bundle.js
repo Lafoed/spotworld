@@ -4272,50 +4272,6 @@ for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList'
 
 /***/ }),
 
-/***/ "../node_modules/css-in-js-utils/lib/hyphenateProperty.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = hyphenateProperty;
-
-var _hyphenateStyleName = __webpack_require__("../node_modules/hyphenate-style-name/index.js");
-
-var _hyphenateStyleName2 = _interopRequireDefault(_hyphenateStyleName);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function hyphenateProperty(property) {
-  return (0, _hyphenateStyleName2.default)(property);
-}
-module.exports = exports['default'];
-
-/***/ }),
-
-/***/ "../node_modules/css-in-js-utils/lib/isPrefixedValue.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = isPrefixedValue;
-
-var regex = /-webkit-|-moz-|-ms-/;
-
-function isPrefixedValue(value) {
-  return typeof value === 'string' && regex.test(value);
-}
-module.exports = exports['default'];
-
-/***/ }),
-
 /***/ "../node_modules/deep-diff/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4870,7 +4826,7 @@ module.exports = hyphenateStyleName;
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/dynamic/createPrefixer.js":
+/***/ "../node_modules/inline-style-prefixer/lib/Prefixer.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4881,178 +4837,232 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+// special flexbox specifications
 
-exports.default = createPrefixer;
 
-var _getBrowserInformation = __webpack_require__("../node_modules/inline-style-prefixer/utils/getBrowserInformation.js");
+var _prefixAll2 = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/prefixAll.js");
+
+var _prefixAll3 = _interopRequireDefault(_prefixAll2);
+
+var _getBrowserInformation = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getBrowserInformation.js");
 
 var _getBrowserInformation2 = _interopRequireDefault(_getBrowserInformation);
 
-var _getPrefixedKeyframes = __webpack_require__("../node_modules/inline-style-prefixer/utils/getPrefixedKeyframes.js");
+var _getPrefixedKeyframes = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedKeyframes.js");
 
 var _getPrefixedKeyframes2 = _interopRequireDefault(_getPrefixedKeyframes);
 
-var _capitalizeString = __webpack_require__("../node_modules/inline-style-prefixer/utils/capitalizeString.js");
+var _capitalizeString = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/capitalizeString.js");
 
 var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
 
-var _addNewValuesOnly = __webpack_require__("../node_modules/inline-style-prefixer/utils/addNewValuesOnly.js");
+var _sortPrefixedStyle = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/sortPrefixedStyle.js");
 
-var _addNewValuesOnly2 = _interopRequireDefault(_addNewValuesOnly);
+var _sortPrefixedStyle2 = _interopRequireDefault(_sortPrefixedStyle);
 
-var _isObject = __webpack_require__("../node_modules/inline-style-prefixer/utils/isObject.js");
+var _prefixProps = __webpack_require__("../node_modules/inline-style-prefixer/lib/prefixProps.js");
 
-var _isObject2 = _interopRequireDefault(_isObject);
+var _prefixProps2 = _interopRequireDefault(_prefixProps);
 
-var _prefixValue = __webpack_require__("../node_modules/inline-style-prefixer/utils/prefixValue.js");
+var _position = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/position.js");
 
-var _prefixValue2 = _interopRequireDefault(_prefixValue);
+var _position2 = _interopRequireDefault(_position);
+
+var _calc = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/calc.js");
+
+var _calc2 = _interopRequireDefault(_calc);
+
+var _zoomCursor = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/zoomCursor.js");
+
+var _zoomCursor2 = _interopRequireDefault(_zoomCursor);
+
+var _grabCursor = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/grabCursor.js");
+
+var _grabCursor2 = _interopRequireDefault(_grabCursor);
+
+var _flex = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/flex.js");
+
+var _flex2 = _interopRequireDefault(_flex);
+
+var _sizing = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/sizing.js");
+
+var _sizing2 = _interopRequireDefault(_sizing);
+
+var _gradient = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/gradient.js");
+
+var _gradient2 = _interopRequireDefault(_gradient);
+
+var _transition = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/transition.js");
+
+var _transition2 = _interopRequireDefault(_transition);
+
+var _flexboxIE = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/flexboxIE.js");
+
+var _flexboxIE2 = _interopRequireDefault(_flexboxIE);
+
+var _flexboxOld = __webpack_require__("../node_modules/inline-style-prefixer/lib/plugins/flexboxOld.js");
+
+var _flexboxOld2 = _interopRequireDefault(_flexboxOld);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function createPrefixer(_ref) {
-  var prefixMap = _ref.prefixMap,
-      plugins = _ref.plugins;
-  var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (style) {
-    return style;
-  };
+var plugins = [_position2.default, _calc2.default, _zoomCursor2.default, _grabCursor2.default, _sizing2.default, _gradient2.default, _transition2.default, _flexboxIE2.default, _flexboxOld2.default,
+// this must be run AFTER the flexbox specs
+_flex2.default];
 
-  return function () {
-    /**
-    * Instantiante a new prefixer
-    * @param {string} userAgent - userAgent to gather prefix information according to caniuse.com
-    * @param {string} keepUnprefixed - keeps unprefixed properties and values
-    */
-    function Prefixer() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+var Prefixer = function () {
+  /**
+   * Instantiante a new prefixer
+   * @param {string} userAgent - userAgent to gather prefix information according to caniuse.com
+   * @param {string} keepUnprefixed - keeps unprefixed properties and values
+   */
 
-      _classCallCheck(this, Prefixer);
+  function Prefixer() {
+    var _this = this;
 
-      var defaultUserAgent = typeof navigator !== 'undefined' ? navigator.userAgent : undefined;
+    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      this._userAgent = options.userAgent || defaultUserAgent;
-      this._keepUnprefixed = options.keepUnprefixed || false;
+    _classCallCheck(this, Prefixer);
 
-      if (this._userAgent) {
-        this._browserInfo = (0, _getBrowserInformation2.default)(this._userAgent);
-      }
+    var defaultUserAgent = typeof navigator !== 'undefined' ? navigator.userAgent : undefined;
 
-      // Checks if the userAgent was resolved correctly
-      if (this._browserInfo && this._browserInfo.cssPrefix) {
-        this.prefixedKeyframes = (0, _getPrefixedKeyframes2.default)(this._browserInfo.browserName, this._browserInfo.browserVersion, this._browserInfo.cssPrefix);
-      } else {
-        this._useFallback = true;
-        return false;
-      }
+    this._userAgent = options.userAgent || defaultUserAgent;
+    this._keepUnprefixed = options.keepUnprefixed || false;
 
-      var prefixData = this._browserInfo.browserName && prefixMap[this._browserInfo.browserName];
-      if (prefixData) {
-        this._requiresPrefix = {};
+    this._browserInfo = (0, _getBrowserInformation2.default)(this._userAgent);
 
-        for (var property in prefixData) {
-          if (prefixData[property] >= this._browserInfo.browserVersion) {
-            this._requiresPrefix[property] = true;
-          }
-        }
-
-        this._hasPropsRequiringPrefix = Object.keys(this._requiresPrefix).length > 0;
-      } else {
-        this._useFallback = true;
-      }
-
-      this._metaData = {
-        browserVersion: this._browserInfo.browserVersion,
-        browserName: this._browserInfo.browserName,
-        cssPrefix: this._browserInfo.cssPrefix,
-        jsPrefix: this._browserInfo.jsPrefix,
-        keepUnprefixed: this._keepUnprefixed,
-        requiresPrefix: this._requiresPrefix
-      };
+    // Checks if the userAgent was resolved correctly
+    if (this._browserInfo && this._browserInfo.prefix) {
+      // set additional prefix information
+      this.cssPrefix = this._browserInfo.prefix.css;
+      this.jsPrefix = this._browserInfo.prefix.inline;
+      this.prefixedKeyframes = (0, _getPrefixedKeyframes2.default)(this._browserInfo);
+    } else {
+      this._usePrefixAllFallback = true;
+      return false;
     }
 
-    _createClass(Prefixer, [{
-      key: 'prefix',
-      value: function prefix(style) {
-        // use static prefixer as fallback if userAgent can not be resolved
-        if (this._useFallback) {
-          return fallback(style);
-        }
+    var data = this._browserInfo.browser && _prefixProps2.default[this._browserInfo.browser];
+    if (data) {
+      this._requiresPrefix = Object.keys(data).filter(function (key) {
+        return data[key] >= _this._browserInfo.version;
+      }).reduce(function (result, name) {
+        result[name] = true;
+        return result;
+      }, {});
+      this._hasPropsRequiringPrefix = Object.keys(this._requiresPrefix).length > 0;
+    } else {
+      this._usePrefixAllFallback = true;
+    }
+  }
 
-        // only add prefixes if needed
-        if (!this._hasPropsRequiringPrefix) {
-          return style;
-        }
+  /**
+   * Returns a prefixed version of the style object
+   * @param {Object} styles - Style object that gets prefixed properties added
+   * @returns {Object} - Style object with prefixed properties and values
+   */
 
-        return this._prefixStyle(style);
+
+  _createClass(Prefixer, [{
+    key: 'prefix',
+    value: function prefix(styles) {
+      var _this2 = this;
+
+      // use prefixAll as fallback if userAgent can not be resolved
+      if (this._usePrefixAllFallback) {
+        return (0, _prefixAll3.default)(styles);
       }
-    }, {
-      key: '_prefixStyle',
-      value: function _prefixStyle(style) {
-        for (var property in style) {
-          var value = style[property];
 
-          // handle nested objects
-          if ((0, _isObject2.default)(value)) {
-            style[property] = this.prefix(value);
-            // handle array values
-          } else if (Array.isArray(value)) {
-            var combinedValue = [];
+      // only add prefixes if needed
+      if (!this._hasPropsRequiringPrefix) {
+        return styles;
+      }
 
-            for (var i = 0, len = value.length; i < len; ++i) {
-              var processedValue = (0, _prefixValue2.default)(plugins, property, value[i], style, this._metaData);
-              (0, _addNewValuesOnly2.default)(combinedValue, processedValue || value[i]);
-            }
-
-            // only modify the value if it was touched
-            // by any plugin to prevent unnecessary mutations
-            if (combinedValue.length > 0) {
-              style[property] = combinedValue;
-            }
-          } else {
-            var _processedValue = (0, _prefixValue2.default)(plugins, property, value, style, this._metaData);
-
-            // only modify the value if it was touched
-            // by any plugin to prevent unnecessary mutations
-            if (_processedValue) {
-              style[property] = _processedValue;
-            }
-
-            // add prefixes to properties
-            if (this._requiresPrefix.hasOwnProperty(property)) {
-              style[this._browserInfo.jsPrefix + (0, _capitalizeString2.default)(property)] = value;
-              if (!this._keepUnprefixed) {
-                delete style[property];
-              }
+      Object.keys(styles).forEach(function (property) {
+        var value = styles[property];
+        if (value instanceof Object && !Array.isArray(value)) {
+          // recurse through nested style objects
+          styles[property] = _this2.prefix(value);
+        } else {
+          // add prefixes if needed
+          if (_this2._requiresPrefix[property]) {
+            styles[_this2.jsPrefix + (0, _capitalizeString2.default)(property)] = value;
+            if (!_this2._keepUnprefixed) {
+              delete styles[property];
             }
           }
         }
+      });
 
-        return style;
-      }
+      Object.keys(styles).forEach(function (property) {
+        [].concat(styles[property]).forEach(function (value) {
+          // resolve plugins
+          plugins.forEach(function (plugin) {
+            // generates a new plugin interface with current data
+            assignStyles(styles, plugin({
+              property: property,
+              value: value,
+              styles: styles,
+              browserInfo: _this2._browserInfo,
+              prefix: {
+                js: _this2.jsPrefix,
+                css: _this2.cssPrefix,
+                keyframes: _this2.prefixedKeyframes
+              },
+              keepUnprefixed: _this2._keepUnprefixed,
+              requiresPrefix: _this2._requiresPrefix
+            }), value, _this2._keepUnprefixed);
+          });
+        });
+      });
 
-      /**
-      * Returns a prefixed version of the style object using all vendor prefixes
-      * @param {Object} styles - Style object that gets prefixed properties added
-      * @returns {Object} - Style object with prefixed properties and values
-      */
+      return (0, _sortPrefixedStyle2.default)(styles);
+    }
 
-    }], [{
-      key: 'prefixAll',
-      value: function prefixAll(styles) {
-        return fallback(styles);
-      }
-    }]);
+    /**
+     * Returns a prefixed version of the style object using all vendor prefixes
+     * @param {Object} styles - Style object that gets prefixed properties added
+     * @returns {Object} - Style object with prefixed properties and values
+     */
 
-    return Prefixer;
-  }();
+  }], [{
+    key: 'prefixAll',
+    value: function prefixAll(styles) {
+      return (0, _prefixAll3.default)(styles);
+    }
+  }]);
+
+  return Prefixer;
+}();
+
+exports.default = Prefixer;
+
+
+function assignStyles(base) {
+  var extend = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+  var value = arguments[2];
+  var keepUnprefixed = arguments[3];
+
+  Object.keys(extend).forEach(function (property) {
+    var baseValue = base[property];
+    if (Array.isArray(baseValue)) {
+      [].concat(extend[property]).forEach(function (val) {
+        if (base[property].indexOf(val) === -1) {
+          base[property].splice(baseValue.indexOf(value), keepUnprefixed ? 0 : 1, val);
+        }
+      });
+    } else {
+      base[property] = extend[property];
+    }
+  });
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/dynamic/plugins/calc.js":
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/calc.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5063,27 +5073,32 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = calc;
 
-var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/utils/getPrefixedValue.js");
+var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js");
 
 var _getPrefixedValue2 = _interopRequireDefault(_getPrefixedValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function calc(property, value, style, _ref) {
-  var browserName = _ref.browserName,
-      browserVersion = _ref.browserVersion,
-      cssPrefix = _ref.cssPrefix,
-      keepUnprefixed = _ref.keepUnprefixed;
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-  if (typeof value === 'string' && value.indexOf('calc(') > -1 && (browserName === 'firefox' && browserVersion < 15 || browserName === 'chrome' && browserVersion < 25 || browserName === 'safari' && browserVersion < 6.1 || browserName === 'ios_saf' && browserVersion < 7)) {
-    return (0, _getPrefixedValue2.default)(value.replace(/calc\(/g, cssPrefix + 'calc('), value, keepUnprefixed);
+function calc(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var _ref$browserInfo = _ref.browserInfo;
+  var browser = _ref$browserInfo.browser;
+  var version = _ref$browserInfo.version;
+  var css = _ref.prefix.css;
+  var keepUnprefixed = _ref.keepUnprefixed;
+
+  if (typeof value === 'string' && value.indexOf('calc(') > -1 && (browser === 'firefox' && version < 15 || browser === 'chrome' && version < 25 || browser === 'safari' && version < 6.1 || browser === 'ios_saf' && version < 7)) {
+    return _defineProperty({}, property, (0, _getPrefixedValue2.default)(value.replace(/calc\(/g, css + 'calc('), value, keepUnprefixed));
   }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/dynamic/plugins/flex.js":
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/flex.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5094,31 +5109,34 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = flex;
 
-var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/utils/getPrefixedValue.js");
+var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js");
 
 var _getPrefixedValue2 = _interopRequireDefault(_getPrefixedValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var values = {
-  flex: true,
-  'inline-flex': true
-};
-function flex(property, value, style, _ref) {
-  var browserName = _ref.browserName,
-      browserVersion = _ref.browserVersion,
-      cssPrefix = _ref.cssPrefix,
-      keepUnprefixed = _ref.keepUnprefixed;
+var values = { flex: true, 'inline-flex': true };
 
-  if (property === 'display' && values[value] && (browserName === 'chrome' && browserVersion < 29 && browserVersion > 20 || (browserName === 'safari' || browserName === 'ios_saf') && browserVersion < 9 && browserVersion > 6 || browserName === 'opera' && (browserVersion === 15 || browserVersion === 16))) {
-    return (0, _getPrefixedValue2.default)(cssPrefix + value, value, keepUnprefixed);
+function flex(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var _ref$browserInfo = _ref.browserInfo;
+  var browser = _ref$browserInfo.browser;
+  var version = _ref$browserInfo.version;
+  var css = _ref.prefix.css;
+  var keepUnprefixed = _ref.keepUnprefixed;
+
+  if (property === 'display' && values[value] && (browser === 'chrome' && version < 29 && version > 20 || (browser === 'safari' || browser === 'ios_saf') && version < 9 && version > 6 || browser === 'opera' && (version == 15 || version == 16))) {
+    return {
+      display: (0, _getPrefixedValue2.default)(css + value, value, keepUnprefixed)
+    };
   }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/dynamic/plugins/flexboxIE.js":
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/flexboxIE.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5129,11 +5147,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = flexboxIE;
 
-var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/utils/getPrefixedValue.js");
+var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js");
 
 var _getPrefixedValue2 = _interopRequireDefault(_getPrefixedValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var alternativeValues = {
   'space-around': 'distribute',
@@ -5143,7 +5163,6 @@ var alternativeValues = {
   flex: 'flexbox',
   'inline-flex': 'inline-flexbox'
 };
-
 var alternativeProps = {
   alignContent: 'msFlexLinePack',
   alignSelf: 'msFlexItemAlign',
@@ -5155,24 +5174,27 @@ var alternativeProps = {
   flexBasis: 'msPreferredSize'
 };
 
-function flexboxIE(property, value, style, _ref) {
-  var browserName = _ref.browserName,
-      browserVersion = _ref.browserVersion,
-      cssPrefix = _ref.cssPrefix,
-      keepUnprefixed = _ref.keepUnprefixed,
-      requiresPrefix = _ref.requiresPrefix;
+function flexboxIE(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var styles = _ref.styles;
+  var _ref$browserInfo = _ref.browserInfo;
+  var browser = _ref$browserInfo.browser;
+  var version = _ref$browserInfo.version;
+  var css = _ref.prefix.css;
+  var keepUnprefixed = _ref.keepUnprefixed;
 
-  if ((alternativeProps.hasOwnProperty(property) || property === 'display' && typeof value === 'string' && value.indexOf('flex') > -1) && (browserName === 'ie_mob' || browserName === 'ie') && browserVersion === 10) {
-    delete requiresPrefix[property];
-
-    if (!keepUnprefixed && !Array.isArray(style[property])) {
-      delete style[property];
+  if ((alternativeProps[property] || property === 'display' && typeof value === 'string' && value.indexOf('flex') > -1) && (browser === 'ie_mob' || browser === 'ie') && version == 10) {
+    if (!keepUnprefixed && !Array.isArray(styles[property])) {
+      delete styles[property];
     }
-    if (property === 'display' && alternativeValues.hasOwnProperty(value)) {
-      return (0, _getPrefixedValue2.default)(cssPrefix + alternativeValues[value], value, keepUnprefixed);
+    if (property === 'display' && alternativeValues[value]) {
+      return {
+        display: (0, _getPrefixedValue2.default)(css + alternativeValues[value], value, keepUnprefixed)
+      };
     }
-    if (alternativeProps.hasOwnProperty(property)) {
-      style[alternativeProps[property]] = alternativeValues[value] || value;
+    if (alternativeProps[property]) {
+      return _defineProperty({}, alternativeProps[property], alternativeValues[value] || value);
     }
   }
 }
@@ -5180,7 +5202,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/dynamic/plugins/flexboxOld.js":
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/flexboxOld.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5191,11 +5213,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = flexboxOld;
 
-var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/utils/getPrefixedValue.js");
+var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js");
 
 var _getPrefixedValue2 = _interopRequireDefault(_getPrefixedValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var alternativeValues = {
   'space-around': 'justify',
@@ -5208,7 +5232,6 @@ var alternativeValues = {
   'inline-flex': 'inline-box'
 };
 
-
 var alternativeProps = {
   alignItems: 'WebkitBoxAlign',
   justifyContent: 'WebkitBoxPack',
@@ -5218,36 +5241,33 @@ var alternativeProps = {
 var otherProps = ['alignContent', 'alignSelf', 'order', 'flexGrow', 'flexShrink', 'flexBasis', 'flexDirection'];
 var properties = Object.keys(alternativeProps).concat(otherProps);
 
-function flexboxOld(property, value, style, _ref) {
-  var browserName = _ref.browserName,
-      browserVersion = _ref.browserVersion,
-      cssPrefix = _ref.cssPrefix,
-      keepUnprefixed = _ref.keepUnprefixed,
-      requiresPrefix = _ref.requiresPrefix;
+function flexboxOld(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var styles = _ref.styles;
+  var _ref$browserInfo = _ref.browserInfo;
+  var browser = _ref$browserInfo.browser;
+  var version = _ref$browserInfo.version;
+  var css = _ref.prefix.css;
+  var keepUnprefixed = _ref.keepUnprefixed;
 
-  if ((properties.indexOf(property) > -1 || property === 'display' && typeof value === 'string' && value.indexOf('flex') > -1) && (browserName === 'firefox' && browserVersion < 22 || browserName === 'chrome' && browserVersion < 21 || (browserName === 'safari' || browserName === 'ios_saf') && browserVersion <= 6.1 || browserName === 'android' && browserVersion < 4.4 || browserName === 'and_uc')) {
-    delete requiresPrefix[property];
-
-    if (!keepUnprefixed && !Array.isArray(style[property])) {
-      delete style[property];
+  if ((properties.indexOf(property) > -1 || property === 'display' && typeof value === 'string' && value.indexOf('flex') > -1) && (browser === 'firefox' && version < 22 || browser === 'chrome' && version < 21 || (browser === 'safari' || browser === 'ios_saf') && version <= 6.1 || browser === 'android' && version < 4.4 || browser === 'and_uc')) {
+    if (!keepUnprefixed && !Array.isArray(styles[property])) {
+      delete styles[property];
     }
     if (property === 'flexDirection' && typeof value === 'string') {
-      if (value.indexOf('column') > -1) {
-        style.WebkitBoxOrient = 'vertical';
-      } else {
-        style.WebkitBoxOrient = 'horizontal';
-      }
-      if (value.indexOf('reverse') > -1) {
-        style.WebkitBoxDirection = 'reverse';
-      } else {
-        style.WebkitBoxDirection = 'normal';
-      }
+      return {
+        WebkitBoxOrient: value.indexOf('column') > -1 ? 'vertical' : 'horizontal',
+        WebkitBoxDirection: value.indexOf('reverse') > -1 ? 'reverse' : 'normal'
+      };
     }
-    if (property === 'display' && alternativeValues.hasOwnProperty(value)) {
-      return (0, _getPrefixedValue2.default)(cssPrefix + alternativeValues[value], value, keepUnprefixed);
+    if (property === 'display' && alternativeValues[value]) {
+      return {
+        display: (0, _getPrefixedValue2.default)(css + alternativeValues[value], value, keepUnprefixed)
+      };
     }
-    if (alternativeProps.hasOwnProperty(property)) {
-      style[alternativeProps[property]] = alternativeValues[value] || value;
+    if (alternativeProps[property]) {
+      return _defineProperty({}, alternativeProps[property], alternativeValues[value] || value);
     }
   }
 }
@@ -5255,7 +5275,44 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/dynamic/plugins/gradient.js":
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/grabCursor.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = grabCursor;
+
+var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js");
+
+var _getPrefixedValue2 = _interopRequireDefault(_getPrefixedValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var values = { grab: true, grabbing: true };
+
+function grabCursor(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var browser = _ref.browserInfo.browser;
+  var css = _ref.prefix.css;
+  var keepUnprefixed = _ref.keepUnprefixed;
+
+  // adds prefixes for firefox, chrome, safari, and opera regardless of version until a reliable brwoser support info can be found (see: https://github.com/rofrischmann/inline-style-prefixer/issues/79)
+  if (property === 'cursor' && values[value] && (browser === 'firefox' || browser === 'chrome' || browser === 'safari' || browser === 'opera')) {
+    return {
+      cursor: (0, _getPrefixedValue2.default)(css + value, value, keepUnprefixed)
+    };
+  }
+}
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/gradient.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5266,28 +5323,68 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = gradient;
 
-var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/utils/getPrefixedValue.js");
+var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js");
 
 var _getPrefixedValue2 = _interopRequireDefault(_getPrefixedValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var values = /linear-gradient|radial-gradient|repeating-linear-gradient|repeating-radial-gradient/;
-function gradient(property, value, style, _ref) {
-  var browserName = _ref.browserName,
-      browserVersion = _ref.browserVersion,
-      cssPrefix = _ref.cssPrefix,
-      keepUnprefixed = _ref.keepUnprefixed;
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-  if (typeof value === 'string' && values.test(value) && (browserName === 'firefox' && browserVersion < 16 || browserName === 'chrome' && browserVersion < 26 || (browserName === 'safari' || browserName === 'ios_saf') && browserVersion < 7 || (browserName === 'opera' || browserName === 'op_mini') && browserVersion < 12.1 || browserName === 'android' && browserVersion < 4.4 || browserName === 'and_uc')) {
-    return (0, _getPrefixedValue2.default)(cssPrefix + value, value, keepUnprefixed);
+var values = /linear-gradient|radial-gradient|repeating-linear-gradient|repeating-radial-gradient/;
+
+function gradient(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var _ref$browserInfo = _ref.browserInfo;
+  var browser = _ref$browserInfo.browser;
+  var version = _ref$browserInfo.version;
+  var css = _ref.prefix.css;
+  var keepUnprefixed = _ref.keepUnprefixed;
+
+  if (typeof value === 'string' && value.match(values) !== null && (browser === 'firefox' && version < 16 || browser === 'chrome' && version < 26 || (browser === 'safari' || browser === 'ios_saf') && version < 7 || (browser === 'opera' || browser === 'op_mini') && version < 12.1 || browser === 'android' && version < 4.4 || browser === 'and_uc')) {
+    return _defineProperty({}, property, (0, _getPrefixedValue2.default)(css + value, value, keepUnprefixed));
   }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/dynamic/plugins/sizing.js":
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/position.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = position;
+
+var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js");
+
+var _getPrefixedValue2 = _interopRequireDefault(_getPrefixedValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function position(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var browser = _ref.browserInfo.browser;
+  var css = _ref.prefix.css;
+  var keepUnprefixed = _ref.keepUnprefixed;
+
+  if (property === 'position' && value === 'sticky' && (browser === 'safari' || browser === 'ios_saf')) {
+    return _defineProperty({}, property, (0, _getPrefixedValue2.default)(css + value, value, keepUnprefixed));
+  }
+}
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/sizing.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5298,11 +5395,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = sizing;
 
-var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/utils/getPrefixedValue.js");
+var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js");
 
 var _getPrefixedValue2 = _interopRequireDefault(_getPrefixedValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var properties = {
   maxHeight: true,
@@ -5313,7 +5412,6 @@ var properties = {
   minWidth: true,
   minHeight: true
 };
-
 var values = {
   'min-content': true,
   'max-content': true,
@@ -5322,22 +5420,23 @@ var values = {
   'contain-floats': true
 };
 
-// TODO: chrome & opera support it
-function sizing(property, value, style, _ref) {
-  var cssPrefix = _ref.cssPrefix,
-      keepUnprefixed = _ref.keepUnprefixed;
+function sizing(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var css = _ref.prefix.css;
+  var keepUnprefixed = _ref.keepUnprefixed;
 
   // This might change in the future
   // Keep an eye on it
-  if (properties.hasOwnProperty(property) && values.hasOwnProperty(value)) {
-    return (0, _getPrefixedValue2.default)(cssPrefix + value, value, keepUnprefixed);
+  if (properties[property] && values[value]) {
+    return _defineProperty({}, property, (0, _getPrefixedValue2.default)(css + value, value, keepUnprefixed));
   }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/dynamic/plugins/transition.js":
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/transition.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5347,40 +5446,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 exports.default = transition;
 
-var _hyphenateProperty = __webpack_require__("../node_modules/css-in-js-utils/lib/hyphenateProperty.js");
+var _hyphenateStyleName = __webpack_require__("../node_modules/hyphenate-style-name/index.js");
 
-var _hyphenateProperty2 = _interopRequireDefault(_hyphenateProperty);
+var _hyphenateStyleName2 = _interopRequireDefault(_hyphenateStyleName);
+
+var _unprefixProperty = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/unprefixProperty.js");
+
+var _unprefixProperty2 = _interopRequireDefault(_unprefixProperty);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var properties = {
-  transition: true,
-  transitionProperty: true,
-  WebkitTransition: true,
-  WebkitTransitionProperty: true,
-  MozTransition: true,
-  MozTransitionProperty: true
-};
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var requiresPrefixDashCased = void 0;
+var properties = { transition: true, transitionProperty: true };
 
-function transition(property, value, style, _ref) {
-  var cssPrefix = _ref.cssPrefix,
-      keepUnprefixed = _ref.keepUnprefixed,
-      requiresPrefix = _ref.requiresPrefix;
+function transition(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var css = _ref.prefix.css;
+  var requiresPrefix = _ref.requiresPrefix;
+  var keepUnprefixed = _ref.keepUnprefixed;
 
-  if (typeof value === 'string' && properties.hasOwnProperty(property)) {
+  // also check for already prefixed transitions
+  var unprefixedProperty = (0, _unprefixProperty2.default)(property);
+
+  if (typeof value === 'string' && properties[unprefixedProperty]) {
     var _ret = function () {
-      // memoize the prefix array for later use
-      if (!requiresPrefixDashCased) {
-        requiresPrefixDashCased = Object.keys(requiresPrefix).map(function (prop) {
-          return (0, _hyphenateProperty2.default)(prop);
-        });
-      }
+      // TODO: memoize this array
+      var requiresPrefixDashCased = Object.keys(requiresPrefix).map(function (prop) {
+        return (0, _hyphenateStyleName2.default)(prop);
+      });
 
       // only split multi values, not cubic beziers
       var multipleValues = value.split(/,(?![^()]*(?:\([^()]*\))?\))/g);
@@ -5388,13 +5487,13 @@ function transition(property, value, style, _ref) {
       requiresPrefixDashCased.forEach(function (prop) {
         multipleValues.forEach(function (val, index) {
           if (val.indexOf(prop) > -1 && prop !== 'order') {
-            multipleValues[index] = val.replace(prop, cssPrefix + prop) + (keepUnprefixed ? ',' + val : '');
+            multipleValues[index] = val.replace(prop, css + prop) + (keepUnprefixed ? ',' + val : '');
           }
         });
       });
 
       return {
-        v: multipleValues.join(',')
+        v: _defineProperty({}, property, multipleValues.join(','))
       };
     }();
 
@@ -5405,7 +5504,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/static/createPrefixer.js":
+/***/ "../node_modules/inline-style-prefixer/lib/plugins/zoomCursor.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5414,74 +5513,50 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = createPrefixer;
+exports.default = zoomCursor;
 
-var _prefixProperty = __webpack_require__("../node_modules/inline-style-prefixer/utils/prefixProperty.js");
+var _getPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js");
 
-var _prefixProperty2 = _interopRequireDefault(_prefixProperty);
-
-var _prefixValue = __webpack_require__("../node_modules/inline-style-prefixer/utils/prefixValue.js");
-
-var _prefixValue2 = _interopRequireDefault(_prefixValue);
-
-var _addNewValuesOnly = __webpack_require__("../node_modules/inline-style-prefixer/utils/addNewValuesOnly.js");
-
-var _addNewValuesOnly2 = _interopRequireDefault(_addNewValuesOnly);
-
-var _isObject = __webpack_require__("../node_modules/inline-style-prefixer/utils/isObject.js");
-
-var _isObject2 = _interopRequireDefault(_isObject);
+var _getPrefixedValue2 = _interopRequireDefault(_getPrefixedValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function createPrefixer(_ref) {
-  var prefixMap = _ref.prefixMap,
-      plugins = _ref.plugins;
+var values = { 'zoom-in': true, 'zoom-out': true };
 
-  function prefixAll(style) {
-    for (var property in style) {
-      var value = style[property];
+function zoomCursor(_ref) {
+  var property = _ref.property;
+  var value = _ref.value;
+  var _ref$browserInfo = _ref.browserInfo;
+  var browser = _ref$browserInfo.browser;
+  var version = _ref$browserInfo.version;
+  var css = _ref.prefix.css;
+  var keepUnprefixed = _ref.keepUnprefixed;
 
-      // handle nested objects
-      if ((0, _isObject2.default)(value)) {
-        style[property] = prefixAll(value);
-        // handle array values
-      } else if (Array.isArray(value)) {
-        var combinedValue = [];
-
-        for (var i = 0, len = value.length; i < len; ++i) {
-          var processedValue = (0, _prefixValue2.default)(plugins, property, value[i], style, prefixMap);
-          (0, _addNewValuesOnly2.default)(combinedValue, processedValue || value[i]);
-        }
-
-        // only modify the value if it was touched
-        // by any plugin to prevent unnecessary mutations
-        if (combinedValue.length > 0) {
-          style[property] = combinedValue;
-        }
-      } else {
-        var _processedValue = (0, _prefixValue2.default)(plugins, property, value, style, prefixMap);
-
-        // only modify the value if it was touched
-        // by any plugin to prevent unnecessary mutations
-        if (_processedValue) {
-          style[property] = _processedValue;
-        }
-
-        (0, _prefixProperty2.default)(prefixMap, property, style);
-      }
-    }
-
-    return style;
+  if (property === 'cursor' && values[value] && (browser === 'firefox' && version < 24 || browser === 'chrome' && version < 37 || browser === 'safari' && version < 9 || browser === 'opera' && version < 24)) {
+    return {
+      cursor: (0, _getPrefixedValue2.default)(css + value, value, keepUnprefixed)
+    };
   }
-
-  return prefixAll;
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/static/plugins/calc.js":
+/***/ "../node_modules/inline-style-prefixer/lib/prefixProps.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = { "chrome": { "transform": 35, "transformOrigin": 35, "transformOriginX": 35, "transformOriginY": 35, "backfaceVisibility": 35, "perspective": 35, "perspectiveOrigin": 35, "transformStyle": 35, "transformOriginZ": 35, "animation": 42, "animationDelay": 42, "animationDirection": 42, "animationFillMode": 42, "animationDuration": 42, "animationIterationCount": 42, "animationName": 42, "animationPlayState": 42, "animationTimingFunction": 42, "appearance": 55, "userSelect": 55, "fontKerning": 32, "textEmphasisPosition": 55, "textEmphasis": 55, "textEmphasisStyle": 55, "textEmphasisColor": 55, "boxDecorationBreak": 55, "clipPath": 55, "maskImage": 55, "maskMode": 55, "maskRepeat": 55, "maskPosition": 55, "maskClip": 55, "maskOrigin": 55, "maskSize": 55, "maskComposite": 55, "mask": 55, "maskBorderSource": 55, "maskBorderMode": 55, "maskBorderSlice": 55, "maskBorderWidth": 55, "maskBorderOutset": 55, "maskBorderRepeat": 55, "maskBorder": 55, "maskType": 55, "textDecorationStyle": 55, "textDecorationSkip": 55, "textDecorationLine": 55, "textDecorationColor": 55, "filter": 52, "fontFeatureSettings": 47, "breakAfter": 49, "breakBefore": 49, "breakInside": 49, "columnCount": 49, "columnFill": 49, "columnGap": 49, "columnRule": 49, "columnRuleColor": 49, "columnRuleStyle": 49, "columnRuleWidth": 49, "columns": 49, "columnSpan": 49, "columnWidth": 49 }, "safari": { "flex": 8, "flexBasis": 8, "flexDirection": 8, "flexGrow": 8, "flexFlow": 8, "flexShrink": 8, "flexWrap": 8, "alignContent": 8, "alignItems": 8, "alignSelf": 8, "justifyContent": 8, "order": 8, "transition": 6, "transitionDelay": 6, "transitionDuration": 6, "transitionProperty": 6, "transitionTimingFunction": 6, "transform": 8, "transformOrigin": 8, "transformOriginX": 8, "transformOriginY": 8, "backfaceVisibility": 8, "perspective": 8, "perspectiveOrigin": 8, "transformStyle": 8, "transformOriginZ": 8, "animation": 8, "animationDelay": 8, "animationDirection": 8, "animationFillMode": 8, "animationDuration": 8, "animationIterationCount": 8, "animationName": 8, "animationPlayState": 8, "animationTimingFunction": 8, "appearance": 10, "userSelect": 10, "backdropFilter": 10, "fontKerning": 9, "scrollSnapType": 10, "scrollSnapPointsX": 10, "scrollSnapPointsY": 10, "scrollSnapDestination": 10, "scrollSnapCoordinate": 10, "textEmphasisPosition": 7, "textEmphasis": 7, "textEmphasisStyle": 7, "textEmphasisColor": 7, "boxDecorationBreak": 10, "clipPath": 10, "maskImage": 10, "maskMode": 10, "maskRepeat": 10, "maskPosition": 10, "maskClip": 10, "maskOrigin": 10, "maskSize": 10, "maskComposite": 10, "mask": 10, "maskBorderSource": 10, "maskBorderMode": 10, "maskBorderSlice": 10, "maskBorderWidth": 10, "maskBorderOutset": 10, "maskBorderRepeat": 10, "maskBorder": 10, "maskType": 10, "textDecorationStyle": 10, "textDecorationSkip": 10, "textDecorationLine": 10, "textDecorationColor": 10, "shapeImageThreshold": 10, "shapeImageMargin": 10, "shapeImageOutside": 10, "filter": 9, "hyphens": 10, "flowInto": 10, "flowFrom": 10, "breakBefore": 8, "breakAfter": 8, "breakInside": 8, "regionFragment": 10, "columnCount": 8, "columnFill": 8, "columnGap": 8, "columnRule": 8, "columnRuleColor": 8, "columnRuleStyle": 8, "columnRuleWidth": 8, "columns": 8, "columnSpan": 8, "columnWidth": 8 }, "firefox": { "appearance": 51, "userSelect": 51, "boxSizing": 28, "textAlignLast": 48, "textDecorationStyle": 35, "textDecorationSkip": 35, "textDecorationLine": 35, "textDecorationColor": 35, "tabSize": 51, "hyphens": 42, "fontFeatureSettings": 33, "breakAfter": 51, "breakBefore": 51, "breakInside": 51, "columnCount": 51, "columnFill": 51, "columnGap": 51, "columnRule": 51, "columnRuleColor": 51, "columnRuleStyle": 51, "columnRuleWidth": 51, "columns": 51, "columnSpan": 51, "columnWidth": 51 }, "opera": { "flex": 16, "flexBasis": 16, "flexDirection": 16, "flexGrow": 16, "flexFlow": 16, "flexShrink": 16, "flexWrap": 16, "alignContent": 16, "alignItems": 16, "alignSelf": 16, "justifyContent": 16, "order": 16, "transform": 22, "transformOrigin": 22, "transformOriginX": 22, "transformOriginY": 22, "backfaceVisibility": 22, "perspective": 22, "perspectiveOrigin": 22, "transformStyle": 22, "transformOriginZ": 22, "animation": 29, "animationDelay": 29, "animationDirection": 29, "animationFillMode": 29, "animationDuration": 29, "animationIterationCount": 29, "animationName": 29, "animationPlayState": 29, "animationTimingFunction": 29, "appearance": 41, "userSelect": 41, "fontKerning": 19, "textEmphasisPosition": 41, "textEmphasis": 41, "textEmphasisStyle": 41, "textEmphasisColor": 41, "boxDecorationBreak": 41, "clipPath": 41, "maskImage": 41, "maskMode": 41, "maskRepeat": 41, "maskPosition": 41, "maskClip": 41, "maskOrigin": 41, "maskSize": 41, "maskComposite": 41, "mask": 41, "maskBorderSource": 41, "maskBorderMode": 41, "maskBorderSlice": 41, "maskBorderWidth": 41, "maskBorderOutset": 41, "maskBorderRepeat": 41, "maskBorder": 41, "maskType": 41, "textDecorationStyle": 41, "textDecorationSkip": 41, "textDecorationLine": 41, "textDecorationColor": 41, "filter": 39, "fontFeatureSettings": 34, "breakAfter": 36, "breakBefore": 36, "breakInside": 36, "columnCount": 36, "columnFill": 36, "columnGap": 36, "columnRule": 36, "columnRuleColor": 36, "columnRuleStyle": 36, "columnRuleWidth": 36, "columns": 36, "columnSpan": 36, "columnWidth": 36 }, "ie": { "flex": 10, "flexDirection": 10, "flexFlow": 10, "flexWrap": 10, "transform": 9, "transformOrigin": 9, "transformOriginX": 9, "transformOriginY": 9, "userSelect": 11, "wrapFlow": 11, "wrapThrough": 11, "wrapMargin": 11, "scrollSnapType": 11, "scrollSnapPointsX": 11, "scrollSnapPointsY": 11, "scrollSnapDestination": 11, "scrollSnapCoordinate": 11, "touchAction": 10, "hyphens": 11, "flowInto": 11, "flowFrom": 11, "breakBefore": 11, "breakAfter": 11, "breakInside": 11, "regionFragment": 11, "gridTemplateColumns": 11, "gridTemplateRows": 11, "gridTemplateAreas": 11, "gridTemplate": 11, "gridAutoColumns": 11, "gridAutoRows": 11, "gridAutoFlow": 11, "grid": 11, "gridRowStart": 11, "gridColumnStart": 11, "gridRowEnd": 11, "gridRow": 11, "gridColumn": 11, "gridColumnEnd": 11, "gridColumnGap": 11, "gridRowGap": 11, "gridArea": 11, "gridGap": 11, "textSizeAdjust": 11 }, "edge": { "userSelect": 14, "wrapFlow": 14, "wrapThrough": 14, "wrapMargin": 14, "scrollSnapType": 14, "scrollSnapPointsX": 14, "scrollSnapPointsY": 14, "scrollSnapDestination": 14, "scrollSnapCoordinate": 14, "hyphens": 14, "flowInto": 14, "flowFrom": 14, "breakBefore": 14, "breakAfter": 14, "breakInside": 14, "regionFragment": 14, "gridTemplateColumns": 14, "gridTemplateRows": 14, "gridTemplateAreas": 14, "gridTemplate": 14, "gridAutoColumns": 14, "gridAutoRows": 14, "gridAutoFlow": 14, "grid": 14, "gridRowStart": 14, "gridColumnStart": 14, "gridRowEnd": 14, "gridRow": 14, "gridColumn": 14, "gridColumnEnd": 14, "gridColumnGap": 14, "gridRowGap": 14, "gridArea": 14, "gridGap": 14 }, "ios_saf": { "flex": 8.1, "flexBasis": 8.1, "flexDirection": 8.1, "flexGrow": 8.1, "flexFlow": 8.1, "flexShrink": 8.1, "flexWrap": 8.1, "alignContent": 8.1, "alignItems": 8.1, "alignSelf": 8.1, "justifyContent": 8.1, "order": 8.1, "transition": 6, "transitionDelay": 6, "transitionDuration": 6, "transitionProperty": 6, "transitionTimingFunction": 6, "transform": 8.1, "transformOrigin": 8.1, "transformOriginX": 8.1, "transformOriginY": 8.1, "backfaceVisibility": 8.1, "perspective": 8.1, "perspectiveOrigin": 8.1, "transformStyle": 8.1, "transformOriginZ": 8.1, "animation": 8.1, "animationDelay": 8.1, "animationDirection": 8.1, "animationFillMode": 8.1, "animationDuration": 8.1, "animationIterationCount": 8.1, "animationName": 8.1, "animationPlayState": 8.1, "animationTimingFunction": 8.1, "appearance": 9.3, "userSelect": 9.3, "backdropFilter": 9.3, "fontKerning": 9.3, "scrollSnapType": 9.3, "scrollSnapPointsX": 9.3, "scrollSnapPointsY": 9.3, "scrollSnapDestination": 9.3, "scrollSnapCoordinate": 9.3, "boxDecorationBreak": 9.3, "clipPath": 9.3, "maskImage": 9.3, "maskMode": 9.3, "maskRepeat": 9.3, "maskPosition": 9.3, "maskClip": 9.3, "maskOrigin": 9.3, "maskSize": 9.3, "maskComposite": 9.3, "mask": 9.3, "maskBorderSource": 9.3, "maskBorderMode": 9.3, "maskBorderSlice": 9.3, "maskBorderWidth": 9.3, "maskBorderOutset": 9.3, "maskBorderRepeat": 9.3, "maskBorder": 9.3, "maskType": 9.3, "textSizeAdjust": 9.3, "textDecorationStyle": 9.3, "textDecorationSkip": 9.3, "textDecorationLine": 9.3, "textDecorationColor": 9.3, "shapeImageThreshold": 9.3, "shapeImageMargin": 9.3, "shapeImageOutside": 9.3, "filter": 9, "hyphens": 9.3, "flowInto": 9.3, "flowFrom": 9.3, "breakBefore": 8.1, "breakAfter": 8.1, "breakInside": 8.1, "regionFragment": 9.3, "columnCount": 8.1, "columnFill": 8.1, "columnGap": 8.1, "columnRule": 8.1, "columnRuleColor": 8.1, "columnRuleStyle": 8.1, "columnRuleWidth": 8.1, "columns": 8.1, "columnSpan": 8.1, "columnWidth": 8.1 }, "android": { "flex": 4.2, "flexBasis": 4.2, "flexDirection": 4.2, "flexGrow": 4.2, "flexFlow": 4.2, "flexShrink": 4.2, "flexWrap": 4.2, "alignContent": 4.2, "alignItems": 4.2, "alignSelf": 4.2, "justifyContent": 4.2, "order": 4.2, "transition": 4.2, "transitionDelay": 4.2, "transitionDuration": 4.2, "transitionProperty": 4.2, "transitionTimingFunction": 4.2, "transform": 4.4, "transformOrigin": 4.4, "transformOriginX": 4.4, "transformOriginY": 4.4, "backfaceVisibility": 4.4, "perspective": 4.4, "perspectiveOrigin": 4.4, "transformStyle": 4.4, "transformOriginZ": 4.4, "animation": 4.4, "animationDelay": 4.4, "animationDirection": 4.4, "animationFillMode": 4.4, "animationDuration": 4.4, "animationIterationCount": 4.4, "animationName": 4.4, "animationPlayState": 4.4, "animationTimingFunction": 4.4, "appearance": 51, "userSelect": 51, "fontKerning": 4.4, "textEmphasisPosition": 51, "textEmphasis": 51, "textEmphasisStyle": 51, "textEmphasisColor": 51, "boxDecorationBreak": 51, "clipPath": 51, "maskImage": 51, "maskMode": 51, "maskRepeat": 51, "maskPosition": 51, "maskClip": 51, "maskOrigin": 51, "maskSize": 51, "maskComposite": 51, "mask": 51, "maskBorderSource": 51, "maskBorderMode": 51, "maskBorderSlice": 51, "maskBorderWidth": 51, "maskBorderOutset": 51, "maskBorderRepeat": 51, "maskBorder": 51, "maskType": 51, "filter": 51, "fontFeatureSettings": 4.4, "breakAfter": 51, "breakBefore": 51, "breakInside": 51, "columnCount": 51, "columnFill": 51, "columnGap": 51, "columnRule": 51, "columnRuleColor": 51, "columnRuleStyle": 51, "columnRuleWidth": 51, "columns": 51, "columnSpan": 51, "columnWidth": 51 }, "and_chr": { "appearance": 51, "userSelect": 51, "textEmphasisPosition": 51, "textEmphasis": 51, "textEmphasisStyle": 51, "textEmphasisColor": 51, "boxDecorationBreak": 51, "clipPath": 51, "maskImage": 51, "maskMode": 51, "maskRepeat": 51, "maskPosition": 51, "maskClip": 51, "maskOrigin": 51, "maskSize": 51, "maskComposite": 51, "mask": 51, "maskBorderSource": 51, "maskBorderMode": 51, "maskBorderSlice": 51, "maskBorderWidth": 51, "maskBorderOutset": 51, "maskBorderRepeat": 51, "maskBorder": 51, "maskType": 51, "textDecorationStyle": 51, "textDecorationSkip": 51, "textDecorationLine": 51, "textDecorationColor": 51, "filter": 51 }, "and_uc": { "flex": 9.9, "flexBasis": 9.9, "flexDirection": 9.9, "flexGrow": 9.9, "flexFlow": 9.9, "flexShrink": 9.9, "flexWrap": 9.9, "alignContent": 9.9, "alignItems": 9.9, "alignSelf": 9.9, "justifyContent": 9.9, "order": 9.9, "transition": 9.9, "transitionDelay": 9.9, "transitionDuration": 9.9, "transitionProperty": 9.9, "transitionTimingFunction": 9.9, "transform": 9.9, "transformOrigin": 9.9, "transformOriginX": 9.9, "transformOriginY": 9.9, "backfaceVisibility": 9.9, "perspective": 9.9, "perspectiveOrigin": 9.9, "transformStyle": 9.9, "transformOriginZ": 9.9, "animation": 9.9, "animationDelay": 9.9, "animationDirection": 9.9, "animationFillMode": 9.9, "animationDuration": 9.9, "animationIterationCount": 9.9, "animationName": 9.9, "animationPlayState": 9.9, "animationTimingFunction": 9.9, "appearance": 9.9, "userSelect": 9.9, "fontKerning": 9.9, "textEmphasisPosition": 9.9, "textEmphasis": 9.9, "textEmphasisStyle": 9.9, "textEmphasisColor": 9.9, "maskImage": 9.9, "maskMode": 9.9, "maskRepeat": 9.9, "maskPosition": 9.9, "maskClip": 9.9, "maskOrigin": 9.9, "maskSize": 9.9, "maskComposite": 9.9, "mask": 9.9, "maskBorderSource": 9.9, "maskBorderMode": 9.9, "maskBorderSlice": 9.9, "maskBorderWidth": 9.9, "maskBorderOutset": 9.9, "maskBorderRepeat": 9.9, "maskBorder": 9.9, "maskType": 9.9, "textSizeAdjust": 9.9, "filter": 9.9, "hyphens": 9.9, "flowInto": 9.9, "flowFrom": 9.9, "breakBefore": 9.9, "breakAfter": 9.9, "breakInside": 9.9, "regionFragment": 9.9, "fontFeatureSettings": 9.9, "columnCount": 9.9, "columnFill": 9.9, "columnGap": 9.9, "columnRule": 9.9, "columnRuleColor": 9.9, "columnRuleStyle": 9.9, "columnRuleWidth": 9.9, "columns": 9.9, "columnSpan": 9.9, "columnWidth": 9.9 }, "op_mini": {} };
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "../node_modules/inline-style-prefixer/lib/static/plugins/calc.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5492,16 +5567,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = calc;
 
-var _isPrefixedValue = __webpack_require__("../node_modules/css-in-js-utils/lib/isPrefixedValue.js");
+var _joinPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/joinPrefixedValue.js");
+
+var _joinPrefixedValue2 = _interopRequireDefault(_joinPrefixedValue);
+
+var _isPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/isPrefixedValue.js");
 
 var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var prefixes = ['-webkit-', '-moz-', ''];
 function calc(property, value) {
   if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && value.indexOf('calc(') > -1) {
-    return prefixes.map(function (prefix) {
+    return (0, _joinPrefixedValue2.default)(property, value, function (prefix, value) {
       return value.replace(/calc\(/g, prefix + 'calc(');
     });
   }
@@ -5510,7 +5588,40 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/static/plugins/flex.js":
+/***/ "../node_modules/inline-style-prefixer/lib/static/plugins/cursor.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = cursor;
+
+var _joinPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/joinPrefixedValue.js");
+
+var _joinPrefixedValue2 = _interopRequireDefault(_joinPrefixedValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var values = {
+  'zoom-in': true,
+  'zoom-out': true,
+  grab: true,
+  grabbing: true
+};
+
+function cursor(property, value) {
+  if (property === 'cursor' && values[value]) {
+    return (0, _joinPrefixedValue2.default)(property, value);
+  }
+}
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "../node_modules/inline-style-prefixer/lib/static/plugins/flex.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5520,21 +5631,20 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = flex;
-var values = {
-  flex: true,
-  'inline-flex': true
-};
+var values = { flex: true, 'inline-flex': true };
 
 function flex(property, value) {
-  if (property === 'display' && values.hasOwnProperty(value)) {
-    return ['-webkit-box', '-moz-box', '-ms-' + value + 'box', '-webkit-' + value, value];
+  if (property === 'display' && values[value]) {
+    return {
+      display: ['-webkit-box', '-moz-box', '-ms-' + value + 'box', '-webkit-' + value, value]
+    };
   }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/static/plugins/flexboxIE.js":
+/***/ "../node_modules/inline-style-prefixer/lib/static/plugins/flexboxIE.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5544,6 +5654,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = flexboxIE;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var alternativeValues = {
   'space-around': 'distribute',
   'space-between': 'justify',
@@ -5561,16 +5674,16 @@ var alternativeProps = {
   flexBasis: 'msPreferredSize'
 };
 
-function flexboxIE(property, value, style) {
-  if (alternativeProps.hasOwnProperty(property)) {
-    style[alternativeProps[property]] = alternativeValues[value] || value;
+function flexboxIE(property, value) {
+  if (alternativeProps[property]) {
+    return _defineProperty({}, alternativeProps[property], alternativeValues[value] || value);
   }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/static/plugins/flexboxOld.js":
+/***/ "../node_modules/inline-style-prefixer/lib/static/plugins/flexboxOld.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5580,6 +5693,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = flexboxOld;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var alternativeValues = {
   'space-around': 'justify',
   'space-between': 'justify',
@@ -5595,28 +5711,22 @@ var alternativeProps = {
   flexWrap: 'WebkitBoxLines'
 };
 
-function flexboxOld(property, value, style) {
+function flexboxOld(property, value) {
   if (property === 'flexDirection' && typeof value === 'string') {
-    if (value.indexOf('column') > -1) {
-      style.WebkitBoxOrient = 'vertical';
-    } else {
-      style.WebkitBoxOrient = 'horizontal';
-    }
-    if (value.indexOf('reverse') > -1) {
-      style.WebkitBoxDirection = 'reverse';
-    } else {
-      style.WebkitBoxDirection = 'normal';
-    }
+    return {
+      WebkitBoxOrient: value.indexOf('column') > -1 ? 'vertical' : 'horizontal',
+      WebkitBoxDirection: value.indexOf('reverse') > -1 ? 'reverse' : 'normal'
+    };
   }
-  if (alternativeProps.hasOwnProperty(property)) {
-    style[alternativeProps[property]] = alternativeValues[value] || value;
+  if (alternativeProps[property]) {
+    return _defineProperty({}, alternativeProps[property], alternativeValues[value] || value);
   }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/static/plugins/gradient.js":
+/***/ "../node_modules/inline-style-prefixer/lib/static/plugins/gradient.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5627,28 +5737,47 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = gradient;
 
-var _isPrefixedValue = __webpack_require__("../node_modules/css-in-js-utils/lib/isPrefixedValue.js");
+var _joinPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/joinPrefixedValue.js");
+
+var _joinPrefixedValue2 = _interopRequireDefault(_joinPrefixedValue);
+
+var _isPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/isPrefixedValue.js");
 
 var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var prefixes = ['-webkit-', '-moz-', ''];
-
 var values = /linear-gradient|radial-gradient|repeating-linear-gradient|repeating-radial-gradient/;
 
 function gradient(property, value) {
-  if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && values.test(value)) {
-    return prefixes.map(function (prefix) {
-      return prefix + value;
-    });
+  if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && value.match(values) !== null) {
+    return (0, _joinPrefixedValue2.default)(property, value);
   }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/static/plugins/sizing.js":
+/***/ "../node_modules/inline-style-prefixer/lib/static/plugins/position.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = position;
+function position(property, value) {
+  if (property === 'position' && value === 'sticky') {
+    return { position: ['-webkit-sticky', 'sticky'] };
+  }
+}
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "../node_modules/inline-style-prefixer/lib/static/plugins/sizing.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5658,7 +5787,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = sizing;
-var prefixes = ['-webkit-', '-moz-', ''];
+
+var _joinPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/joinPrefixedValue.js");
+
+var _joinPrefixedValue2 = _interopRequireDefault(_joinPrefixedValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var properties = {
   maxHeight: true,
@@ -5678,17 +5812,15 @@ var values = {
 };
 
 function sizing(property, value) {
-  if (properties.hasOwnProperty(property) && values.hasOwnProperty(value)) {
-    return prefixes.map(function (prefix) {
-      return prefix + value;
-    });
+  if (properties[property] && values[value]) {
+    return (0, _joinPrefixedValue2.default)(property, value);
   }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/static/plugins/transition.js":
+/***/ "../node_modules/inline-style-prefixer/lib/static/plugins/transition.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5699,37 +5831,53 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = transition;
 
-var _hyphenateProperty = __webpack_require__("../node_modules/css-in-js-utils/lib/hyphenateProperty.js");
+var _hyphenateStyleName = __webpack_require__("../node_modules/hyphenate-style-name/index.js");
 
-var _hyphenateProperty2 = _interopRequireDefault(_hyphenateProperty);
+var _hyphenateStyleName2 = _interopRequireDefault(_hyphenateStyleName);
 
-var _isPrefixedValue = __webpack_require__("../node_modules/css-in-js-utils/lib/isPrefixedValue.js");
-
-var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
-
-var _capitalizeString = __webpack_require__("../node_modules/inline-style-prefixer/utils/capitalizeString.js");
+var _capitalizeString = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/capitalizeString.js");
 
 var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
 
+var _isPrefixedValue = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/isPrefixedValue.js");
+
+var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
+
+var _prefixProps = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/prefixProps.js");
+
+var _prefixProps2 = _interopRequireDefault(_prefixProps);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var properties = {
   transition: true,
   transitionProperty: true,
   WebkitTransition: true,
-  WebkitTransitionProperty: true,
-  MozTransition: true,
-  MozTransitionProperty: true
+  WebkitTransitionProperty: true
 };
 
+function transition(property, value) {
+  // also check for already prefixed transitions
+  if (typeof value === 'string' && properties[property]) {
+    var _ref2;
 
-var prefixMapping = {
-  Webkit: '-webkit-',
-  Moz: '-moz-',
-  ms: '-ms-'
-};
+    var outputValue = prefixValue(value);
+    var webkitOutput = outputValue.split(/,(?![^()]*(?:\([^()]*\))?\))/g).filter(function (value) {
+      return value.match(/-moz-|-ms-/) === null;
+    }).join(',');
 
-function prefixValue(value, propertyPrefixMap) {
+    // if the property is already prefixed
+    if (property.indexOf('Webkit') > -1) {
+      return _defineProperty({}, property, webkitOutput);
+    }
+
+    return _ref2 = {}, _defineProperty(_ref2, 'Webkit' + (0, _capitalizeString2.default)(property), webkitOutput), _defineProperty(_ref2, property, outputValue), _ref2;
+  }
+}
+
+function prefixValue(value) {
   if ((0, _isPrefixedValue2.default)(value)) {
     return value;
   }
@@ -5737,58 +5885,31 @@ function prefixValue(value, propertyPrefixMap) {
   // only split multi values, not cubic beziers
   var multipleValues = value.split(/,(?![^()]*(?:\([^()]*\))?\))/g);
 
-  for (var i = 0, len = multipleValues.length; i < len; ++i) {
-    var singleValue = multipleValues[i];
-    var values = [singleValue];
-    for (var property in propertyPrefixMap) {
-      var dashCaseProperty = (0, _hyphenateProperty2.default)(property);
+  // iterate each single value and check for transitioned properties
+  // that need to be prefixed as well
+  multipleValues.forEach(function (val, index) {
+    multipleValues[index] = Object.keys(_prefixProps2.default).reduce(function (out, prefix) {
+      var dashCasePrefix = '-' + prefix.toLowerCase() + '-';
 
-      if (singleValue.indexOf(dashCaseProperty) > -1 && dashCaseProperty !== 'order') {
-        var prefixes = propertyPrefixMap[property];
-        for (var j = 0, pLen = prefixes.length; j < pLen; ++j) {
+      Object.keys(_prefixProps2.default[prefix]).forEach(function (prop) {
+        var dashCaseProperty = (0, _hyphenateStyleName2.default)(prop);
+
+        if (val.indexOf(dashCaseProperty) > -1 && dashCaseProperty !== 'order') {
           // join all prefixes and create a new value
-          values.unshift(singleValue.replace(dashCaseProperty, prefixMapping[prefixes[j]] + dashCaseProperty));
+          out = val.replace(dashCaseProperty, dashCasePrefix + dashCaseProperty) + ',' + out;
         }
-      }
-    }
-
-    multipleValues[i] = values.join(',');
-  }
+      });
+      return out;
+    }, val);
+  });
 
   return multipleValues.join(',');
-}
-
-function transition(property, value, style, propertyPrefixMap) {
-  // also check for already prefixed transitions
-  if (typeof value === 'string' && properties.hasOwnProperty(property)) {
-    var outputValue = prefixValue(value, propertyPrefixMap);
-    // if the property is already prefixed
-    var webkitOutput = outputValue.split(/,(?![^()]*(?:\([^()]*\))?\))/g).filter(function (val) {
-      return !/-moz-|-ms-/.test(val);
-    }).join(',');
-
-    if (property.indexOf('Webkit') > -1) {
-      return webkitOutput;
-    }
-
-    var mozOutput = outputValue.split(/,(?![^()]*(?:\([^()]*\))?\))/g).filter(function (val) {
-      return !/-webkit-|-ms-/.test(val);
-    }).join(',');
-
-    if (property.indexOf('Moz') > -1) {
-      return mozOutput;
-    }
-
-    style['Webkit' + (0, _capitalizeString2.default)(property)] = webkitOutput;
-    style['Moz' + (0, _capitalizeString2.default)(property)] = mozOutput;
-    return outputValue;
-  }
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/utils/addNewValuesOnly.js":
+/***/ "../node_modules/inline-style-prefixer/lib/static/prefixAll.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5797,27 +5918,120 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = addNewValuesOnly;
-function addIfNew(list, value) {
-  if (list.indexOf(value) === -1) {
-    list.push(value);
-  }
-}
+exports.default = prefixAll;
 
-function addNewValuesOnly(list, values) {
-  if (Array.isArray(values)) {
-    for (var i = 0, len = values.length; i < len; ++i) {
-      addIfNew(list, values[i]);
+var _prefixProps = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/prefixProps.js");
+
+var _prefixProps2 = _interopRequireDefault(_prefixProps);
+
+var _capitalizeString = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/capitalizeString.js");
+
+var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
+
+var _sortPrefixedStyle = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/sortPrefixedStyle.js");
+
+var _sortPrefixedStyle2 = _interopRequireDefault(_sortPrefixedStyle);
+
+var _position = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/plugins/position.js");
+
+var _position2 = _interopRequireDefault(_position);
+
+var _calc = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/plugins/calc.js");
+
+var _calc2 = _interopRequireDefault(_calc);
+
+var _cursor = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/plugins/cursor.js");
+
+var _cursor2 = _interopRequireDefault(_cursor);
+
+var _flex = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/plugins/flex.js");
+
+var _flex2 = _interopRequireDefault(_flex);
+
+var _sizing = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/plugins/sizing.js");
+
+var _sizing2 = _interopRequireDefault(_sizing);
+
+var _gradient = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/plugins/gradient.js");
+
+var _gradient2 = _interopRequireDefault(_gradient);
+
+var _transition = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/plugins/transition.js");
+
+var _transition2 = _interopRequireDefault(_transition);
+
+var _flexboxIE = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/plugins/flexboxIE.js");
+
+var _flexboxIE2 = _interopRequireDefault(_flexboxIE);
+
+var _flexboxOld = __webpack_require__("../node_modules/inline-style-prefixer/lib/static/plugins/flexboxOld.js");
+
+var _flexboxOld2 = _interopRequireDefault(_flexboxOld);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// special flexbox specifications
+
+
+var plugins = [_position2.default, _calc2.default, _cursor2.default, _sizing2.default, _gradient2.default, _transition2.default, _flexboxIE2.default, _flexboxOld2.default, _flex2.default];
+
+/**
+ * Returns a prefixed version of the style object using all vendor prefixes
+ * @param {Object} styles - Style object that gets prefixed properties added
+ * @returns {Object} - Style object with prefixed properties and values
+ */
+function prefixAll(styles) {
+  Object.keys(styles).forEach(function (property) {
+    var value = styles[property];
+    if (value instanceof Object && !Array.isArray(value)) {
+      // recurse through nested style objects
+      styles[property] = prefixAll(value);
+    } else {
+      Object.keys(_prefixProps2.default).forEach(function (prefix) {
+        var properties = _prefixProps2.default[prefix];
+        // add prefixes if needed
+        if (properties[property]) {
+          styles[prefix + (0, _capitalizeString2.default)(property)] = value;
+        }
+      });
     }
-  } else {
-    addIfNew(list, values);
-  }
+  });
+
+  Object.keys(styles).forEach(function (property) {
+    [].concat(styles[property]).forEach(function (value, index) {
+      // resolve every special plugins
+      plugins.forEach(function (plugin) {
+        return assignStyles(styles, plugin(property, value));
+      });
+    });
+  });
+
+  return (0, _sortPrefixedStyle2.default)(styles);
 }
-module.exports = exports["default"];
+
+function assignStyles(base) {
+  var extend = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+  Object.keys(extend).forEach(function (property) {
+    var baseValue = base[property];
+    if (Array.isArray(baseValue)) {
+      [].concat(extend[property]).forEach(function (value) {
+        var valueIndex = baseValue.indexOf(value);
+        if (valueIndex > -1) {
+          base[property].splice(valueIndex, 1);
+        }
+        base[property].push(value);
+      });
+    } else {
+      base[property] = extend[property];
+    }
+  });
+}
+module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/utils/capitalizeString.js":
+/***/ "../node_modules/inline-style-prefixer/lib/static/prefixProps.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5826,15 +6040,31 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = capitalizeString;
-function capitalizeString(str) {
+exports.default = { "Webkit": { "transform": true, "transformOrigin": true, "transformOriginX": true, "transformOriginY": true, "backfaceVisibility": true, "perspective": true, "perspectiveOrigin": true, "transformStyle": true, "transformOriginZ": true, "animation": true, "animationDelay": true, "animationDirection": true, "animationFillMode": true, "animationDuration": true, "animationIterationCount": true, "animationName": true, "animationPlayState": true, "animationTimingFunction": true, "appearance": true, "userSelect": true, "fontKerning": true, "textEmphasisPosition": true, "textEmphasis": true, "textEmphasisStyle": true, "textEmphasisColor": true, "boxDecorationBreak": true, "clipPath": true, "maskImage": true, "maskMode": true, "maskRepeat": true, "maskPosition": true, "maskClip": true, "maskOrigin": true, "maskSize": true, "maskComposite": true, "mask": true, "maskBorderSource": true, "maskBorderMode": true, "maskBorderSlice": true, "maskBorderWidth": true, "maskBorderOutset": true, "maskBorderRepeat": true, "maskBorder": true, "maskType": true, "textDecorationStyle": true, "textDecorationSkip": true, "textDecorationLine": true, "textDecorationColor": true, "filter": true, "fontFeatureSettings": true, "breakAfter": true, "breakBefore": true, "breakInside": true, "columnCount": true, "columnFill": true, "columnGap": true, "columnRule": true, "columnRuleColor": true, "columnRuleStyle": true, "columnRuleWidth": true, "columns": true, "columnSpan": true, "columnWidth": true, "flex": true, "flexBasis": true, "flexDirection": true, "flexGrow": true, "flexFlow": true, "flexShrink": true, "flexWrap": true, "alignContent": true, "alignItems": true, "alignSelf": true, "justifyContent": true, "order": true, "transition": true, "transitionDelay": true, "transitionDuration": true, "transitionProperty": true, "transitionTimingFunction": true, "backdropFilter": true, "scrollSnapType": true, "scrollSnapPointsX": true, "scrollSnapPointsY": true, "scrollSnapDestination": true, "scrollSnapCoordinate": true, "shapeImageThreshold": true, "shapeImageMargin": true, "shapeImageOutside": true, "hyphens": true, "flowInto": true, "flowFrom": true, "regionFragment": true, "textSizeAdjust": true }, "Moz": { "appearance": true, "userSelect": true, "boxSizing": true, "textAlignLast": true, "textDecorationStyle": true, "textDecorationSkip": true, "textDecorationLine": true, "textDecorationColor": true, "tabSize": true, "hyphens": true, "fontFeatureSettings": true, "breakAfter": true, "breakBefore": true, "breakInside": true, "columnCount": true, "columnFill": true, "columnGap": true, "columnRule": true, "columnRuleColor": true, "columnRuleStyle": true, "columnRuleWidth": true, "columns": true, "columnSpan": true, "columnWidth": true }, "ms": { "flex": true, "flexBasis": false, "flexDirection": true, "flexGrow": false, "flexFlow": true, "flexShrink": false, "flexWrap": true, "alignContent": false, "alignItems": false, "alignSelf": false, "justifyContent": false, "order": false, "transform": true, "transformOrigin": true, "transformOriginX": true, "transformOriginY": true, "userSelect": true, "wrapFlow": true, "wrapThrough": true, "wrapMargin": true, "scrollSnapType": true, "scrollSnapPointsX": true, "scrollSnapPointsY": true, "scrollSnapDestination": true, "scrollSnapCoordinate": true, "touchAction": true, "hyphens": true, "flowInto": true, "flowFrom": true, "breakBefore": true, "breakAfter": true, "breakInside": true, "regionFragment": true, "gridTemplateColumns": true, "gridTemplateRows": true, "gridTemplateAreas": true, "gridTemplate": true, "gridAutoColumns": true, "gridAutoRows": true, "gridAutoFlow": true, "grid": true, "gridRowStart": true, "gridColumnStart": true, "gridRowEnd": true, "gridRow": true, "gridColumn": true, "gridColumnEnd": true, "gridColumnGap": true, "gridRowGap": true, "gridArea": true, "gridGap": true, "textSizeAdjust": true } };
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "../node_modules/inline-style-prefixer/lib/utils/capitalizeString.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// helper to capitalize strings
+
+exports.default = function (str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
+
 module.exports = exports["default"];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/utils/getBrowserInformation.js":
+/***/ "../node_modules/inline-style-prefixer/lib/utils/getBrowserInformation.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5843,7 +6073,6 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = getBrowserInformation;
 
 var _bowser = __webpack_require__("../node_modules/bowser/src/bowser.js");
 
@@ -5851,124 +6080,106 @@ var _bowser2 = _interopRequireDefault(_bowser);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var prefixByBrowser = {
-  chrome: 'Webkit',
-  safari: 'Webkit',
-  ios: 'Webkit',
-  android: 'Webkit',
-  phantom: 'Webkit',
-  opera: 'Webkit',
-  webos: 'Webkit',
-  blackberry: 'Webkit',
-  bada: 'Webkit',
-  tizen: 'Webkit',
-  chromium: 'Webkit',
-  vivaldi: 'Webkit',
-  firefox: 'Moz',
-  seamoney: 'Moz',
-  sailfish: 'Moz',
-  msie: 'ms',
-  msedge: 'ms'
+var vendorPrefixes = {
+  Webkit: ['chrome', 'safari', 'ios', 'android', 'phantom', 'opera', 'webos', 'blackberry', 'bada', 'tizen', 'chromium', 'vivaldi'],
+  Moz: ['firefox', 'seamonkey', 'sailfish'],
+  ms: ['msie', 'msedge']
+};
+var browsers = {
+  chrome: [['chrome'], ['chromium']],
+  safari: [['safari']],
+  firefox: [['firefox']],
+  edge: [['msedge']],
+  opera: [['opera'], ['vivaldi']],
+  ios_saf: [['ios', 'mobile'], ['ios', 'tablet']],
+  ie: [['msie']],
+  op_mini: [['opera', 'mobile'], ['opera', 'tablet']],
+  and_uc: [['android', 'mobile'], ['android', 'tablet']],
+  android: [['android', 'mobile'], ['android', 'tablet']]
 };
 
-
-var browserByCanIuseAlias = {
-  chrome: 'chrome',
-  chromium: 'chrome',
-  safari: 'safari',
-  firfox: 'firefox',
-  msedge: 'edge',
-  opera: 'opera',
-  vivaldi: 'opera',
-  msie: 'ie'
-};
-
-function getBrowserName(browserInfo) {
-  if (browserInfo.firefox) {
+var browserByInfo = function browserByInfo(info) {
+  if (info.firefox) {
     return 'firefox';
   }
+  var name = '';
 
-  if (browserInfo.mobile || browserInfo.tablet) {
-    if (browserInfo.ios) {
-      return 'ios_saf';
-    } else if (browserInfo.android) {
-      return 'android';
-    } else if (browserInfo.opera) {
-      return 'op_mini';
-    }
-  }
+  Object.keys(browsers).forEach(function (browser) {
+    browsers[browser].forEach(function (condition) {
+      var match = 0;
+      condition.forEach(function (single) {
+        if (info[single]) {
+          match += 1;
+        }
+      });
+      if (condition.length === match) {
+        name = browser;
+      }
+    });
+  });
 
-  for (var browser in browserByCanIuseAlias) {
-    if (browserInfo.hasOwnProperty(browser)) {
-      return browserByCanIuseAlias[browser];
-    }
-  }
-}
+  return name;
+};
 
 /**
- * Uses bowser to get default browser browserInformation such as version and name
- * Evaluates bowser browserInfo and adds vendorPrefix browserInformation
+ * Uses bowser to get default browser information such as version and name
+ * Evaluates bowser info and adds vendorPrefix information
  * @param {string} userAgent - userAgent that gets evaluated
  */
-function getBrowserInformation(userAgent) {
-  var browserInfo = _bowser2.default._detect(userAgent);
 
-  for (var browser in prefixByBrowser) {
-    if (browserInfo.hasOwnProperty(browser)) {
-      var prefix = prefixByBrowser[browser];
-
-      browserInfo.jsPrefix = prefix;
-      browserInfo.cssPrefix = '-' + prefix.toLowerCase() + '-';
-      break;
-    }
+exports.default = function (userAgent) {
+  if (!userAgent) {
+    return false;
   }
+  var info = _bowser2.default._detect(userAgent);
 
-  browserInfo.browserName = getBrowserName(browserInfo);
+  Object.keys(vendorPrefixes).forEach(function (prefix) {
+    vendorPrefixes[prefix].forEach(function (browser) {
+      if (info[browser]) {
+        info.prefix = {
+          inline: prefix,
+          css: '-' + prefix.toLowerCase() + '-'
+        };
+      }
+    });
+  });
+
+  info.browser = browserByInfo(info);
 
   // For cordova IOS 8 the version is missing, set truncated osversion to prevent NaN
-  if (browserInfo.version) {
-    browserInfo.browserVersion = parseFloat(browserInfo.version);
-  } else {
-    browserInfo.browserVersion = parseInt(parseFloat(browserInfo.osversion), 10);
-  }
-
-  browserInfo.osVersion = parseFloat(browserInfo.osversion);
+  info.version = info.version ? parseFloat(info.version) : parseInt(parseFloat(info.osversion), 10);
+  info.osversion = parseFloat(info.osversion);
 
   // iOS forces all browsers to use Safari under the hood
   // as the Safari version seems to match the iOS version
   // we just explicitely use the osversion instead
   // https://github.com/rofrischmann/inline-style-prefixer/issues/72
-  if (browserInfo.browserName === 'ios_saf' && browserInfo.browserVersion > browserInfo.osVersion) {
-    browserInfo.browserVersion = browserInfo.osVersion;
+  if (info.browser === 'ios_saf' && info.version > info.osversion) {
+    info.version = info.osversion;
+    info.safari = true;
   }
 
   // seperate native android chrome
   // https://github.com/rofrischmann/inline-style-prefixer/issues/45
-  if (browserInfo.browserName === 'android' && browserInfo.chrome && browserInfo.browserVersion > 37) {
-    browserInfo.browserName = 'and_chr';
+  if (info.browser === 'android' && info.chrome && info.version > 37) {
+    info.browser = 'and_chr';
   }
 
   // For android < 4.4 we want to check the osversion
   // not the chrome version, see issue #26
   // https://github.com/rofrischmann/inline-style-prefixer/issues/26
-  if (browserInfo.browserName === 'android' && browserInfo.osVersion < 5) {
-    browserInfo.browserVersion = browserInfo.osVersion;
+  if (info.browser === 'android' && info.osversion < 5) {
+    info.version = info.osversion;
   }
 
-  // Samsung browser are basically build on Chrome > 44
-  // https://github.com/rofrischmann/inline-style-prefixer/issues/102
-  if (browserInfo.browserName === 'android' && browserInfo.samsungBrowser) {
-    browserInfo.browserName = 'and_chr';
-    browserInfo.browserVersion = 44;
-  }
+  return info;
+};
 
-  return browserInfo;
-}
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/utils/getPrefixedKeyframes.js":
+/***/ "../node_modules/inline-style-prefixer/lib/utils/getPrefixedKeyframes.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5977,20 +6188,25 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = getPrefixedKeyframes;
-function getPrefixedKeyframes(browserName, browserVersion, cssPrefix) {
+
+exports.default = function (_ref) {
+  var browser = _ref.browser;
+  var version = _ref.version;
+  var prefix = _ref.prefix;
+
   var prefixedKeyframes = 'keyframes';
 
-  if (browserName === 'chrome' && browserVersion < 43 || (browserName === 'safari' || browserName === 'ios_saf') && browserVersion < 9 || browserName === 'opera' && browserVersion < 30 || browserName === 'android' && browserVersion <= 4.4 || browserName === 'and_uc') {
-    return cssPrefix + prefixedKeyframes;
+  if (browser === 'chrome' && version < 43 || (browser === 'safari' || browser === 'ios_saf') && version < 9 || browser === 'opera' && version < 30 || browser === 'android' && version <= 4.4 || browser === 'and_uc') {
+    prefixedKeyframes = prefix.css + prefixedKeyframes;
   }
   return prefixedKeyframes;
-}
+};
+
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/utils/getPrefixedValue.js":
+/***/ "../node_modules/inline-style-prefixer/lib/utils/getPrefixedValue.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5999,18 +6215,16 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = getPrefixedValue;
-function getPrefixedValue(prefixedValue, value, keepUnprefixed) {
-  if (keepUnprefixed) {
-    return [prefixedValue, value];
-  }
-  return prefixedValue;
-}
+
+exports.default = function (prefixedValue, value, keepUnprefixed) {
+  return keepUnprefixed ? [prefixedValue, value] : prefixedValue;
+};
+
 module.exports = exports["default"];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/utils/isObject.js":
+/***/ "../node_modules/inline-style-prefixer/lib/utils/isPrefixedProperty.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6019,15 +6233,16 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = isObject;
-function isObject(value) {
-  return value instanceof Object && !Array.isArray(value);
-}
+
+exports.default = function (property) {
+  return property.match(/^(Webkit|Moz|O|ms)/) !== null;
+};
+
 module.exports = exports["default"];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/utils/prefixProperty.js":
+/***/ "../node_modules/inline-style-prefixer/lib/utils/isPrefixedValue.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6036,27 +6251,79 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = prefixProperty;
 
-var _capitalizeString = __webpack_require__("../node_modules/inline-style-prefixer/utils/capitalizeString.js");
+exports.default = function (value) {
+  if (Array.isArray(value)) value = value.join(',');
 
-var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
+  return value.match(/-webkit-|-moz-|-ms-/) !== null;
+};
+
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "../node_modules/inline-style-prefixer/lib/utils/joinPrefixedValue.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// returns a style object with a single concated prefixed value string
+
+exports.default = function (property, value) {
+  var replacer = arguments.length <= 2 || arguments[2] === undefined ? function (prefix, value) {
+    return prefix + value;
+  } : arguments[2];
+  return _defineProperty({}, property, ['-webkit-', '-moz-', ''].map(function (prefix) {
+    return replacer(prefix, value);
+  }));
+};
+
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "../node_modules/inline-style-prefixer/lib/utils/sortPrefixedStyle.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = sortPrefixedStyle;
+
+var _isPrefixedProperty = __webpack_require__("../node_modules/inline-style-prefixer/lib/utils/isPrefixedProperty.js");
+
+var _isPrefixedProperty2 = _interopRequireDefault(_isPrefixedProperty);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function prefixProperty(prefixProperties, property, style) {
-  if (prefixProperties.hasOwnProperty(property)) {
-    var requiredPrefixes = prefixProperties[property];
-    for (var i = 0, len = requiredPrefixes.length; i < len; ++i) {
-      style[requiredPrefixes[i] + (0, _capitalizeString2.default)(property)] = style[property];
+function sortPrefixedStyle(style) {
+  return Object.keys(style).sort(function (left, right) {
+    if ((0, _isPrefixedProperty2.default)(left) && !(0, _isPrefixedProperty2.default)(right)) {
+      return -1;
+    } else if (!(0, _isPrefixedProperty2.default)(left) && (0, _isPrefixedProperty2.default)(right)) {
+      return 1;
     }
-  }
+    return 0;
+  }).reduce(function (sortedStyle, prop) {
+    sortedStyle[prop] = style[prop];
+    return sortedStyle;
+  }, {});
 }
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ "../node_modules/inline-style-prefixer/utils/prefixValue.js":
+/***/ "../node_modules/inline-style-prefixer/lib/utils/unprefixProperty.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6065,19 +6332,13 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = prefixValue;
-function prefixValue(plugins, property, value, style, metaData) {
-  for (var i = 0, len = plugins.length; i < len; ++i) {
-    var processedValue = plugins[i](property, value, style, metaData);
 
-    // we can stop processing if a value is returned
-    // as all plugin criteria are unique
-    if (processedValue) {
-      return processedValue;
-    }
-  }
-}
-module.exports = exports["default"];
+exports.default = function (property) {
+  var unprefixed = property.replace(/^(ms|Webkit|Moz|O)/, '');
+  return unprefixed.charAt(0).toLowerCase() + unprefixed.slice(1);
+};
+
+module.exports = exports['default'];
 
 /***/ }),
 
@@ -9295,10 +9556,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _TextFieldUnderline = __webpack_require__("../node_modules/material-ui/TextField/TextFieldUnderline.js");
 
 var _TextFieldUnderline2 = _interopRequireDefault(_TextFieldUnderline);
@@ -9569,7 +9826,6 @@ var ChipInput = function (_React$Component) {
       var handleKeyDown = this.autoComplete.handleKeyDown;
       this.autoComplete.handleKeyDown = function (event) {
         if (_this2.props.newChipKeyCodes.indexOf(event.keyCode) >= 0) {
-          event.preventDefault();
           _this2.handleAddChip(event.target.value);
           _this2.autoComplete.setState({ searchText: '' });
           _this2.autoComplete.forceUpdate();
@@ -9664,7 +9920,7 @@ var ChipInput = function (_React$Component) {
           chip = (_chip = {}, _defineProperty(_chip, this.props.dataSourceConfig.text, chip), _defineProperty(_chip, this.props.dataSourceConfig.value, chip), _chip);
         }
 
-        if (!chips.some(function (c) {
+        if (!chips.find(function (c) {
           return c[_this3.props.dataSourceConfig.value] === chip[_this3.props.dataSourceConfig.value];
         })) {
           if (this.props.value) {
@@ -9929,31 +10185,31 @@ var ChipInput = function (_React$Component) {
 }(_react2.default.Component);
 
 ChipInput.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react2.default.PropTypes.object.isRequired
 };
 
 
 ChipInput.propTypes = {
-  style: _propTypes2.default.object,
-  floatingLabelText: _propTypes2.default.node,
-  hintText: _propTypes2.default.node,
-  id: _propTypes2.default.string,
-  dataSourceConfig: _propTypes2.default.shape({
-    text: _propTypes2.default.string.isRequired,
-    value: _propTypes2.default.string.isRequired
+  style: _react.PropTypes.object,
+  floatingLabelText: _react.PropTypes.node,
+  hintText: _react.PropTypes.node,
+  id: _react.PropTypes.string,
+  dataSourceConfig: _react.PropTypes.shape({
+    text: _react.PropTypes.string.isRequired,
+    value: _react.PropTypes.string.isRequired
   }),
-  disabled: _propTypes2.default.bool,
-  defaultValue: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.string), _propTypes2.default.arrayOf(_propTypes2.default.object)]),
-  onChange: _propTypes2.default.func,
-  value: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.string), _propTypes2.default.arrayOf(_propTypes2.default.object)]),
-  onRequestAdd: _propTypes2.default.func,
-  onRequestDelete: _propTypes2.default.func,
-  dataSource: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.string), _propTypes2.default.arrayOf(_propTypes2.default.object)]),
-  onUpdateInput: _propTypes2.default.func,
-  openOnFocus: _propTypes2.default.bool,
-  chipRenderer: _propTypes2.default.func,
-  newChipKeyCodes: _propTypes2.default.arrayOf(_propTypes2.default.number),
-  clearOnBlur: _propTypes2.default.bool
+  disabled: _react.PropTypes.bool,
+  defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.arrayOf(_react.PropTypes.string), _react.PropTypes.arrayOf(_react.PropTypes.object)]),
+  onChange: _react.PropTypes.func,
+  value: _react.PropTypes.oneOfType([_react.PropTypes.arrayOf(_react.PropTypes.string), _react.PropTypes.arrayOf(_react.PropTypes.object)]),
+  onRequestAdd: _react.PropTypes.func,
+  onRequestDelete: _react.PropTypes.func,
+  dataSource: _react.PropTypes.oneOfType([_react.PropTypes.arrayOf(_react.PropTypes.string), _react.PropTypes.arrayOf(_react.PropTypes.object)]),
+  onUpdateInput: _react.PropTypes.func,
+  openOnFocus: _react.PropTypes.bool,
+  chipRenderer: _react.PropTypes.func,
+  newChipKeyCodes: _react.PropTypes.arrayOf(_react.PropTypes.number),
+  clearOnBlur: _react.PropTypes.bool
 };
 
 ChipInput.defaultProps = {
@@ -10017,10 +10273,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -10049,9 +10301,9 @@ var _Popover = __webpack_require__("../node_modules/material-ui/Popover/Popover.
 
 var _Popover2 = _interopRequireDefault(_Popover);
 
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
-var _propTypes4 = _interopRequireDefault(_propTypes3);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10289,16 +10541,13 @@ var AutoComplete = function (_Component) {
           menuProps = _props.menuProps,
           listStyle = _props.listStyle,
           targetOrigin = _props.targetOrigin,
-          onBlur = _props.onBlur,
           onClose = _props.onClose,
-          onFocus = _props.onFocus,
-          onKeyDown = _props.onKeyDown,
           onNewRequest = _props.onNewRequest,
           onUpdateInput = _props.onUpdateInput,
           openOnFocus = _props.openOnFocus,
           popoverProps = _props.popoverProps,
           searchTextProp = _props.searchText,
-          other = (0, _objectWithoutProperties3.default)(_props, ['anchorOrigin', 'animated', 'animation', 'dataSource', 'dataSourceConfig', 'disableFocusRipple', 'errorStyle', 'floatingLabelText', 'filter', 'fullWidth', 'style', 'hintText', 'maxSearchResults', 'menuCloseDelay', 'textFieldStyle', 'menuStyle', 'menuProps', 'listStyle', 'targetOrigin', 'onBlur', 'onClose', 'onFocus', 'onKeyDown', 'onNewRequest', 'onUpdateInput', 'openOnFocus', 'popoverProps', 'searchText']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['anchorOrigin', 'animated', 'animation', 'dataSource', 'dataSourceConfig', 'disableFocusRipple', 'errorStyle', 'floatingLabelText', 'filter', 'fullWidth', 'style', 'hintText', 'maxSearchResults', 'menuCloseDelay', 'textFieldStyle', 'menuStyle', 'menuProps', 'listStyle', 'targetOrigin', 'onClose', 'onNewRequest', 'onUpdateInput', 'openOnFocus', 'popoverProps', 'searchText']);
 
       var _ref2 = popoverProps || {},
           popoverStyle = _ref2.style,
@@ -10371,7 +10620,7 @@ var AutoComplete = function (_Component) {
 
       var menu = open && requestsList.length > 0 && _react2.default.createElement(
         _Menu2.default,
-        (0, _extends3.default)({
+        (0, _extends3.default)({}, menuProps, {
           ref: 'menu',
           autoWidth: false,
           disableAutoFocus: focusTextField,
@@ -10381,7 +10630,7 @@ var AutoComplete = function (_Component) {
           onMouseDown: this.handleMouseDown,
           style: (0, _simpleAssign2.default)(styles.menu, menuStyle),
           listStyle: (0, _simpleAssign2.default)(styles.list, listStyle)
-        }, menuProps),
+        }),
         requestsList.map(function (i) {
           return i.value;
         })
@@ -10390,7 +10639,7 @@ var AutoComplete = function (_Component) {
       return _react2.default.createElement(
         'div',
         { style: prepareStyles((0, _simpleAssign2.default)(styles.root, style)) },
-        _react2.default.createElement(_TextField2.default, (0, _extends3.default)({
+        _react2.default.createElement(_TextField2.default, (0, _extends3.default)({}, other, {
           ref: 'searchTextField',
           autoComplete: 'off',
           value: searchText,
@@ -10404,7 +10653,7 @@ var AutoComplete = function (_Component) {
           multiLine: false,
           errorStyle: errorStyle,
           style: textFieldStyle
-        }, other)),
+        })),
         _react2.default.createElement(
           _Popover2.default,
           (0, _extends3.default)({
@@ -10454,25 +10703,25 @@ AutoComplete.defaultProps = {
   }
 };
 AutoComplete.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? AutoComplete.propTypes = {
   /**
    * Location of the anchor for the auto complete.
    */
-  anchorOrigin: _propTypes4.default.origin,
+  anchorOrigin: _propTypes2.default.origin,
   /**
    * If true, the auto complete is animated as it is toggled.
    */
-  animated: _propTypes2.default.bool,
+  animated: _react.PropTypes.bool,
   /**
    * Override the default animation component used.
    */
-  animation: _propTypes2.default.func,
+  animation: _react.PropTypes.func,
   /**
    * Array of strings or nodes used to populate the list.
    */
-  dataSource: _propTypes2.default.array.isRequired,
+  dataSource: _react.PropTypes.array.isRequired,
   /**
    * Config for objects list dataSource.
    *
@@ -10482,19 +10731,19 @@ AutoComplete.contextTypes = {
    * and shown as a `TextField` input value after choosing the result.
    * @property {string} value `dataSource` element key used to find a string to be shown in search results.
    */
-  dataSourceConfig: _propTypes2.default.object,
+  dataSourceConfig: _react.PropTypes.object,
   /**
    * Disables focus ripple when true.
    */
-  disableFocusRipple: _propTypes2.default.bool,
+  disableFocusRipple: _react.PropTypes.bool,
   /**
    * Override style prop for error.
    */
-  errorStyle: _propTypes2.default.object,
+  errorStyle: _react.PropTypes.object,
   /**
    * The error content to display.
    */
-  errorText: _propTypes2.default.node,
+  errorText: _react.PropTypes.node,
   /**
    * Callback function used to filter the auto complete.
    *
@@ -10502,50 +10751,50 @@ AutoComplete.contextTypes = {
    * @param {string} key `dataSource` element, or `text` property on that element if it's not a string.
    * @returns {boolean} `true` indicates the auto complete list will include `key` when the input is `searchText`.
    */
-  filter: _propTypes2.default.func,
+  filter: _react.PropTypes.func,
   /**
    * The content to use for adding floating label element.
    */
-  floatingLabelText: _propTypes2.default.node,
+  floatingLabelText: _react.PropTypes.node,
   /**
    * If true, the field receives the property `width: 100%`.
    */
-  fullWidth: _propTypes2.default.bool,
+  fullWidth: _react.PropTypes.bool,
   /**
    * The hint content to display.
    */
-  hintText: _propTypes2.default.node,
+  hintText: _react.PropTypes.node,
   /**
    * Override style for list.
    */
-  listStyle: _propTypes2.default.object,
+  listStyle: _react.PropTypes.object,
   /**
    * The max number of search results to be shown.
    * By default it shows all the items which matches filter.
    */
-  maxSearchResults: _propTypes2.default.number,
+  maxSearchResults: _react.PropTypes.number,
   /**
    * Delay for closing time of the menu.
    */
-  menuCloseDelay: _propTypes2.default.number,
+  menuCloseDelay: _react.PropTypes.number,
   /**
    * Props to be passed to menu.
    */
-  menuProps: _propTypes2.default.object,
+  menuProps: _react.PropTypes.object,
   /**
    * Override style for menu.
    */
-  menuStyle: _propTypes2.default.object,
+  menuStyle: _react.PropTypes.object,
   /** @ignore */
-  onBlur: _propTypes2.default.func,
+  onBlur: _react.PropTypes.func,
   /**
    * Callback function fired when the menu is closed.
    */
-  onClose: _propTypes2.default.func,
+  onClose: _react.PropTypes.func,
   /** @ignore */
-  onFocus: _propTypes2.default.func,
+  onFocus: _react.PropTypes.func,
   /** @ignore */
-  onKeyDown: _propTypes2.default.func,
+  onKeyDown: _react.PropTypes.func,
   /**
    * Callback function that is fired when a list item is selected, or enter is pressed in the `TextField`.
    *
@@ -10554,7 +10803,7 @@ AutoComplete.contextTypes = {
    * @param {number} index The index in `dataSource` of the list item selected, or `-1` if enter is pressed in the
    * `TextField`.
    */
-  onNewRequest: _propTypes2.default.func,
+  onNewRequest: _react.PropTypes.func,
   /**
    * Callback function that is fired when the user updates the `TextField`.
    *
@@ -10562,35 +10811,35 @@ AutoComplete.contextTypes = {
    * @param {array} dataSource The auto-complete's `dataSource` array.
    * @param {object} params Additional information linked the update.
    */
-  onUpdateInput: _propTypes2.default.func,
+  onUpdateInput: _react.PropTypes.func,
   /**
    * Auto complete menu is open if true.
    */
-  open: _propTypes2.default.bool,
+  open: _react.PropTypes.bool,
   /**
    * If true, the list item is showed when a focus event triggers.
    */
-  openOnFocus: _propTypes2.default.bool,
+  openOnFocus: _react.PropTypes.bool,
   /**
    * Props to be passed to popover.
    */
-  popoverProps: _propTypes2.default.object,
+  popoverProps: _react.PropTypes.object,
   /**
    * Text being input to auto complete.
    */
-  searchText: _propTypes2.default.string,
+  searchText: _react.PropTypes.string,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * Origin for location of target.
    */
-  targetOrigin: _propTypes4.default.origin,
+  targetOrigin: _propTypes2.default.origin,
   /**
    * Override the inline-styles of AutoComplete's TextField element.
    */
-  textFieldStyle: _propTypes2.default.object
+  textFieldStyle: _react.PropTypes.object
 } : void 0;
 
 
@@ -10704,10 +10953,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getStyles(props, context) {
@@ -10795,41 +11040,41 @@ Avatar.defaultProps = {
   size: 40
 };
 Avatar.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Avatar.propTypes = {
   /**
    * The backgroundColor of the avatar. Does not apply to image avatars.
    */
-  backgroundColor: _propTypes2.default.string,
+  backgroundColor: _react.PropTypes.string,
   /**
    * Can be used, for instance, to render a letter inside the avatar.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The css class name of the root `div` or `img` element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * The icon or letter's color.
    */
-  color: _propTypes2.default.string,
+  color: _react.PropTypes.string,
   /**
    * This is the SvgIcon or FontIcon to be used inside the avatar.
    */
-  icon: _propTypes2.default.element,
+  icon: _react.PropTypes.element,
   /**
    * This is the size of the avatar in pixels.
    */
-  size: _propTypes2.default.number,
+  size: _react.PropTypes.number,
   /**
    * If passed in, this component will render an img element. Otherwise, a div will be rendered.
    */
-  src: _propTypes2.default.string,
+  src: _react.PropTypes.string,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = Avatar;
 
@@ -10901,10 +11146,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _Paper = __webpack_require__("../node_modules/material-ui/Paper/index.js");
 
@@ -11040,42 +11281,42 @@ Card.defaultProps = {
   /**
    * Can be used to render elements inside the Card.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * Override the inline-styles of the container element.
    */
-  containerStyle: _propTypes2.default.object,
+  containerStyle: _react.PropTypes.object,
   /**
    * If true, this card component is expandable. Can be set on any child of the `Card` component.
    */
-  expandable: _propTypes2.default.bool,
+  expandable: _react.PropTypes.bool,
   /**
    * Whether this card is expanded.
    * If `true` or `false` the component is controlled.
    * if `null` the component is uncontrolled.
    */
-  expanded: _propTypes2.default.bool,
+  expanded: _react.PropTypes.bool,
   /**
    * Whether this card is initially expanded.
    */
-  initiallyExpanded: _propTypes2.default.bool,
+  initiallyExpanded: _react.PropTypes.bool,
   /**
    * Callback function fired when the `expandable` state of the card has changed.
    *
    * @param {boolean} newExpandedState Represents the new `expanded` state of the card.
    */
-  onExpandChange: _propTypes2.default.func,
+  onExpandChange: _react.PropTypes.func,
   /**
    * If true, this card component will include a button to expand the card. `CardTitle`,
    * `CardHeader` and `CardActions` implement `showExpandableButton`. Any child component
    * of `Card` can implements `showExpandableButton` or forwards the property to a child
    * component supporting it.
    */
-  showExpandableButton: _propTypes2.default.bool,
+  showExpandableButton: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = Card;
 
@@ -11127,10 +11368,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getStyles() {
@@ -11160,9 +11397,8 @@ var CardActions = function (_Component) {
           actAsExpander = _props.actAsExpander,
           children = _props.children,
           expandable = _props.expandable,
-          showExpandableButton = _props.showExpandableButton,
           style = _props.style,
-          other = (0, _objectWithoutProperties3.default)(_props, ['actAsExpander', 'children', 'expandable', 'showExpandableButton', 'style']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['actAsExpander', 'children', 'expandable', 'style']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var styles = getStyles(this.props, this.context);
@@ -11186,29 +11422,29 @@ var CardActions = function (_Component) {
 }(_react.Component);
 
 CardActions.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? CardActions.propTypes = {
   /**
    * If true, a click on this card component expands the card.
    */
-  actAsExpander: _propTypes2.default.bool,
+  actAsExpander: _react.PropTypes.bool,
   /**
    * Can be used to render elements inside the Card Action.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * If true, this card component is expandable.
    */
-  expandable: _propTypes2.default.bool,
+  expandable: _react.PropTypes.bool,
   /**
    * If true, this card component will include a button to expand the card.
    */
-  showExpandableButton: _propTypes2.default.bool,
+  showExpandableButton: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = CardActions;
 
@@ -11251,10 +11487,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _keyboardArrowUp = __webpack_require__("../node_modules/material-ui/svg-icons/hardware/keyboard-arrow-up.js");
 
@@ -11309,18 +11541,18 @@ var CardExpandable = function (_Component) {
 }(_react.Component);
 
 CardExpandable.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
 CardExpandable.defaultProps = {
   closeIcon: _react2.default.createElement(_keyboardArrowDown2.default, null),
   openIcon: _react2.default.createElement(_keyboardArrowUp2.default, null)
 };
  true ? CardExpandable.propTypes = {
-  closeIcon: _propTypes2.default.node,
-  expanded: _propTypes2.default.bool,
-  onExpanding: _propTypes2.default.func.isRequired,
-  openIcon: _propTypes2.default.node,
-  style: _propTypes2.default.object
+  closeIcon: _react.PropTypes.node,
+  expanded: _react.PropTypes.bool,
+  onExpanding: _react.PropTypes.func.isRequired,
+  openIcon: _react.PropTypes.node,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = CardExpandable;
 
@@ -11371,10 +11603,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _Avatar = __webpack_require__("../node_modules/material-ui/Avatar/index.js");
 
@@ -11488,71 +11716,71 @@ CardHeader.defaultProps = {
   avatar: null
 };
 CardHeader.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? CardHeader.propTypes = {
   /**
    * If true, a click on this card component expands the card.
    */
-  actAsExpander: _propTypes2.default.bool,
+  actAsExpander: _react.PropTypes.bool,
   /**
    * This is the [Avatar](/#/components/avatar) element to be displayed on the Card Header.
    * If `avatar` is an `Avatar` or other element, it will be rendered.
    * If `avatar` is a string, it will be used as the image `src` for an `Avatar`.
    */
-  avatar: _propTypes2.default.node,
+  avatar: _react.PropTypes.node,
   /**
    * Can be used to render elements inside the Card Header.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * Can be used to pass a closeIcon if you don't like the default expandable close Icon.
    */
-  closeIcon: _propTypes2.default.node,
+  closeIcon: _react.PropTypes.node,
   /**
    * If true, this card component is expandable.
    */
-  expandable: _propTypes2.default.bool,
+  expandable: _react.PropTypes.bool,
   /**
    * Can be used to pass a openIcon if you don't like the default expandable open Icon.
    */
-  openIcon: _propTypes2.default.node,
+  openIcon: _react.PropTypes.node,
   /**
    * If true, this card component will include a button to expand the card.
    */
-  showExpandableButton: _propTypes2.default.bool,
+  showExpandableButton: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * Can be used to render a subtitle in Card Header.
    */
-  subtitle: _propTypes2.default.node,
+  subtitle: _react.PropTypes.node,
   /**
    * Override the subtitle color.
    */
-  subtitleColor: _propTypes2.default.string,
+  subtitleColor: _react.PropTypes.string,
   /**
    * Override the inline-styles of the subtitle.
    */
-  subtitleStyle: _propTypes2.default.object,
+  subtitleStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the text.
    */
-  textStyle: _propTypes2.default.object,
+  textStyle: _react.PropTypes.object,
   /**
    * Can be used to render a title in Card Header.
    */
-  title: _propTypes2.default.node,
+  title: _react.PropTypes.node,
   /**
    * Override the title color.
    */
-  titleColor: _propTypes2.default.string,
+  titleColor: _react.PropTypes.string,
   /**
    * Override the inline-styles of the title.
    */
-  titleStyle: _propTypes2.default.object
+  titleStyle: _react.PropTypes.object
 } : void 0;
 exports.default = CardHeader;
 
@@ -11603,10 +11831,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11730,45 +11954,45 @@ var CardMedia = function (_Component) {
 }(_react.Component);
 
 CardMedia.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? CardMedia.propTypes = {
   /**
    * If true, a click on this card component expands the card.
    */
-  actAsExpander: _propTypes2.default.bool,
+  actAsExpander: _react.PropTypes.bool,
   /**
    * Can be used to render elements inside the Card Media.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * If true, this card component is expandable.
    */
-  expandable: _propTypes2.default.bool,
+  expandable: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the Card Media.
    */
-  mediaStyle: _propTypes2.default.object,
+  mediaStyle: _react.PropTypes.object,
   /**
    * Can be used to render overlay element in Card Media.
    */
-  overlay: _propTypes2.default.node,
+  overlay: _react.PropTypes.node,
   /**
    * Override the inline-styles of the overlay container.
    */
-  overlayContainerStyle: _propTypes2.default.object,
+  overlayContainerStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the overlay content.
    */
-  overlayContentStyle: _propTypes2.default.object,
+  overlayContentStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the overlay element.
    */
-  overlayStyle: _propTypes2.default.object,
+  overlayStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = CardMedia;
 
@@ -11820,10 +12044,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getStyles(props, context) {
@@ -11874,29 +12094,29 @@ var CardText = function (_Component) {
 
 CardText.muiName = 'CardText';
 CardText.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? CardText.propTypes = {
   /**
    * If true, a click on this card component expands the card.
    */
-  actAsExpander: _propTypes2.default.bool,
+  actAsExpander: _react.PropTypes.bool,
   /**
    * Can be used to render elements inside the Card Text.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * Override the CardText color.
    */
-  color: _propTypes2.default.string,
+  color: _react.PropTypes.string,
   /**
    * If true, this card component is expandable.
    */
-  expandable: _propTypes2.default.bool,
+  expandable: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = CardText;
 
@@ -11947,10 +12167,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12030,53 +12246,53 @@ var CardTitle = function (_Component) {
 
 CardTitle.muiName = 'CardTitle';
 CardTitle.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? CardTitle.propTypes = {
   /**
    * If true, a click on this card component expands the card.
    */
-  actAsExpander: _propTypes2.default.bool,
+  actAsExpander: _react.PropTypes.bool,
   /**
    * Can be used to render elements inside the Card Title.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * If true, this card component is expandable.
    */
-  expandable: _propTypes2.default.bool,
+  expandable: _react.PropTypes.bool,
   /**
    * If true, this card component will include a button to expand the card.
    */
-  showExpandableButton: _propTypes2.default.bool,
+  showExpandableButton: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * Can be used to render a subtitle in the Card Title.
    */
-  subtitle: _propTypes2.default.node,
+  subtitle: _react.PropTypes.node,
   /**
    * Override the subtitle color.
    */
-  subtitleColor: _propTypes2.default.string,
+  subtitleColor: _react.PropTypes.string,
   /**
    * Override the inline-styles of the subtitle.
    */
-  subtitleStyle: _propTypes2.default.object,
+  subtitleStyle: _react.PropTypes.object,
   /**
    * Can be used to render a title in the Card Title.
    */
-  title: _propTypes2.default.node,
+  title: _react.PropTypes.node,
   /**
    * Override the title color.
    */
-  titleColor: _propTypes2.default.string,
+  titleColor: _react.PropTypes.string,
   /**
    * Override the inline-styles of the title.
    */
-  titleStyle: _propTypes2.default.object
+  titleStyle: _react.PropTypes.object
 } : void 0;
 exports.default = CardTitle;
 
@@ -12179,10 +12395,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _keycode = __webpack_require__("../node_modules/keycode/index.js");
 
@@ -12421,68 +12633,68 @@ Chip.defaultProps = {
   onTouchEnd: function onTouchEnd() {},
   onTouchStart: function onTouchStart() {}
 };
-Chip.contextTypes = { muiTheme: _propTypes2.default.object.isRequired };
+Chip.contextTypes = { muiTheme: _react.PropTypes.object.isRequired };
  true ? Chip.propTypes = {
   /**
    * Override the background color of the chip.
    */
-  backgroundColor: _propTypes2.default.string,
+  backgroundColor: _react.PropTypes.string,
   /**
    * Used to render elements inside the Chip.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * CSS `className` of the root element.
    */
-  className: _propTypes2.default.node,
+  className: _react.PropTypes.node,
   /**
    * The element to use as the container for the Chip. Either a string to
    * use a DOM element or a ReactElement.
    */
-  containerElement: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.element]),
+  containerElement: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
   /**
    * Override the label color.
    */
-  labelColor: _propTypes2.default.string,
+  labelColor: _react.PropTypes.string,
   /**
    * Override the inline-styles of the label.
    */
-  labelStyle: _propTypes2.default.object,
+  labelStyle: _react.PropTypes.object,
   /** @ignore */
-  onBlur: _propTypes2.default.func,
+  onBlur: _react.PropTypes.func,
   /** @ignore */
-  onFocus: _propTypes2.default.func,
+  onFocus: _react.PropTypes.func,
   /** @ignore */
-  onKeyDown: _propTypes2.default.func,
+  onKeyDown: _react.PropTypes.func,
   /** @ignore */
-  onKeyboardFocus: _propTypes2.default.func,
+  onKeyboardFocus: _react.PropTypes.func,
   /** @ignore */
-  onMouseDown: _propTypes2.default.func,
+  onMouseDown: _react.PropTypes.func,
   /** @ignore */
-  onMouseEnter: _propTypes2.default.func,
+  onMouseEnter: _react.PropTypes.func,
   /** @ignore */
-  onMouseLeave: _propTypes2.default.func,
+  onMouseLeave: _react.PropTypes.func,
   /** @ignore */
-  onMouseUp: _propTypes2.default.func,
+  onMouseUp: _react.PropTypes.func,
   /**
    * Callback function fired when the delete icon is clicked. If set, the delete icon will be shown.
    * @param {object} event `touchTap` event targeting the element.
    */
-  onRequestDelete: _propTypes2.default.func,
+  onRequestDelete: _react.PropTypes.func,
   /** @ignore */
-  onTouchEnd: _propTypes2.default.func,
+  onTouchEnd: _react.PropTypes.func,
   /** @ignore */
-  onTouchStart: _propTypes2.default.func,
+  onTouchStart: _react.PropTypes.func,
   /**
    * Callback function fired when the `Chip` element is touch-tapped.
    *
    * @param {object} event TouchTap event targeting the element.
    */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = Chip;
 
@@ -12546,10 +12758,6 @@ var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactEventListener = __webpack_require__("../node_modules/react-event-listener/lib/index.js");
 
@@ -12619,10 +12827,12 @@ var Calendar = function (_Component) {
     }, _this.handleMonthChange = function (months) {
       _this.setState({
         transitionDirection: months >= 0 ? 'left' : 'right',
-        displayDate: _this.props.utils.addMonths(_this.state.displayDate, months)
+        displayDate: (0, _dateUtils.addMonths)(_this.state.displayDate, months)
       });
     }, _this.handleTouchTapYear = function (event, year) {
-      _this.setSelectedDate(_this.props.utils.setYear(_this.state.selectedDate, year), event);
+      var date = (0, _dateUtils.cloneDate)(_this.state.selectedDate);
+      date.setFullYear(year);
+      _this.setSelectedDate(date, event);
       _this.handleTouchTapDateDisplayMonthDay();
     }, _this.handleTouchTapDateDisplayMonthDay = function () {
       _this.setState({
@@ -12683,7 +12893,7 @@ var Calendar = function (_Component) {
     key: 'componentWillMount',
     value: function componentWillMount() {
       this.setState({
-        displayDate: this.props.utils.getFirstDayOfMonth(this.props.initialDate),
+        displayDate: (0, _dateUtils.getFirstDayOfMonth)(this.props.initialDate),
         selectedDate: this.props.initialDate
       });
     }
@@ -12693,20 +12903,10 @@ var Calendar = function (_Component) {
       if (nextProps.initialDate !== this.props.initialDate) {
         var date = nextProps.initialDate || new Date();
         this.setState({
-          displayDate: this.props.utils.getFirstDayOfMonth(date),
+          displayDate: (0, _dateUtils.getFirstDayOfMonth)(date),
           selectedDate: date
         });
       }
-    }
-  }, {
-    key: 'getMinDate',
-    value: function getMinDate() {
-      return this.props.minDate || this.props.utils.addYears(new Date(), -100);
-    }
-  }, {
-    key: 'getMaxDate',
-    value: function getMaxDate() {
-      return this.props.maxDate || this.props.utils.addYears(new Date(), 100);
     }
   }, {
     key: 'getSelectedDate',
@@ -12725,22 +12925,22 @@ var Calendar = function (_Component) {
   }, {
     key: 'addSelectedDays',
     value: function addSelectedDays(days) {
-      this.setSelectedDate(this.props.utils.addDays(this.state.selectedDate, days));
+      this.setSelectedDate((0, _dateUtils.addDays)(this.state.selectedDate, days));
     }
   }, {
     key: 'addSelectedMonths',
     value: function addSelectedMonths(months) {
-      this.setSelectedDate(this.props.utils.addMonths(this.state.selectedDate, months));
+      this.setSelectedDate((0, _dateUtils.addMonths)(this.state.selectedDate, months));
     }
   }, {
     key: 'addSelectedYears',
     value: function addSelectedYears(years) {
-      this.setSelectedDate(this.props.utils.addYears(this.state.selectedDate, years));
+      this.setSelectedDate((0, _dateUtils.addYears)(this.state.selectedDate, years));
     }
   }, {
     key: 'setDisplayDate',
     value: function setDisplayDate(date, newSelectedDate) {
-      var newDisplayDate = this.props.utils.getFirstDayOfMonth(date);
+      var newDisplayDate = (0, _dateUtils.getFirstDayOfMonth)(date);
       var direction = newDisplayDate > this.state.displayDate ? 'left' : 'right';
 
       if (newDisplayDate !== this.state.displayDate) {
@@ -12755,15 +12955,13 @@ var Calendar = function (_Component) {
     key: 'setSelectedDate',
     value: function setSelectedDate(date) {
       var adjustedDate = date;
-      var minDate = this.getMinDate();
-      var maxDate = this.getMaxDate();
-      if ((0, _dateUtils.isBeforeDate)(date, minDate)) {
-        adjustedDate = minDate;
-      } else if ((0, _dateUtils.isAfterDate)(date, maxDate)) {
-        adjustedDate = maxDate;
+      if ((0, _dateUtils.isBeforeDate)(date, this.props.minDate)) {
+        adjustedDate = this.props.minDate;
+      } else if ((0, _dateUtils.isAfterDate)(date, this.props.maxDate)) {
+        adjustedDate = this.props.maxDate;
       }
 
-      var newDisplayDate = this.props.utils.getFirstDayOfMonth(adjustedDate);
+      var newDisplayDate = (0, _dateUtils.getFirstDayOfMonth)(adjustedDate);
       if (newDisplayDate !== this.state.displayDate) {
         this.setDisplayDate(newDisplayDate, adjustedDate);
       } else {
@@ -12776,8 +12974,8 @@ var Calendar = function (_Component) {
     key: 'getToolbarInteractions',
     value: function getToolbarInteractions() {
       return {
-        prevMonth: this.props.utils.monthDiff(this.state.displayDate, this.getMinDate()) > 0,
-        nextMonth: this.props.utils.monthDiff(this.state.displayDate, this.getMaxDate()) < 0
+        prevMonth: (0, _dateUtils.monthDiff)(this.state.displayDate, this.props.minDate) > 0,
+        nextMonth: (0, _dateUtils.monthDiff)(this.state.displayDate, this.props.maxDate) < 0
       };
     }
   }, {
@@ -12790,9 +12988,8 @@ var Calendar = function (_Component) {
           locale: this.props.locale,
           onTouchTapYear: this.handleTouchTapYear,
           selectedDate: this.state.selectedDate,
-          minDate: this.getMinDate(),
-          maxDate: this.getMaxDate(),
-          utils: this.props.utils
+          minDate: this.props.minDate,
+          maxDate: this.props.maxDate
         });
       }
     }
@@ -12857,14 +13054,15 @@ var Calendar = function (_Component) {
       var weekTitleDayStyle = prepareStyles(styles.weekTitleDay);
 
       var _props = this.props,
+          minDate = _props.minDate,
+          maxDate = _props.maxDate,
           cancelLabel = _props.cancelLabel,
           DateTimeFormat = _props.DateTimeFormat,
           firstDayOfWeek = _props.firstDayOfWeek,
           locale = _props.locale,
           okLabel = _props.okLabel,
           onTouchTapCancel = _props.onTouchTapCancel,
-          onTouchTapOk = _props.onTouchTapOk,
-          utils = _props.utils;
+          onTouchTapOk = _props.onTouchTapOk;
 
 
       return _react2.default.createElement(
@@ -12918,13 +13116,12 @@ var Calendar = function (_Component) {
                 displayDate: this.state.displayDate,
                 firstDayOfWeek: this.props.firstDayOfWeek,
                 key: this.state.displayDate.toDateString(),
-                minDate: this.getMinDate(),
-                maxDate: this.getMaxDate(),
+                minDate: minDate,
+                maxDate: maxDate,
                 onTouchTapDay: this.handleTouchTapDay,
                 ref: 'calendar',
                 selectedDate: this.state.selectedDate,
-                shouldDisableDate: this.props.shouldDisableDate,
-                utils: utils
+                shouldDisableDate: this.props.shouldDisableDate
               })
             )
           ),
@@ -12952,30 +13149,30 @@ Calendar.defaultProps = {
   disableYearSelection: false,
   initialDate: new Date(),
   locale: 'en-US',
-  utils: _dateUtils.defaultUtils
+  minDate: (0, _dateUtils.addYears)(new Date(), -100),
+  maxDate: (0, _dateUtils.addYears)(new Date(), 100)
 };
 Calendar.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Calendar.propTypes = {
-  DateTimeFormat: _propTypes2.default.func.isRequired,
-  autoOk: _propTypes2.default.bool,
-  cancelLabel: _propTypes2.default.node,
-  disableYearSelection: _propTypes2.default.bool,
-  firstDayOfWeek: _propTypes2.default.number,
-  hideCalendarDate: _propTypes2.default.bool,
-  initialDate: _propTypes2.default.object,
-  locale: _propTypes2.default.string.isRequired,
-  maxDate: _propTypes2.default.object,
-  minDate: _propTypes2.default.object,
-  mode: _propTypes2.default.oneOf(['portrait', 'landscape']),
-  okLabel: _propTypes2.default.node,
-  onTouchTapCancel: _propTypes2.default.func,
-  onTouchTapDay: _propTypes2.default.func,
-  onTouchTapOk: _propTypes2.default.func,
-  open: _propTypes2.default.bool,
-  shouldDisableDate: _propTypes2.default.func,
-  utils: _propTypes2.default.object
+  DateTimeFormat: _react.PropTypes.func.isRequired,
+  autoOk: _react.PropTypes.bool,
+  cancelLabel: _react.PropTypes.node,
+  disableYearSelection: _react.PropTypes.bool,
+  firstDayOfWeek: _react.PropTypes.number,
+  hideCalendarDate: _react.PropTypes.bool,
+  initialDate: _react.PropTypes.object,
+  locale: _react.PropTypes.string.isRequired,
+  maxDate: _react.PropTypes.object,
+  minDate: _react.PropTypes.object,
+  mode: _react.PropTypes.oneOf(['portrait', 'landscape']),
+  okLabel: _react.PropTypes.node,
+  onTouchTapCancel: _react.PropTypes.func,
+  onTouchTapDay: _react.PropTypes.func,
+  onTouchTapOk: _react.PropTypes.func,
+  open: _react.PropTypes.bool,
+  shouldDisableDate: _react.PropTypes.func
 } : void 0;
 exports.default = Calendar;
 
@@ -13014,10 +13211,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _FlatButton = __webpack_require__("../node_modules/material-ui/FlatButton/index.js");
 
@@ -13082,11 +13275,11 @@ var CalendarActionButton = function (_Component) {
 }(_react.Component);
 
  true ? CalendarActionButton.propTypes = {
-  autoOk: _propTypes2.default.bool,
-  cancelLabel: _propTypes2.default.node,
-  okLabel: _propTypes2.default.node,
-  onTouchTapCancel: _propTypes2.default.func,
-  onTouchTapOk: _propTypes2.default.func
+  autoOk: _react.PropTypes.bool,
+  cancelLabel: _react.PropTypes.node,
+  okLabel: _react.PropTypes.node,
+  onTouchTapCancel: _react.PropTypes.func,
+  onTouchTapOk: _react.PropTypes.func
 } : void 0;
 exports.default = CalendarActionButton;
 
@@ -13125,10 +13318,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _dateUtils = __webpack_require__("../node_modules/material-ui/DatePicker/dateUtils.js");
 
@@ -13199,7 +13388,7 @@ var CalendarMonth = function (_Component) {
     value: function getWeekElements() {
       var _this2 = this;
 
-      var weekArray = this.props.utils.getWeekArray(this.props.displayDate, this.props.firstDayOfWeek);
+      var weekArray = (0, _dateUtils.getWeekArray)(this.props.displayDate, this.props.firstDayOfWeek);
 
       return weekArray.map(function (week, i) {
         return _react2.default.createElement(
@@ -13254,17 +13443,16 @@ var CalendarMonth = function (_Component) {
 }(_react.Component);
 
  true ? CalendarMonth.propTypes = {
-  DateTimeFormat: _propTypes2.default.func.isRequired,
-  autoOk: _propTypes2.default.bool,
-  displayDate: _propTypes2.default.object.isRequired,
-  firstDayOfWeek: _propTypes2.default.number,
-  locale: _propTypes2.default.string.isRequired,
-  maxDate: _propTypes2.default.object,
-  minDate: _propTypes2.default.object,
-  onTouchTapDay: _propTypes2.default.func,
-  selectedDate: _propTypes2.default.object.isRequired,
-  shouldDisableDate: _propTypes2.default.func,
-  utils: _propTypes2.default.object.isRequired
+  DateTimeFormat: _react.PropTypes.func.isRequired,
+  autoOk: _react.PropTypes.bool,
+  displayDate: _react.PropTypes.object.isRequired,
+  firstDayOfWeek: _react.PropTypes.number,
+  locale: _react.PropTypes.string.isRequired,
+  maxDate: _react.PropTypes.object,
+  minDate: _react.PropTypes.object,
+  onTouchTapDay: _react.PropTypes.func,
+  selectedDate: _react.PropTypes.object.isRequired,
+  shouldDisableDate: _react.PropTypes.func
 } : void 0;
 exports.default = CalendarMonth;
 
@@ -13303,10 +13491,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _IconButton = __webpack_require__("../node_modules/material-ui/IconButton/index.js");
 
@@ -13438,12 +13622,12 @@ CalendarToolbar.defaultProps = {
   prevMonth: true
 };
  true ? CalendarToolbar.propTypes = {
-  DateTimeFormat: _propTypes2.default.func.isRequired,
-  displayDate: _propTypes2.default.object.isRequired,
-  locale: _propTypes2.default.string.isRequired,
-  nextMonth: _propTypes2.default.bool,
-  onMonthChange: _propTypes2.default.func,
-  prevMonth: _propTypes2.default.bool
+  DateTimeFormat: _react.PropTypes.func.isRequired,
+  displayDate: _react.PropTypes.object.isRequired,
+  locale: _react.PropTypes.string.isRequired,
+  nextMonth: _react.PropTypes.bool,
+  onMonthChange: _react.PropTypes.func,
+  prevMonth: _react.PropTypes.bool
 } : void 0;
 exports.default = CalendarToolbar;
 
@@ -13487,10 +13671,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -13498,6 +13678,8 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 var _YearButton = __webpack_require__("../node_modules/material-ui/DatePicker/YearButton.js");
 
 var _YearButton2 = _interopRequireDefault(_YearButton);
+
+var _dateUtils = __webpack_require__("../node_modules/material-ui/DatePicker/dateUtils.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13540,16 +13722,17 @@ var CalendarYear = function (_Component) {
           locale = _props.locale,
           minDate = _props.minDate,
           maxDate = _props.maxDate,
-          selectedDate = _props.selectedDate,
-          utils = _props.utils;
+          selectedDate = _props.selectedDate;
 
 
-      var minYear = utils.getYear(minDate);
-      var maxYear = utils.getYear(maxDate);
+      var minYear = minDate.getFullYear();
+      var maxYear = maxDate.getFullYear();
       var years = [];
+      var dateCheck = (0, _dateUtils.cloneDate)(selectedDate);
 
       for (var year = minYear; year <= maxYear; year++) {
-        var selected = utils.getYear(selectedDate) === year;
+        dateCheck.setFullYear(year);
+        var selected = selectedDate.getFullYear() === year;
         var selectedProps = {};
         if (selected) {
           selectedProps.ref = 'selectedYearButton';
@@ -13557,7 +13740,7 @@ var CalendarYear = function (_Component) {
 
         var yearFormated = new DateTimeFormat(locale, {
           year: 'numeric'
-        }).format(utils.setYear(selectedDate, year));
+        }).format(dateCheck);
 
         var yearButton = _react2.default.createElement(
           _YearButton2.default,
@@ -13565,8 +13748,7 @@ var CalendarYear = function (_Component) {
             key: 'yb' + year,
             onTouchTap: this.handleTouchTapYear,
             selected: selected,
-            year: year,
-            utils: utils
+            year: year
           }, selectedProps),
           yearFormated
         );
@@ -13632,17 +13814,16 @@ var CalendarYear = function (_Component) {
 }(_react.Component);
 
 CalendarYear.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? CalendarYear.propTypes = {
-  DateTimeFormat: _propTypes2.default.func.isRequired,
-  locale: _propTypes2.default.string.isRequired,
-  maxDate: _propTypes2.default.object.isRequired,
-  minDate: _propTypes2.default.object.isRequired,
-  onTouchTapYear: _propTypes2.default.func,
-  selectedDate: _propTypes2.default.object.isRequired,
-  utils: _propTypes2.default.object.isRequired,
-  wordings: _propTypes2.default.object
+  DateTimeFormat: _react.PropTypes.func.isRequired,
+  locale: _react.PropTypes.string.isRequired,
+  maxDate: _react.PropTypes.object.isRequired,
+  minDate: _react.PropTypes.object.isRequired,
+  onTouchTapYear: _react.PropTypes.func,
+  selectedDate: _react.PropTypes.object.isRequired,
+  wordings: _react.PropTypes.object
 } : void 0;
 exports.default = CalendarYear;
 
@@ -13689,10 +13870,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -13879,18 +14056,18 @@ DateDisplay.defaultProps = {
   monthDaySelected: true
 };
 DateDisplay.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? DateDisplay.propTypes = {
-  DateTimeFormat: _propTypes2.default.func.isRequired,
-  disableYearSelection: _propTypes2.default.bool,
-  locale: _propTypes2.default.string.isRequired,
-  mode: _propTypes2.default.oneOf(['portrait', 'landscape']),
-  monthDaySelected: _propTypes2.default.bool,
-  onTouchTapMonthDay: _propTypes2.default.func,
-  onTouchTapYear: _propTypes2.default.func,
-  selectedDate: _propTypes2.default.object.isRequired,
-  style: _propTypes2.default.object
+  DateTimeFormat: _react.PropTypes.func.isRequired,
+  disableYearSelection: _react.PropTypes.bool,
+  locale: _react.PropTypes.string.isRequired,
+  mode: _react.PropTypes.oneOf(['portrait', 'landscape']),
+  monthDaySelected: _react.PropTypes.bool,
+  onTouchTapMonthDay: _react.PropTypes.func,
+  onTouchTapYear: _react.PropTypes.func,
+  selectedDate: _react.PropTypes.object.isRequired,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = DateDisplay;
 
@@ -13941,10 +14118,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _dateUtils = __webpack_require__("../node_modules/material-ui/DatePicker/dateUtils.js");
 
@@ -14110,8 +14283,7 @@ var DatePicker = function (_Component) {
           hideCalendarDate = _props.hideCalendarDate,
           style = _props.style,
           textFieldStyle = _props.textFieldStyle,
-          utils = _props.utils,
-          other = (0, _objectWithoutProperties3.default)(_props, ['DateTimeFormat', 'autoOk', 'cancelLabel', 'className', 'container', 'defaultDate', 'dialogContainerStyle', 'disableYearSelection', 'firstDayOfWeek', 'formatDate', 'locale', 'maxDate', 'minDate', 'mode', 'okLabel', 'onDismiss', 'onFocus', 'onShow', 'onTouchTap', 'shouldDisableDate', 'hideCalendarDate', 'style', 'textFieldStyle', 'utils']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['DateTimeFormat', 'autoOk', 'cancelLabel', 'className', 'container', 'defaultDate', 'dialogContainerStyle', 'disableYearSelection', 'firstDayOfWeek', 'formatDate', 'locale', 'maxDate', 'minDate', 'mode', 'okLabel', 'onDismiss', 'onFocus', 'onShow', 'onTouchTap', 'shouldDisableDate', 'hideCalendarDate', 'style', 'textFieldStyle']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var formatDate = formatDateProp || this.formatDate;
@@ -14145,8 +14317,7 @@ var DatePicker = function (_Component) {
           onDismiss: onDismiss,
           ref: 'dialogWindow',
           shouldDisableDate: shouldDisableDate,
-          hideCalendarDate: hideCalendarDate,
-          utils: utils
+          hideCalendarDate: hideCalendarDate
         })
       );
     }
@@ -14164,7 +14335,7 @@ DatePicker.defaultProps = {
   style: {}
 };
 DatePicker.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? DatePicker.propTypes = {
   /**
@@ -14175,50 +14346,50 @@ DatePicker.contextTypes = {
    *
    * By default, a built-in `DateTimeFormat` is used which supports the 'en-US' `locale`.
    */
-  DateTimeFormat: _propTypes2.default.func,
+  DateTimeFormat: _react.PropTypes.func,
   /**
    * If true, automatically accept and close the picker on select a date.
    */
-  autoOk: _propTypes2.default.bool,
+  autoOk: _react.PropTypes.bool,
   /**
    * Override the default text of the 'Cancel' button.
    */
-  cancelLabel: _propTypes2.default.node,
+  cancelLabel: _react.PropTypes.node,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * Used to control how the Date Picker will be displayed when the input field is focused.
    * `dialog` (default) displays the DatePicker as a dialog with a modal.
    * `inline` displays the DatePicker below the input field (similar to auto complete).
    */
-  container: _propTypes2.default.oneOf(['dialog', 'inline']),
+  container: _react.PropTypes.oneOf(['dialog', 'inline']),
   /**
    * This is the initial date value of the component.
    * If either `value` or `valueLink` is provided they will override this
    * prop with `value` taking precedence.
    */
-  defaultDate: _propTypes2.default.object,
+  defaultDate: _react.PropTypes.object,
   /**
    * Override the inline-styles of DatePickerDialog's Container element.
    */
-  dialogContainerStyle: _propTypes2.default.object,
+  dialogContainerStyle: _react.PropTypes.object,
   /**
    * Disables the year selection in the date picker.
    */
-  disableYearSelection: _propTypes2.default.bool,
+  disableYearSelection: _react.PropTypes.bool,
   /**
    * Disables the DatePicker.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
    * Used to change the first day of week. It varies from
    * Saturday to Monday between different locales.
    * The allowed range is 0 (Sunday) to 6 (Saturday).
    * The default is `1`, Monday, as per ISO 8601.
    */
-  firstDayOfWeek: _propTypes2.default.number,
+  firstDayOfWeek: _react.PropTypes.number,
   /**
    * This function is called to format the date displayed in the input field, and should return a string.
    * By default if no `locale` and `DateTimeFormat` is provided date objects are formatted to ISO 8601 YYYY-MM-DD.
@@ -14226,34 +14397,34 @@ DatePicker.contextTypes = {
    * @param {object} date Date object to be formatted.
    * @returns {any} The formatted date.
    */
-  formatDate: _propTypes2.default.func,
+  formatDate: _react.PropTypes.func,
   /**
    * Hide date display
    */
-  hideCalendarDate: _propTypes2.default.bool,
+  hideCalendarDate: _react.PropTypes.bool,
   /**
    * Locale used for formatting the `DatePicker` date strings. Other than for 'en-US', you
    * must provide a `DateTimeFormat` that supports the chosen `locale`.
    */
-  locale: _propTypes2.default.string,
+  locale: _react.PropTypes.string,
   /**
    * The ending of a range of valid dates. The range includes the endDate.
    * The default value is current date + 100 years.
    */
-  maxDate: _propTypes2.default.object,
+  maxDate: _react.PropTypes.object,
   /**
    * The beginning of a range of valid dates. The range includes the startDate.
    * The default value is current date - 100 years.
    */
-  minDate: _propTypes2.default.object,
+  minDate: _react.PropTypes.object,
   /**
    * Tells the component to display the picker in portrait or landscape mode.
    */
-  mode: _propTypes2.default.oneOf(['portrait', 'landscape']),
+  mode: _react.PropTypes.oneOf(['portrait', 'landscape']),
   /**
    * Override the default text of the 'OK' button.
    */
-  okLabel: _propTypes2.default.node,
+  okLabel: _react.PropTypes.node,
   /**
    * Callback function that is fired when the date value changes.
    *
@@ -14261,53 +14432,44 @@ DatePicker.contextTypes = {
    * the first argument will always be null.
    * @param {object} date The new date.
    */
-  onChange: _propTypes2.default.func,
+  onChange: _react.PropTypes.func,
   /**
    * Callback function that is fired when the Date Picker's dialog is dismissed.
    */
-  onDismiss: _propTypes2.default.func,
+  onDismiss: _react.PropTypes.func,
   /**
    * Callback function that is fired when the Date Picker's `TextField` gains focus.
    */
-  onFocus: _propTypes2.default.func,
+  onFocus: _react.PropTypes.func,
   /**
    * Callback function that is fired when the Date Picker's dialog is shown.
    */
-  onShow: _propTypes2.default.func,
+  onShow: _react.PropTypes.func,
   /**
    * Callback function that is fired when a touch tap event occurs on the Date Picker's `TextField`.
    *
    * @param {object} event TouchTap event targeting the `TextField`.
    */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * Callback function used to determine if a day's entry should be disabled on the calendar.
    *
    * @param {object} day Date object of a day.
    * @returns {boolean} Indicates whether the day should be disabled.
    */
-  shouldDisableDate: _propTypes2.default.func,
+  shouldDisableDate: _react.PropTypes.func,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * Override the inline-styles of DatePicker's TextField element.
    */
-  textFieldStyle: _propTypes2.default.object,
-  /**
-   * This object should contain methods needed to build the calendar system.
-   *
-   * Useful for building a custom calendar system. Refer to the
-   * [source code](https://github.com/callemall/material-ui/blob/master/src/DatePicker/dateUtils.js)
-   * and an [example implementation](https://github.com/alitaheri/material-ui-persian-date-picker-utils)
-   * for more information.
-   */
-  utils: _propTypes2.default.object,
+  textFieldStyle: _react.PropTypes.object,
   /**
    * Sets the date for the Date Picker programmatically.
    */
-  value: _propTypes2.default.object
+  value: _react.PropTypes.object
 } : void 0;
 exports.default = DatePicker;
 
@@ -14358,10 +14520,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactEventListener = __webpack_require__("../node_modules/react-event-listener/lib/index.js");
 
@@ -14472,8 +14630,7 @@ var DatePickerDialog = function (_Component) {
           hideCalendarDate = _props.hideCalendarDate,
           style = _props.style,
           animation = _props.animation,
-          utils = _props.utils,
-          other = (0, _objectWithoutProperties3.default)(_props, ['DateTimeFormat', 'autoOk', 'cancelLabel', 'container', 'containerStyle', 'disableYearSelection', 'initialDate', 'firstDayOfWeek', 'locale', 'maxDate', 'minDate', 'mode', 'okLabel', 'onAccept', 'onDismiss', 'onShow', 'shouldDisableDate', 'hideCalendarDate', 'style', 'animation', 'utils']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['DateTimeFormat', 'autoOk', 'cancelLabel', 'container', 'containerStyle', 'disableYearSelection', 'initialDate', 'firstDayOfWeek', 'locale', 'maxDate', 'minDate', 'mode', 'okLabel', 'onAccept', 'onDismiss', 'onShow', 'shouldDisableDate', 'hideCalendarDate', 'style', 'animation']);
       var open = this.state.open;
 
 
@@ -14528,8 +14685,7 @@ var DatePickerDialog = function (_Component) {
             onTouchTapOk: this.handleTouchTapOk,
             okLabel: okLabel,
             shouldDisableDate: shouldDisableDate,
-            hideCalendarDate: hideCalendarDate,
-            utils: utils
+            hideCalendarDate: hideCalendarDate
           })
         )
       );
@@ -14546,31 +14702,30 @@ DatePickerDialog.defaultProps = {
   okLabel: 'OK'
 };
 DatePickerDialog.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? DatePickerDialog.propTypes = {
-  DateTimeFormat: _propTypes2.default.func,
-  animation: _propTypes2.default.func,
-  autoOk: _propTypes2.default.bool,
-  cancelLabel: _propTypes2.default.node,
-  container: _propTypes2.default.oneOf(['dialog', 'inline']),
-  containerStyle: _propTypes2.default.object,
-  disableYearSelection: _propTypes2.default.bool,
-  firstDayOfWeek: _propTypes2.default.number,
-  hideCalendarDate: _propTypes2.default.bool,
-  initialDate: _propTypes2.default.object,
-  locale: _propTypes2.default.string,
-  maxDate: _propTypes2.default.object,
-  minDate: _propTypes2.default.object,
-  mode: _propTypes2.default.oneOf(['portrait', 'landscape']),
-  okLabel: _propTypes2.default.node,
-  onAccept: _propTypes2.default.func,
-  onDismiss: _propTypes2.default.func,
-  onShow: _propTypes2.default.func,
-  open: _propTypes2.default.bool,
-  shouldDisableDate: _propTypes2.default.func,
-  style: _propTypes2.default.object,
-  utils: _propTypes2.default.object
+  DateTimeFormat: _react.PropTypes.func,
+  animation: _react.PropTypes.func,
+  autoOk: _react.PropTypes.bool,
+  cancelLabel: _react.PropTypes.node,
+  container: _react.PropTypes.oneOf(['dialog', 'inline']),
+  containerStyle: _react.PropTypes.object,
+  disableYearSelection: _react.PropTypes.bool,
+  firstDayOfWeek: _react.PropTypes.number,
+  hideCalendarDate: _react.PropTypes.bool,
+  initialDate: _react.PropTypes.object,
+  locale: _react.PropTypes.string,
+  maxDate: _react.PropTypes.object,
+  minDate: _react.PropTypes.object,
+  mode: _react.PropTypes.oneOf(['portrait', 'landscape']),
+  okLabel: _react.PropTypes.node,
+  onAccept: _react.PropTypes.func,
+  onDismiss: _react.PropTypes.func,
+  onShow: _react.PropTypes.func,
+  open: _react.PropTypes.bool,
+  shouldDisableDate: _react.PropTypes.func,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = DatePickerDialog;
 
@@ -14617,10 +14772,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -14767,16 +14918,16 @@ DayButton.defaultProps = {
   disabled: false
 };
 DayButton.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? DayButton.propTypes = {
-  DateTimeFormat: _propTypes2.default.func.isRequired,
-  date: _propTypes2.default.object,
-  disabled: _propTypes2.default.bool,
-  locale: _propTypes2.default.string.isRequired,
-  onKeyboardFocus: _propTypes2.default.func,
-  onTouchTap: _propTypes2.default.func,
-  selected: _propTypes2.default.bool
+  DateTimeFormat: _react.PropTypes.func.isRequired,
+  date: _react.PropTypes.object,
+  disabled: _react.PropTypes.bool,
+  locale: _react.PropTypes.string.isRequired,
+  onKeyboardFocus: _react.PropTypes.func,
+  onTouchTap: _react.PropTypes.func,
+  selected: _react.PropTypes.bool
 } : void 0;
 exports.default = DayButton;
 
@@ -14824,10 +14975,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _EnhancedButton = __webpack_require__("../node_modules/material-ui/internal/EnhancedButton.js");
 
 var _EnhancedButton2 = _interopRequireDefault(_EnhancedButton);
@@ -14836,8 +14983,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function getStyles(props, context, state) {
   var selected = props.selected,
-      year = props.year,
-      utils = props.utils;
+      year = props.year;
   var _context$muiTheme = context.muiTheme,
       baseTheme = _context$muiTheme.baseTheme,
       datePicker = _context$muiTheme.datePicker;
@@ -14847,7 +14993,7 @@ function getStyles(props, context, state) {
   return {
     root: {
       boxSizing: 'border-box',
-      color: year === utils.getYear(new Date()) && datePicker.color,
+      color: year === new Date().getFullYear() && datePicker.color,
       display: 'block',
       fontSize: 14,
       margin: '0 auto',
@@ -14902,8 +15048,7 @@ var YearButton = function (_Component) {
           onTouchTap = _props.onTouchTap,
           selected = _props.selected,
           year = _props.year,
-          utils = _props.utils,
-          other = (0, _objectWithoutProperties3.default)(_props, ['children', 'className', 'onTouchTap', 'selected', 'year', 'utils']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['children', 'className', 'onTouchTap', 'selected', 'year']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var styles = getStyles(this.props, this.context, this.state);
@@ -14933,18 +15078,17 @@ YearButton.defaultProps = {
   selected: false
 };
 YearButton.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? YearButton.propTypes = {
-  children: _propTypes2.default.node.isRequired,
+  children: _react.PropTypes.node.isRequired,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
-  onTouchTap: _propTypes2.default.func,
-  selected: _propTypes2.default.bool,
-  utils: _propTypes2.default.object.isRequired,
-  year: _propTypes2.default.number.isRequired
+  className: _react.PropTypes.string,
+  onTouchTap: _react.PropTypes.func,
+  selected: _react.PropTypes.bool,
+  year: _react.PropTypes.number.isRequired
 } : void 0;
 exports.default = YearButton;
 
@@ -14959,10 +15103,7 @@ exports.default = YearButton;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.defaultUtils = undefined;
 exports.dateTimeFormat = dateTimeFormat;
-exports.getYear = getYear;
-exports.setYear = setYear;
 exports.addDays = addDays;
 exports.addMonths = addMonths;
 exports.addYears = addYears;
@@ -15012,16 +15153,6 @@ function dateTimeFormat(locale, options) {
        true ? (0, _warning2.default)(false, 'Material-UI: Wrong usage of DateTimeFormat') : void 0;
     }
   };
-}
-
-function getYear(d) {
-  return d.getFullYear();
-}
-
-function setYear(d, year) {
-  var newDate = cloneDate(d);
-  newDate.setFullYear(year);
-  return newDate;
 }
 
 function addDays(d, days) {
@@ -15148,17 +15279,6 @@ function yearDiff(d1, d2) {
   return ~~(monthDiff(d1, d2) / 12);
 }
 
-var defaultUtils = exports.defaultUtils = {
-  getYear: getYear,
-  setYear: setYear,
-  addDays: addDays,
-  addMonths: addMonths,
-  addYears: addYears,
-  getFirstDayOfMonth: getFirstDayOfMonth,
-  getWeekArray: getWeekArray,
-  monthDiff: monthDiff
-};
-
 /***/ }),
 
 /***/ "../node_modules/material-ui/DatePicker/index.js":
@@ -15227,10 +15347,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -15343,11 +15459,11 @@ var TransitionItem = function (_Component) {
 }(_react.Component);
 
 TransitionItem.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? TransitionItem.propTypes = {
-  children: _propTypes2.default.node,
-  style: _propTypes2.default.object
+  children: _react.PropTypes.node,
+  style: _react.PropTypes.object
 } : void 0;
 
 
@@ -15622,30 +15738,30 @@ var DialogInline = function (_Component2) {
 }(_react.Component);
 
 DialogInline.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? DialogInline.propTypes = {
-  actions: _propTypes2.default.node,
-  actionsContainerClassName: _propTypes2.default.string,
-  actionsContainerStyle: _propTypes2.default.object,
-  autoDetectWindowHeight: _propTypes2.default.bool,
-  autoScrollBodyContent: _propTypes2.default.bool,
-  bodyClassName: _propTypes2.default.string,
-  bodyStyle: _propTypes2.default.object,
-  children: _propTypes2.default.node,
-  className: _propTypes2.default.string,
-  contentClassName: _propTypes2.default.string,
-  contentStyle: _propTypes2.default.object,
-  modal: _propTypes2.default.bool,
-  onRequestClose: _propTypes2.default.func,
-  open: _propTypes2.default.bool.isRequired,
-  overlayClassName: _propTypes2.default.string,
-  overlayStyle: _propTypes2.default.object,
-  repositionOnUpdate: _propTypes2.default.bool,
-  style: _propTypes2.default.object,
-  title: _propTypes2.default.node,
-  titleClassName: _propTypes2.default.string,
-  titleStyle: _propTypes2.default.object
+  actions: _react.PropTypes.node,
+  actionsContainerClassName: _react.PropTypes.string,
+  actionsContainerStyle: _react.PropTypes.object,
+  autoDetectWindowHeight: _react.PropTypes.bool,
+  autoScrollBodyContent: _react.PropTypes.bool,
+  bodyClassName: _react.PropTypes.string,
+  bodyStyle: _react.PropTypes.object,
+  children: _react.PropTypes.node,
+  className: _react.PropTypes.string,
+  contentClassName: _react.PropTypes.string,
+  contentStyle: _react.PropTypes.object,
+  modal: _react.PropTypes.bool,
+  onRequestClose: _react.PropTypes.func,
+  open: _react.PropTypes.bool.isRequired,
+  overlayClassName: _react.PropTypes.string,
+  overlayStyle: _react.PropTypes.object,
+  repositionOnUpdate: _react.PropTypes.bool,
+  style: _react.PropTypes.object,
+  title: _react.PropTypes.node,
+  titleClassName: _react.PropTypes.string,
+  titleStyle: _react.PropTypes.object
 } : void 0;
 
 var Dialog = function (_Component3) {
@@ -15677,7 +15793,7 @@ var Dialog = function (_Component3) {
 }(_react.Component);
 
 Dialog.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
 Dialog.defaultProps = {
   autoDetectWindowHeight: true,
@@ -15690,91 +15806,91 @@ Dialog.defaultProps = {
    * Action buttons to display below the Dialog content (`children`).
    * This property accepts either a React element, or an array of React elements.
    */
-  actions: _propTypes2.default.node,
+  actions: _react.PropTypes.node,
   /**
    * The `className` to add to the actions container's root element.
    */
-  actionsContainerClassName: _propTypes2.default.string,
+  actionsContainerClassName: _react.PropTypes.string,
   /**
    * Overrides the inline-styles of the actions container's root element.
    */
-  actionsContainerStyle: _propTypes2.default.object,
+  actionsContainerStyle: _react.PropTypes.object,
   /**
    * If set to true, the height of the `Dialog` will be auto detected. A max height
    * will be enforced so that the content does not extend beyond the viewport.
    */
-  autoDetectWindowHeight: _propTypes2.default.bool,
+  autoDetectWindowHeight: _react.PropTypes.bool,
   /**
    * If set to true, the body content of the `Dialog` will be scrollable.
    */
-  autoScrollBodyContent: _propTypes2.default.bool,
+  autoScrollBodyContent: _react.PropTypes.bool,
   /**
    * The `className` to add to the content's root element under the title.
    */
-  bodyClassName: _propTypes2.default.string,
+  bodyClassName: _react.PropTypes.string,
   /**
    * Overrides the inline-styles of the content's root element under the title.
    */
-  bodyStyle: _propTypes2.default.object,
+  bodyStyle: _react.PropTypes.object,
   /**
    * The contents of the `Dialog`.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * The `className` to add to the content container.
    */
-  contentClassName: _propTypes2.default.string,
+  contentClassName: _react.PropTypes.string,
   /**
    * Overrides the inline-styles of the content container.
    */
-  contentStyle: _propTypes2.default.object,
+  contentStyle: _react.PropTypes.object,
   /**
    * Force the user to use one of the actions in the `Dialog`.
    * Clicking outside the `Dialog` will not trigger the `onRequestClose`.
    */
-  modal: _propTypes2.default.bool,
+  modal: _react.PropTypes.bool,
   /**
    * Fired when the `Dialog` is requested to be closed by a click outside the `Dialog` or on the buttons.
    *
    * @param {bool} buttonClicked Determines whether a button click triggered this request.
    */
-  onRequestClose: _propTypes2.default.func,
+  onRequestClose: _react.PropTypes.func,
   /**
    * Controls whether the Dialog is opened or not.
    */
-  open: _propTypes2.default.bool.isRequired,
+  open: _react.PropTypes.bool.isRequired,
   /**
    * The `className` to add to the `Overlay` component that is rendered behind the `Dialog`.
    */
-  overlayClassName: _propTypes2.default.string,
+  overlayClassName: _react.PropTypes.string,
   /**
    * Overrides the inline-styles of the `Overlay` component that is rendered behind the `Dialog`.
    */
-  overlayStyle: _propTypes2.default.object,
+  overlayStyle: _react.PropTypes.object,
   /**
    * Determines whether the `Dialog` should be repositioned when it's contents are updated.
    */
-  repositionOnUpdate: _propTypes2.default.bool,
+  repositionOnUpdate: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * The title to display on the `Dialog`. Could be number, string, element or an array containing these types.
    */
-  title: _propTypes2.default.node,
+  title: _react.PropTypes.node,
   /**
    * The `className` to add to the title's root container element.
    */
-  titleClassName: _propTypes2.default.string,
+  titleClassName: _react.PropTypes.string,
   /**
    * Overrides the inline-styles of the title's root container element.
    */
-  titleStyle: _propTypes2.default.object
+  titleStyle: _react.PropTypes.object
 } : void 0;
 exports.default = Dialog;
 
@@ -15827,10 +15943,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Divider = function Divider(props, context) {
@@ -15862,11 +15974,11 @@ Divider.muiName = 'Divider';
   /**
    * If true, the `Divider` will be indented.
    */
-  inset: _propTypes2.default.bool,
+  inset: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 
 Divider.defaultProps = {
@@ -15874,7 +15986,7 @@ Divider.defaultProps = {
 };
 
 Divider.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
 
 exports.default = Divider;
@@ -15940,10 +16052,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -15972,9 +16080,9 @@ var _Paper = __webpack_require__("../node_modules/material-ui/Paper/index.js");
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
-var _propTypes4 = _interopRequireDefault(_propTypes3);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16144,7 +16252,7 @@ var Drawer = function (_Component) {
       var styles = {
         root: {
           height: '100%',
-          width: this.getTranslatedWidth() || theme.width,
+          width: this.props.width || theme.width,
           position: 'fixed',
           zIndex: muiTheme.zIndex.drawer,
           left: 0,
@@ -16185,24 +16293,9 @@ var Drawer = function (_Component) {
       return this;
     }
   }, {
-    key: 'getTranslatedWidth',
-    value: function getTranslatedWidth() {
-      if (typeof this.props.width === 'string') {
-        if (!/^\d+(\.\d+)?%$/.test(this.props.width)) {
-          throw new Error('Not a valid percentage format.');
-        }
-        var width = parseFloat(this.props.width) / 100.0;
-        // We are doing our best on the Server to render a consistent UI, hence the
-        // default value of 10000
-        return window ? width * window.innerWidth : 10000;
-      } else {
-        return this.props.width;
-      }
-    }
-  }, {
     key: 'getMaxTranslateX',
     value: function getMaxTranslateX() {
-      var width = this.getTranslatedWidth() || this.context.muiTheme.drawer.width;
+      var width = this.props.width || this.context.muiTheme.drawer.width;
       return width + 10;
     }
   }, {
@@ -16309,34 +16402,34 @@ Drawer.defaultProps = {
   zDepth: 2
 };
 Drawer.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Drawer.propTypes = {
   /**
    * The contents of the `Drawer`
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The CSS class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * The CSS class name of the container element.
    */
-  containerClassName: _propTypes2.default.string,
+  containerClassName: _react.PropTypes.string,
   /**
    * Override the inline-styles of the container element.
    */
-  containerStyle: _propTypes2.default.object,
+  containerStyle: _react.PropTypes.object,
   /**
    * If true, swiping sideways when the `Drawer` is closed will not open it.
    */
-  disableSwipeToOpen: _propTypes2.default.bool,
+  disableSwipeToOpen: _react.PropTypes.bool,
   /**
    * If true, the `Drawer` will be docked. In this state, the overlay won't show and
    * clicking on a menu item will not close the `Drawer`.
    */
-  docked: _propTypes2.default.bool,
+  docked: _react.PropTypes.bool,
   /**
    * Callback function fired when the `open` state of the `Drawer` is requested to be changed.
    *
@@ -16345,44 +16438,43 @@ Drawer.contextTypes = {
    * 'swipe' for open requests; 'clickaway' (on overlay clicks),
    * 'escape' (on escape key press), and 'swipe' for close requests.
    */
-  onRequestChange: _propTypes2.default.func,
+  onRequestChange: _react.PropTypes.func,
   /**
    * If true, the `Drawer` is opened.  Providing a value will turn the `Drawer`
    * into a controlled component.
    */
-  open: _propTypes2.default.bool,
+  open: _react.PropTypes.bool,
   /**
    * If true, the `Drawer` is positioned to open from the opposite side.
    */
-  openSecondary: _propTypes2.default.bool,
+  openSecondary: _react.PropTypes.bool,
   /**
    * The CSS class name to add to the `Overlay` component that is rendered behind the `Drawer`.
    */
-  overlayClassName: _propTypes2.default.string,
+  overlayClassName: _react.PropTypes.string,
   /**
    * Override the inline-styles of the `Overlay` component that is rendered behind the `Drawer`.
    */
-  overlayStyle: _propTypes2.default.object,
+  overlayStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * The width of the left most (or right most) area in pixels where the `Drawer` can be
    * swiped open from. Setting this to `null` spans that area to the entire page
    * (**CAUTION!** Setting this property to `null` might cause issues with sliders and
    * swipeable `Tabs`: use at your own risk).
    */
-  swipeAreaWidth: _propTypes2.default.number,
+  swipeAreaWidth: _react.PropTypes.number,
   /**
-   * The width of the `Drawer` in pixels or percentage in string format ex. `50%` to fill
-   * half of the window or `100%` and so on. Defaults to using the values from theme.
+   * The width of the `Drawer` in pixels. Defaults to using the values from theme.
    */
-  width: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
+  width: _react.PropTypes.number,
   /**
    * The zDepth of the `Drawer`.
    */
-  zDepth: _propTypes4.default.zDepth
+  zDepth: _propTypes2.default.zDepth
 
 } : void 0;
 exports.default = Drawer;
@@ -16456,10 +16548,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -16500,11 +16588,12 @@ var _IconButton = __webpack_require__("../node_modules/material-ui/IconButton/in
 
 var _IconButton2 = _interopRequireDefault(_IconButton);
 
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
-
-var _propTypes4 = _interopRequireDefault(_propTypes3);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var anchorOrigin = {
+  vertical: 'top',
+  horizontal: 'left'
+};
 
 function getStyles(props, context) {
   var disabled = props.disabled;
@@ -16739,9 +16828,7 @@ var DropDownMenu = function (_Component) {
           underlineStyle = _props.underlineStyle,
           value = _props.value,
           iconButton = _props.iconButton,
-          anchorOrigin = _props.anchorOrigin,
-          targetOrigin = _props.targetOrigin,
-          other = (0, _objectWithoutProperties3.default)(_props, ['animated', 'animation', 'autoWidth', 'multiple', 'children', 'className', 'disabled', 'iconStyle', 'labelStyle', 'listStyle', 'maxHeight', 'menuStyle', 'selectionRenderer', 'onClose', 'openImmediately', 'menuItemStyle', 'selectedMenuItemStyle', 'style', 'underlineStyle', 'value', 'iconButton', 'anchorOrigin', 'targetOrigin']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['animated', 'animation', 'autoWidth', 'multiple', 'children', 'className', 'disabled', 'iconStyle', 'labelStyle', 'listStyle', 'maxHeight', 'menuStyle', 'selectionRenderer', 'onClose', 'openImmediately', 'menuItemStyle', 'selectedMenuItemStyle', 'style', 'underlineStyle', 'value', 'iconButton']);
       var _state = this.state,
           anchorEl = _state.anchorEl,
           open = _state.open;
@@ -16762,23 +16849,25 @@ var DropDownMenu = function (_Component) {
           }
         });
       } else {
-        var values = [];
-        _react2.default.Children.forEach(children, function (child) {
-          if (child && value && value.includes(child.props.value)) {
-            if (selectionRenderer) {
-              values.push(child.props.value);
-            } else {
-              values.push(child.props.label || child.props.primaryText);
+        (function () {
+          var values = [];
+          _react2.default.Children.forEach(children, function (child) {
+            if (child && value && value.includes(child.props.value)) {
+              if (selectionRenderer) {
+                values.push(child.props.value);
+              } else {
+                values.push(child.props.label || child.props.primaryText);
+              }
             }
-          }
-        });
+          });
 
-        displayValue = [];
-        if (selectionRenderer) {
-          displayValue = selectionRenderer(values);
-        } else {
-          displayValue = values.join(', ');
-        }
+          displayValue = [];
+          if (selectionRenderer) {
+            displayValue = selectionRenderer(values);
+          } else {
+            displayValue = values.join(', ');
+          }
+        })();
       }
 
       var menuStyle = void 0;
@@ -16826,7 +16915,6 @@ var DropDownMenu = function (_Component) {
           _Popover2.default,
           {
             anchorOrigin: anchorOrigin,
-            targetOrigin: targetOrigin,
             anchorEl: anchorEl,
             animation: animation || _PopoverAnimationVertical2.default,
             open: open,
@@ -16865,85 +16953,73 @@ DropDownMenu.defaultProps = {
   iconButton: _react2.default.createElement(_arrowDropDown2.default, null),
   openImmediately: false,
   maxHeight: 500,
-  multiple: false,
-  anchorOrigin: {
-    vertical: 'top',
-    horizontal: 'left'
-  }
+  multiple: false
 };
 DropDownMenu.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? DropDownMenu.propTypes = {
-  /**
-   * This is the point on the anchor that the popover's
-   * `targetOrigin` will attach to.
-   * Options:
-   * vertical: [top, center, bottom]
-   * horizontal: [left, middle, right].
-   */
-  anchorOrigin: _propTypes4.default.origin,
   /**
    * If true, the popover will apply transitions when
    * it gets added to the DOM.
    */
-  animated: _propTypes2.default.bool,
+  animated: _react.PropTypes.bool,
   /**
    * Override the default animation component used.
    */
-  animation: _propTypes2.default.func,
+  animation: _react.PropTypes.func,
   /**
    * The width will automatically be set according to the items inside the menu.
    * To control this width in css instead, set this prop to `false`.
    */
-  autoWidth: _propTypes2.default.bool,
+  autoWidth: _react.PropTypes.bool,
   /**
    * The `MenuItem`s to populate the `Menu` with. If the `MenuItems` have the
    * prop `label` that value will be used to render the representation of that
    * item within the field.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * Disables the menu.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
    * Overrides default `SvgIcon` dropdown arrow component.
    */
-  iconButton: _propTypes2.default.node,
+  iconButton: _react.PropTypes.node,
   /**
    * Overrides the styles of icon element.
    */
-  iconStyle: _propTypes2.default.object,
+  iconStyle: _react.PropTypes.object,
   /**
    * Overrides the styles of label when the `DropDownMenu` is inactive.
    */
-  labelStyle: _propTypes2.default.object,
+  labelStyle: _react.PropTypes.object,
   /**
    * The style object to use to override underlying list style.
    */
-  listStyle: _propTypes2.default.object,
+  listStyle: _react.PropTypes.object,
   /**
    * The maximum height of the `Menu` when it is displayed.
    */
-  maxHeight: _propTypes2.default.number,
+  maxHeight: _react.PropTypes.number,
   /**
    * Override the inline-styles of menu items.
    */
-  menuItemStyle: _propTypes2.default.object,
+  menuItemStyle: _react.PropTypes.object,
   /**
    * Overrides the styles of `Menu` when the `DropDownMenu` is displayed.
    */
-  menuStyle: _propTypes2.default.object,
+  menuStyle: _react.PropTypes.object,
   /**
    * If true, `value` must be an array and the menu will support
    * multiple selections.
    */
-  multiple: _propTypes2.default.bool,
+  multiple: _react.PropTypes.bool,
   /**
    * Callback function fired when a menu item is clicked, other than the one currently selected.
    *
@@ -16954,19 +17030,19 @@ DropDownMenu.contextTypes = {
    * it wasn't already selected) or omitted (if it was already selected).
    * Otherwise, the `value` of the menu item.
    */
-  onChange: _propTypes2.default.func,
+  onChange: _react.PropTypes.func,
   /**
    * Callback function fired when the menu is closed.
    */
-  onClose: _propTypes2.default.func,
+  onClose: _react.PropTypes.func,
   /**
    * Set to true to have the `DropDownMenu` automatically open on mount.
    */
-  openImmediately: _propTypes2.default.bool,
+  openImmediately: _react.PropTypes.bool,
   /**
    * Override the inline-styles of selected menu items.
    */
-  selectedMenuItemStyle: _propTypes2.default.object,
+  selectedMenuItemStyle: _react.PropTypes.object,
   /**
    * Callback function fired when a menu item is clicked, other than the one currently selected.
    *
@@ -16975,29 +17051,21 @@ DropDownMenu.contextTypes = {
    * it wasn't already selected) or omitted (if it was already selected).
    * Otherwise, the `value` of the menu item.
    */
-  selectionRenderer: _propTypes2.default.func,
+  selectionRenderer: _react.PropTypes.func,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
-  /**
-   * This is the point on the popover which will attach to
-   * the anchor's origin.
-   * Options:
-   * vertical: [top, center, bottom]
-   * horizontal: [left, middle, right].
-   */
-  targetOrigin: _propTypes4.default.origin,
+  style: _react.PropTypes.object,
   /**
    * Overrides the inline-styles of the underline.
    */
-  underlineStyle: _propTypes2.default.object,
+  underlineStyle: _react.PropTypes.object,
   /**
    * If `multiple` is true, an array of the `value`s of the selected
    * menu items. Otherwise, the `value` of the selected menu item.
    * If provided, the menu will be a controlled component.
    */
-  value: _propTypes2.default.any
+  value: _react.PropTypes.any
 } : void 0;
 exports.default = DropDownMenu;
 
@@ -17075,10 +17143,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -17287,13 +17351,13 @@ FlatButton.defaultProps = {
   secondary: false
 };
 FlatButton.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? FlatButton.propTypes = {
   /**
    * Color of button when mouse is not hovering over it.
    */
-  backgroundColor: _propTypes2.default.string,
+  backgroundColor: _react.PropTypes.string,
   /**
    * This is what will be displayed inside the button.
    * If a label is specified, the text within the label prop will
@@ -17303,11 +17367,11 @@ FlatButton.contextTypes = {
    * that acts as our label to be displayed.) This only
    * applies to flat and raised buttons.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The CSS class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * The element to use as the container for the FlatButton. Either a string to
    * use a DOM element or a ReactElement. This is useful for wrapping the
@@ -17315,31 +17379,31 @@ FlatButton.contextTypes = {
    * that it passes all of its given props through to the underlying DOM
    * element and renders its children prop for proper integration.
    */
-  containerElement: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.element]),
+  containerElement: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
   /**
    * If true, the element's ripple effect will be disabled.
    */
-  disableTouchRipple: _propTypes2.default.bool,
+  disableTouchRipple: _react2.default.PropTypes.bool,
   /**
    * Disables the button if set to true.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
    * If true, the button will take up the full width of its container.
    */
-  fullWidth: _propTypes2.default.bool,
+  fullWidth: _react.PropTypes.bool,
   /**
    * Color of button when mouse hovers over.
    */
-  hoverColor: _propTypes2.default.string,
+  hoverColor: _react.PropTypes.string,
   /**
    * The URL to link to when the button is clicked.
    */
-  href: _propTypes2.default.string,
+  href: _react.PropTypes.string,
   /**
    * Use this property to display an icon.
    */
-  icon: _propTypes2.default.node,
+  icon: _react.PropTypes.node,
   /**
    * Label for the button.
    */
@@ -17347,48 +17411,48 @@ FlatButton.contextTypes = {
   /**
    * Place label before or after the passed children.
    */
-  labelPosition: _propTypes2.default.oneOf(['before', 'after']),
+  labelPosition: _react.PropTypes.oneOf(['before', 'after']),
   /**
    * Override the inline-styles of the button's label element.
    */
-  labelStyle: _propTypes2.default.object,
+  labelStyle: _react.PropTypes.object,
   /**
    * Callback function fired when the element is focused or blurred by the keyboard.
    *
    * @param {object} event `focus` or `blur` event targeting the element.
    * @param {boolean} isKeyboardFocused Indicates whether the element is focused.
    */
-  onKeyboardFocus: _propTypes2.default.func,
+  onKeyboardFocus: _react.PropTypes.func,
   /** @ignore */
-  onMouseEnter: _propTypes2.default.func,
+  onMouseEnter: _react.PropTypes.func,
   /** @ignore */
-  onMouseLeave: _propTypes2.default.func,
+  onMouseLeave: _react.PropTypes.func,
   /** @ignore */
-  onTouchStart: _propTypes2.default.func,
+  onTouchStart: _react.PropTypes.func,
   /**
    * Callback function fired when the button is touch-tapped.
    *
    * @param {object} event TouchTap event targeting the button.
    */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * If true, colors button according to
    * primaryTextColor from the Theme.
    */
-  primary: _propTypes2.default.bool,
+  primary: _react.PropTypes.bool,
   /**
    * Color for the ripple after button is clicked.
    */
-  rippleColor: _propTypes2.default.string,
+  rippleColor: _react.PropTypes.string,
   /**
    * If true, colors button according to secondaryTextColor from the theme.
    * The primary prop has precendent if set to true.
    */
-  secondary: _propTypes2.default.bool,
+  secondary: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = FlatButton;
 
@@ -17431,10 +17495,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17481,11 +17541,11 @@ var FlatButtonLabel = function (_Component) {
 }(_react.Component);
 
 FlatButtonLabel.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? FlatButtonLabel.propTypes = {
-  label: _propTypes2.default.node,
-  style: _propTypes2.default.object
+  label: _react.PropTypes.node,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = FlatButtonLabel;
 
@@ -17557,10 +17617,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -17652,26 +17708,26 @@ FontIcon.defaultProps = {
   onMouseLeave: function onMouseLeave() {}
 };
 FontIcon.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? FontIcon.propTypes = {
   /**
    * This is the font color of the font icon. If not specified,
    * this component will default to muiTheme.palette.textColor.
    */
-  color: _propTypes2.default.string,
+  color: _react.PropTypes.string,
   /**
    * This is the icon color when the mouse hovers over the icon.
    */
-  hoverColor: _propTypes2.default.string,
+  hoverColor: _react.PropTypes.string,
   /** @ignore */
-  onMouseEnter: _propTypes2.default.func,
+  onMouseEnter: _react.PropTypes.func,
   /** @ignore */
-  onMouseLeave: _propTypes2.default.func,
+  onMouseLeave: _react.PropTypes.func,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = FontIcon;
 
@@ -17743,10 +17799,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17821,30 +17873,30 @@ GridList.defaultProps = {
   cellHeight: 180
 };
 GridList.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? GridList.propTypes = {
   /**
    * Number of px for one cell height.
    * You can set `'auto'` if you want to let the children determine the height.
    */
-  cellHeight: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.oneOf(['auto'])]),
+  cellHeight: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.oneOf(['auto'])]),
   /**
    * Grid Tiles that will be in Grid List.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * Number of columns.
    */
-  cols: _propTypes2.default.number,
+  cols: _react.PropTypes.number,
   /**
    * Number of px for the padding/spacing between items.
    */
-  padding: _propTypes2.default.number,
+  padding: _react.PropTypes.number,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = GridList;
 
@@ -17899,10 +17951,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17986,28 +18034,30 @@ var GridTile = function (_Component) {
       var imgEl = this.refs.img;
 
       if (imgEl) {
-        var fit = function fit() {
-          if (imgEl.offsetWidth < imgEl.parentNode.offsetWidth) {
-            var isRtl = _this2.context.muiTheme.isRtl;
+        (function () {
+          var fit = function fit() {
+            if (imgEl.offsetWidth < imgEl.parentNode.offsetWidth) {
+              var isRtl = _this2.context.muiTheme.isRtl;
 
-            imgEl.style.height = 'auto';
-            if (isRtl) {
-              imgEl.style.right = '0';
-            } else {
-              imgEl.style.left = '0';
+              imgEl.style.height = 'auto';
+              if (isRtl) {
+                imgEl.style.right = '0';
+              } else {
+                imgEl.style.left = '0';
+              }
+              imgEl.style.width = '100%';
+              imgEl.style.top = '50%';
+              imgEl.style.transform = imgEl.style.WebkitTransform = 'translateY(-50%)';
             }
-            imgEl.style.width = '100%';
-            imgEl.style.top = '50%';
-            imgEl.style.transform = imgEl.style.WebkitTransform = 'translateY(-50%)';
+            imgEl.removeEventListener('load', fit);
+            imgEl = null; // prevent closure memory leak
+          };
+          if (imgEl.complete) {
+            fit();
+          } else {
+            imgEl.addEventListener('load', fit);
           }
-          imgEl.removeEventListener('load', fit);
-          imgEl = null; // prevent closure memory leak
-        };
-        if (imgEl.complete) {
-          fit();
-        } else {
-          imgEl.addEventListener('load', fit);
-        }
+        })();
       }
     }
   }, {
@@ -18019,13 +18069,12 @@ var GridTile = function (_Component) {
           titlePosition = _props.titlePosition,
           titleBackground = _props.titleBackground,
           titleStyle = _props.titleStyle,
-          subtitleStyle = _props.subtitleStyle,
           actionIcon = _props.actionIcon,
           actionPosition = _props.actionPosition,
           style = _props.style,
           children = _props.children,
           containerElement = _props.containerElement,
-          other = (0, _objectWithoutProperties3.default)(_props, ['title', 'subtitle', 'titlePosition', 'titleBackground', 'titleStyle', 'subtitleStyle', 'actionIcon', 'actionPosition', 'style', 'children', 'containerElement']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['title', 'subtitle', 'titlePosition', 'titleBackground', 'titleStyle', 'actionIcon', 'actionPosition', 'style', 'children', 'containerElement']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var styles = getStyles(this.props, this.context);
@@ -18047,7 +18096,7 @@ var GridTile = function (_Component) {
             ),
             subtitle ? _react2.default.createElement(
               'div',
-              { style: prepareStyles((0, _simpleAssign2.default)(styles.subtitle, subtitleStyle)) },
+              { style: prepareStyles(styles.subtitle) },
               subtitle
             ) : null
           ),
@@ -18096,28 +18145,28 @@ GridTile.defaultProps = {
   containerElement: 'div'
 };
 GridTile.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? GridTile.propTypes = {
   /**
    * An IconButton element to be used as secondary action target
    * (primary action target is the tile itself).
    */
-  actionIcon: _propTypes2.default.element,
+  actionIcon: _react.PropTypes.element,
   /**
    * Position of secondary action IconButton.
    */
-  actionPosition: _propTypes2.default.oneOf(['left', 'right']),
+  actionPosition: _react.PropTypes.oneOf(['left', 'right']),
   /**
    * Theoretically you can pass any node as children, but the main use case is to pass an img,
    * in whichcase GridTile takes care of making the image "cover" available space
    * (similar to background-size: cover or to object-fit:cover).
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * Width of the tile in number of grid cells.
    */
-  cols: _propTypes2.default.number,
+  cols: _react.PropTypes.number,
   /**
    * Either a string used as tag name for the tile root element, or a ReactElement.
    * This is useful when you have, for example, a custom implementation of
@@ -18125,40 +18174,36 @@ GridTile.contextTypes = {
    * In case you pass a ReactElement, please ensure that it passes all props,
    * accepts styles overrides and render it's children.
    */
-  containerElement: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.element]),
+  containerElement: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
   /**
    * Height of the tile in number of grid cells.
    */
-  rows: _propTypes2.default.number,
+  rows: _react.PropTypes.number,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * String or element serving as subtitle (support text).
    */
-  subtitle: _propTypes2.default.node,
-  /**
-   * Override the inline-styles of the subtitle element.
-   */
-  subtitleStyle: _propTypes2.default.object,
+  subtitle: _react.PropTypes.node,
   /**
    * Title to be displayed on tile.
    */
-  title: _propTypes2.default.node,
+  title: _react.PropTypes.node,
   /**
    * Style used for title bar background.
    * Useful for setting custom gradients for example
    */
-  titleBackground: _propTypes2.default.string,
+  titleBackground: _react.PropTypes.string,
   /**
    * Position of the title bar (container of title, subtitle and action icon).
    */
-  titlePosition: _propTypes2.default.oneOf(['top', 'bottom']),
+  titlePosition: _react.PropTypes.oneOf(['top', 'bottom']),
   /**
    * Override the inline-styles of the title element.
    */
-  titleStyle: _propTypes2.default.object
+  titleStyle: _react.PropTypes.object
 } : void 0;
 exports.default = GridTile;
 
@@ -18237,17 +18282,13 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
 var _transitions2 = _interopRequireDefault(_transitions);
 
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
-var _propTypes4 = _interopRequireDefault(_propTypes3);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _EnhancedButton = __webpack_require__("../node_modules/material-ui/internal/EnhancedButton.js");
 
@@ -18493,90 +18534,90 @@ IconButton.defaultProps = {
   touch: false
 };
 IconButton.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? IconButton.propTypes = {
   /**
    * Can be used to pass a `FontIcon` element as the icon for the button.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The CSS class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * If true, the element's ripple effect will be disabled.
    */
-  disableTouchRipple: _propTypes2.default.bool,
+  disableTouchRipple: _react.PropTypes.bool,
   /**
    * If true, the element will be disabled.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element when the component is hovered.
    */
-  hoveredStyle: _propTypes2.default.object,
+  hoveredStyle: _react.PropTypes.object,
   /**
    * The URL to link to when the button is clicked.
    */
-  href: _propTypes2.default.string,
+  href: _react.PropTypes.string,
   /**
    * The CSS class name of the icon. Used for setting the icon with a stylesheet.
    */
-  iconClassName: _propTypes2.default.string,
+  iconClassName: _react.PropTypes.string,
   /**
    * Override the inline-styles of the icon element.
    * Note: you can specify iconHoverColor as a String inside this object.
    */
-  iconStyle: _propTypes2.default.object,
+  iconStyle: _react.PropTypes.object,
   /** @ignore */
-  onBlur: _propTypes2.default.func,
+  onBlur: _react.PropTypes.func,
   /** @ignore */
-  onFocus: _propTypes2.default.func,
+  onFocus: _react.PropTypes.func,
   /**
    * Callback function fired when the element is focused or blurred by the keyboard.
    *
    * @param {object} event `focus` or `blur` event targeting the element.
    * @param {boolean} keyboardFocused Indicates whether the element is focused.
    */
-  onKeyboardFocus: _propTypes2.default.func,
+  onKeyboardFocus: _react.PropTypes.func,
   /** @ignore */
-  onMouseEnter: _propTypes2.default.func,
+  onMouseEnter: _react.PropTypes.func,
   /** @ignore */
-  onMouseLeave: _propTypes2.default.func,
+  onMouseLeave: _react.PropTypes.func,
   /** @ignore */
-  onMouseOut: _propTypes2.default.func,
+  onMouseOut: _react.PropTypes.func,
   /** @ignore */
-  onTouchStart: _propTypes2.default.func,
+  onTouchStart: _react.PropTypes.func,
   /**
    * Callback function fired when the button is touch-tapped.
    *
    * @param {object} event TouchTap event targeting the button.
    */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * The text to supply to the element's tooltip.
    */
-  tooltip: _propTypes2.default.node,
+  tooltip: _react.PropTypes.node,
   /**
    * The vertical and horizontal positions, respectively, of the element's tooltip.
    * Possible values are: "bottom-center", "top-center", "bottom-right", "top-right",
    * "bottom-left", and "top-left".
    */
-  tooltipPosition: _propTypes4.default.cornersAndCenter,
+  tooltipPosition: _propTypes2.default.cornersAndCenter,
   /**
    * Override the inline-styles of the tooltip element.
    */
-  tooltipStyles: _propTypes2.default.object,
+  tooltipStyles: _react.PropTypes.object,
   /**
    * If true, increase the tooltip element's size. Useful for increasing tooltip
    * readability on mobile devices.
    */
-  touch: _propTypes2.default.bool
+  touch: _react.PropTypes.bool
 } : void 0;
 exports.default = IconButton;
 
@@ -18649,10 +18690,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -18661,9 +18698,9 @@ var _events = __webpack_require__("../node_modules/material-ui/utils/events.js")
 
 var _events2 = _interopRequireDefault(_events);
 
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
-var _propTypes4 = _interopRequireDefault(_propTypes3);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _Menu = __webpack_require__("../node_modules/material-ui/Menu/Menu.js");
 
@@ -18698,10 +18735,12 @@ var IconMenu = function (_Component) {
       open: false
     }, _this.handleItemTouchTap = function (event, child) {
       if (_this.props.touchTapCloseDelay !== 0 && !child.props.hasOwnProperty('menuItems')) {
-        var isKeyboard = _events2.default.isKeyboard(event);
-        _this.timerCloseId = setTimeout(function () {
-          _this.close(isKeyboard ? 'enter' : 'itemTap', isKeyboard);
-        }, _this.props.touchTapCloseDelay);
+        (function () {
+          var isKeyboard = _events2.default.isKeyboard(event);
+          _this.timerCloseId = setTimeout(function () {
+            _this.close(isKeyboard ? 'enter' : 'itemTap', isKeyboard);
+          }, _this.props.touchTapCloseDelay);
+        })();
       }
 
       _this.props.onItemTouchTap(event, child);
@@ -18909,7 +18948,7 @@ IconMenu.defaultProps = {
   useLayerForClickAway: false
 };
 IconMenu.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? IconMenu.propTypes = {
   /**
@@ -18919,66 +18958,66 @@ IconMenu.contextTypes = {
    * vertical: [top, center, bottom]
    * horizontal: [left, middle, right].
    */
-  anchorOrigin: _propTypes4.default.origin,
+  anchorOrigin: _propTypes2.default.origin,
   /**
    * If true, the popover will apply transitions when
    * it gets added to the DOM.
    */
-  animated: _propTypes2.default.bool,
+  animated: _react.PropTypes.bool,
   /**
    * Override the default animation component used.
    */
-  animation: _propTypes2.default.func,
+  animation: _react.PropTypes.func,
   /**
    * Should be used to pass `MenuItem` components.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The CSS class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * This is the `IconButton` to render. This button will open the menu.
    */
-  iconButtonElement: _propTypes2.default.element.isRequired,
+  iconButtonElement: _react.PropTypes.element.isRequired,
   /**
    * Override the inline-styles of the underlying icon element.
    */
-  iconStyle: _propTypes2.default.object,
+  iconStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the underlying `List` element.
    */
-  listStyle: _propTypes2.default.object,
+  listStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the menu element.
    */
-  menuStyle: _propTypes2.default.object,
+  menuStyle: _react.PropTypes.object,
   /**
    * If true, the value can an be array and allow the menu to be a multi-select.
    */
-  multiple: _propTypes2.default.bool,
+  multiple: _react.PropTypes.bool,
   /**
    * Callback function fired when a menu item is selected with a touch-tap.
    *
    * @param {object} event TouchTap event targeting the selected menu item element.
    * @param {object} child The selected element.
    */
-  onItemTouchTap: _propTypes2.default.func,
+  onItemTouchTap: _react.PropTypes.func,
   /**
    * Callback function fired when the `IconButton` element is focused or blurred by the keyboard.
    *
    * @param {object} event `focus` or `blur` event targeting the `IconButton` element.
    * @param {boolean} keyboardFocused If true, the `IconButton` element is focused.
    */
-  onKeyboardFocus: _propTypes2.default.func,
+  onKeyboardFocus: _react.PropTypes.func,
   /** @ignore */
-  onMouseDown: _propTypes2.default.func,
+  onMouseDown: _react.PropTypes.func,
   /** @ignore */
-  onMouseEnter: _propTypes2.default.func,
+  onMouseEnter: _react.PropTypes.func,
   /** @ignore */
-  onMouseLeave: _propTypes2.default.func,
+  onMouseLeave: _react.PropTypes.func,
   /** @ignore */
-  onMouseUp: _propTypes2.default.func,
+  onMouseUp: _react.PropTypes.func,
   /**
    * Callback function fired when the `open` state of the menu is requested to be changed.
    *
@@ -18987,21 +19026,21 @@ IconMenu.contextTypes = {
    * 'keyboard' and 'iconTap' for open requests; 'enter', 'escape', 'itemTap', and 'clickAway'
    * for close requests.
    */
-  onRequestChange: _propTypes2.default.func,
+  onRequestChange: _react.PropTypes.func,
   /**
    * Callback function fired when the `IconButton` element is touch-tapped.
    *
    * @param {object} event TouchTap event targeting the `IconButton` element.
    */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * If true, the `IconMenu` is opened.
    */
-  open: _propTypes2.default.bool,
+  open: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * This is the point on the menu which will stick to the menu
    * origin.
@@ -19009,19 +19048,19 @@ IconMenu.contextTypes = {
    * vertical: [top, center, bottom]
    * horizontal: [left, middle, right].
    */
-  targetOrigin: _propTypes4.default.origin,
+  targetOrigin: _propTypes2.default.origin,
   /**
    * Sets the delay in milliseconds before closing the
    * menu when an item is clicked.
    * If set to 0 then the auto close functionality
    * will be disabled.
    */
-  touchTapCloseDelay: _propTypes2.default.number,
+  touchTapCloseDelay: _react.PropTypes.number,
   /**
    * If true, the popover will render on top of an invisible
    * layer, which will prevent clicks to the underlying elements.
    */
-  useLayerForClickAway: _propTypes2.default.bool
+  useLayerForClickAway: _react.PropTypes.bool
 } : void 0;
 exports.default = IconMenu;
 
@@ -19100,10 +19139,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _Subheader = __webpack_require__("../node_modules/material-ui/Subheader/index.js");
 
 var _Subheader2 = _interopRequireDefault(_Subheader);
@@ -19152,18 +19187,18 @@ var List = function (_Component) {
 }(_react.Component);
 
 List.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? List.propTypes = {
   /**
    * These are usually `ListItem`s that are passed to
    * be part of the list.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = List;
 
@@ -19214,10 +19249,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -19278,11 +19309,9 @@ function getStyles(props, context, state) {
   var twoLine = secondaryText && secondaryTextLines === 1;
   var threeLine = secondaryText && secondaryTextLines > 1;
 
-  var isKeyboardFocused = (props.isKeyboardFocused !== undefined ? props : state).isKeyboardFocused;
-
   var styles = {
     root: {
-      backgroundColor: (isKeyboardFocused || state.hovered) && !state.rightIconButtonHovered && !state.rightIconButtonKeyboardFocused ? hoverColor : null,
+      backgroundColor: (state.isKeyboardFocused || state.hovered) && !state.rightIconButtonHovered && !state.rightIconButtonKeyboardFocused ? hoverColor : null,
       color: textColor,
       display: 'block',
       fontSize: 16,
@@ -19599,7 +19628,6 @@ var ListItem = function (_Component) {
           nestedLevel = _props3.nestedLevel,
           nestedListStyle = _props3.nestedListStyle,
           onKeyboardFocus = _props3.onKeyboardFocus,
-          isKeyboardFocused = _props3.isKeyboardFocused,
           onMouseEnter = _props3.onMouseEnter,
           onMouseLeave = _props3.onMouseLeave,
           onNestedListToggle = _props3.onNestedListToggle,
@@ -19614,7 +19642,7 @@ var ListItem = function (_Component) {
           secondaryText = _props3.secondaryText,
           secondaryTextLines = _props3.secondaryTextLines,
           style = _props3.style,
-          other = (0, _objectWithoutProperties3.default)(_props3, ['autoGenerateNestedIndicator', 'children', 'containerElement', 'disabled', 'disableKeyboardFocus', 'hoverColor', 'initiallyOpen', 'innerDivStyle', 'insetChildren', 'leftAvatar', 'leftCheckbox', 'leftIcon', 'nestedItems', 'nestedLevel', 'nestedListStyle', 'onKeyboardFocus', 'isKeyboardFocused', 'onMouseEnter', 'onMouseLeave', 'onNestedListToggle', 'onTouchStart', 'onTouchTap', 'rightAvatar', 'rightIcon', 'rightIconButton', 'rightToggle', 'primaryText', 'primaryTogglesNestedList', 'secondaryText', 'secondaryTextLines', 'style']);
+          other = (0, _objectWithoutProperties3.default)(_props3, ['autoGenerateNestedIndicator', 'children', 'containerElement', 'disabled', 'disableKeyboardFocus', 'hoverColor', 'initiallyOpen', 'innerDivStyle', 'insetChildren', 'leftAvatar', 'leftCheckbox', 'leftIcon', 'nestedItems', 'nestedLevel', 'nestedListStyle', 'onKeyboardFocus', 'onMouseEnter', 'onMouseLeave', 'onNestedListToggle', 'onTouchStart', 'onTouchTap', 'rightAvatar', 'rightIcon', 'rightIconButton', 'rightToggle', 'primaryText', 'primaryTogglesNestedList', 'secondaryText', 'secondaryTextLines', 'style']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var styles = getStyles(this.props, this.context, this.state);
@@ -19755,7 +19783,7 @@ ListItem.defaultProps = {
   secondaryTextLines: 1
 };
 ListItem.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ListItem.propTypes = {
   /**
@@ -19764,11 +19792,11 @@ ListItem.contextTypes = {
    * if a `rightIcon` or `rightIconButton` has been provided to
    * the element.
    */
-  autoGenerateNestedIndicator: _propTypes2.default.bool,
+  autoGenerateNestedIndicator: _react.PropTypes.bool,
   /**
    * Children passed into the `ListItem`.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The element to use as the container for the ListItem. Either a string to
    * use a DOM element or a ReactElement. This is useful for wrapping the
@@ -19776,113 +19804,105 @@ ListItem.contextTypes = {
    * that it passes all of its given props through to the underlying DOM
    * element and renders its children prop for proper integration.
    */
-  containerElement: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.element]),
+  containerElement: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
   /**
    * If true, the element will not be able to be focused by the keyboard.
    */
-  disableKeyboardFocus: _propTypes2.default.bool,
+  disableKeyboardFocus: _react.PropTypes.bool,
   /**
    * If true, the element will not be clickable
    * and will not display hover effects.
    * This is automatically disabled if either `leftCheckbox`
    * or `rightToggle` is set.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
   * Override the hover background color.
   */
-  hoverColor: _propTypes2.default.string,
+  hoverColor: _react.PropTypes.string,
   /**
    * If true, the nested `ListItem`s are initially displayed.
    */
-  initiallyOpen: _propTypes2.default.bool,
+  initiallyOpen: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the inner div element.
    */
-  innerDivStyle: _propTypes2.default.object,
+  innerDivStyle: _react.PropTypes.object,
   /**
    * If true, the children will be indented by 72px.
    * This is useful if there is no left avatar or left icon.
    */
-  insetChildren: _propTypes2.default.bool,
-  /**
-   * Use to control if the list item should render as keyboard focused.  If
-   * undefined (default), this will be automatically managed.  If provided,
-   * it will change the components style.  Note that this will not change the
-   * actual focus - and should only be used when you want to simulate
-   * keyboard focus (eg. in a rich text input autocomplete).
-   */
-  isKeyboardFocused: _propTypes2.default.bool,
+  insetChildren: _react.PropTypes.bool,
   /**
    * This is the `Avatar` element to be displayed on the left side.
    */
-  leftAvatar: _propTypes2.default.element,
+  leftAvatar: _react.PropTypes.element,
   /**
    * This is the `Checkbox` element to be displayed on the left side.
    */
-  leftCheckbox: _propTypes2.default.element,
+  leftCheckbox: _react.PropTypes.element,
   /**
    * This is the `SvgIcon` or `FontIcon` to be displayed on the left side.
    */
-  leftIcon: _propTypes2.default.element,
+  leftIcon: _react.PropTypes.element,
   /**
    * An array of `ListItem`s to nest underneath the current `ListItem`.
    */
-  nestedItems: _propTypes2.default.arrayOf(_propTypes2.default.element),
+  nestedItems: _react.PropTypes.arrayOf(_react.PropTypes.element),
   /**
    * Controls how deep a `ListItem` appears.
    * This property is automatically managed, so modify at your own risk.
    */
-  nestedLevel: _propTypes2.default.number,
+  nestedLevel: _react.PropTypes.number,
   /**
    * Override the inline-styles of the nested items' `NestedList`.
    */
-  nestedListStyle: _propTypes2.default.object,
+  nestedListStyle: _react.PropTypes.object,
   /**
    * Callback function fired when the `ListItem` is focused or blurred by the keyboard.
    *
    * @param {object} event `focus` or `blur` event targeting the `ListItem`.
    * @param {boolean} isKeyboardFocused If true, the `ListItem` is focused.
    */
-  onKeyboardFocus: _propTypes2.default.func,
+  onKeyboardFocus: _react.PropTypes.func,
   /** @ignore */
-  onMouseEnter: _propTypes2.default.func,
+  onMouseEnter: _react.PropTypes.func,
   /** @ignore */
-  onMouseLeave: _propTypes2.default.func,
+  onMouseLeave: _react.PropTypes.func,
   /**
    * Callbak function fired when the `ListItem` toggles its nested list.
    *
    * @param {object} listItem The `ListItem`.
    */
-  onNestedListToggle: _propTypes2.default.func,
+  onNestedListToggle: _react.PropTypes.func,
   /** @ignore */
-  onTouchEnd: _propTypes2.default.func,
+  onTouchEnd: _react.PropTypes.func,
   /** @ignore */
-  onTouchStart: _propTypes2.default.func,
+  onTouchStart: _react.PropTypes.func,
   /** @ignore */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * Control toggle state of nested list.
    */
-  open: _propTypes2.default.bool,
+  open: _react.PropTypes.bool,
   /**
    * This is the block element that contains the primary text.
    * If a string is passed in, a div tag will be rendered.
    */
-  primaryText: _propTypes2.default.node,
+  primaryText: _react.PropTypes.node,
   /**
    * If true, clicking or tapping the primary text of the `ListItem`
    * toggles the nested list.
    */
-  primaryTogglesNestedList: _propTypes2.default.bool,
+  primaryTogglesNestedList: _react.PropTypes.bool,
   /**
    * This is the `Avatar` element to be displayed on the right side.
    */
-  rightAvatar: _propTypes2.default.element,
+  rightAvatar: _react.PropTypes.element,
   /**
    * This is the `SvgIcon` or `FontIcon` to be displayed on the right side.
    */
-  rightIcon: _propTypes2.default.element,
+  rightIcon: _react.PropTypes.element,
   /**
    * This is the `IconButton` to be displayed on the right side.
    * Hovering over this button will remove the `ListItem` hover.
@@ -19890,25 +19910,25 @@ ListItem.contextTypes = {
    * ripple on the `ListItem`; the event will be stopped and prevented
    * from bubbling up to cause a `ListItem` click.
    */
-  rightIconButton: _propTypes2.default.element,
+  rightIconButton: _react.PropTypes.element,
   /**
    * This is the `Toggle` element to display on the right side.
    */
-  rightToggle: _propTypes2.default.element,
+  rightToggle: _react.PropTypes.element,
   /**
    * This is the block element that contains the secondary text.
    * If a string is passed in, a div tag will be rendered.
    */
-  secondaryText: _propTypes2.default.node,
+  secondaryText: _react.PropTypes.node,
   /**
    * Can be 1 or 2. This is the number of secondary
    * text lines before ellipsis will show.
    */
-  secondaryTextLines: _propTypes2.default.oneOf([1, 2]),
+  secondaryTextLines: _react.PropTypes.oneOf([1, 2]),
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = ListItem;
 
@@ -19927,10 +19947,6 @@ Object.defineProperty(exports, "__esModule", {
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _List = __webpack_require__("../node_modules/material-ui/List/List.js");
 
@@ -19961,13 +19977,13 @@ var NestedList = function NestedList(props) {
 };
 
  true ? NestedList.propTypes = {
-  children: _propTypes2.default.node,
-  nestedLevel: _propTypes2.default.number.isRequired,
-  open: _propTypes2.default.bool.isRequired,
+  children: _react.PropTypes.node,
+  nestedLevel: _react.PropTypes.number.isRequired,
+  open: _react.PropTypes.bool.isRequired,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 
 exports.default = NestedList;
@@ -20024,10 +20040,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -20044,9 +20056,9 @@ var _keycode = __webpack_require__("../node_modules/keycode/index.js");
 
 var _keycode2 = _interopRequireDefault(_keycode);
 
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
-var _propTypes4 = _interopRequireDefault(_propTypes3);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _List = __webpack_require__("../node_modules/material-ui/List/List.js");
 
@@ -20455,15 +20467,13 @@ var Menu = function (_Component) {
             onKeyDown: this.handleKeyDown,
             onWheel: this.handleOnWheel,
             style: prepareStyles(mergedRootStyles),
-            ref: 'scrollContainer',
-            role: 'presentation'
+            ref: 'scrollContainer'
           },
           _react2.default.createElement(
             _List2.default,
             (0, _extends3.default)({}, other, {
               ref: 'list',
-              style: mergedListStyles,
-              role: 'menu'
+              style: mergedListStyles
             }),
             newChildren
           )
@@ -20487,7 +20497,7 @@ Menu.defaultProps = {
   onKeyDown: function onKeyDown() {}
 };
 Menu.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -20564,43 +20574,43 @@ var _initialiseProps = function _initialiseProps() {
    * using proper keyline increments (64px for desktop,
    * 56px otherwise).
    */
-  autoWidth: _propTypes2.default.bool,
+  autoWidth: _react.PropTypes.bool,
   /**
    * The content of the menu. This is usually used to pass `MenuItem`
    * elements.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * If true, the menu item will render with compact desktop styles.
    */
-  desktop: _propTypes2.default.bool,
+  desktop: _react.PropTypes.bool,
   /**
    * If true, the menu will not be auto-focused.
    */
-  disableAutoFocus: _propTypes2.default.bool,
+  disableAutoFocus: _react.PropTypes.bool,
   /**
    * If true, the menu will be keyboard-focused initially.
    */
-  initiallyKeyboardFocused: _propTypes2.default.bool,
+  initiallyKeyboardFocused: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the underlying `List` element.
    */
-  listStyle: _propTypes2.default.object,
+  listStyle: _react.PropTypes.object,
   /**
    * The maximum height of the menu in pixels. If specified,
    * the menu will be scrollable if it is taller than the provided
    * height.
    */
-  maxHeight: _propTypes2.default.number,
+  maxHeight: _react.PropTypes.number,
   /**
    * Override the inline-styles of menu items.
    */
-  menuItemStyle: _propTypes2.default.object,
+  menuItemStyle: _react.PropTypes.object,
   /**
    * If true, `value` must be an array and the menu will support
    * multiple selections.
    */
-  multiple: _propTypes2.default.bool,
+  multiple: _react.PropTypes.bool,
   /**
    * Callback function fired when a menu item with `value` not
    * equal to the current `value` of the menu is touch-tapped.
@@ -20611,14 +20621,14 @@ var _initialiseProps = function _initialiseProps() {
    * it wasn't already selected) or omitted (if it was already selected).
    * Otherwise, the `value` of the menu item.
    */
-  onChange: _propTypes2.default.func,
+  onChange: _react.PropTypes.func,
   /**
    * Callback function fired when the menu is focused and the *Esc* key
    * is pressed.
    *
    * @param {object} event `keydown` event targeting the menu.
    */
-  onEscKeyDown: _propTypes2.default.func,
+  onEscKeyDown: _react.PropTypes.func,
   /**
    * Callback function fired when a menu item is touch-tapped.
    *
@@ -20626,9 +20636,9 @@ var _initialiseProps = function _initialiseProps() {
    * @param {object} menuItem The menu item.
    * @param {number} index The index of the menu item.
    */
-  onItemTouchTap: _propTypes2.default.func,
+  onItemTouchTap: _react.PropTypes.func,
   /** @ignore */
-  onKeyDown: _propTypes2.default.func,
+  onKeyDown: _react.PropTypes.func,
   /**
    * Callback function fired when the focus on a `MenuItem` is changed.
    * There will be some "duplicate" changes reported if two different
@@ -20641,32 +20651,32 @@ var _initialiseProps = function _initialiseProps() {
    * @param {number} newFocusIndex The index of the newly focused
    * `MenuItem` or `-1` if focus was lost.
    */
-  onMenuItemFocusChange: _propTypes2.default.func,
+  onMenuItemFocusChange: _react.PropTypes.func,
   /**
    * Override the inline-styles of selected menu items.
    */
-  selectedMenuItemStyle: _propTypes2.default.object,
+  selectedMenuItemStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * If `multiple` is true, an array of the `value`s of the selected
    * menu items. Otherwise, the `value` of the selected menu item.
    * If provided, the menu will be a controlled component.
    * This component also supports valueLink.
    */
-  value: _propTypes2.default.any,
+  value: _react.PropTypes.any,
   /**
    * ValueLink for the menu's `value`.
    */
-  valueLink: _propTypes2.default.object,
+  valueLink: _react.PropTypes.object,
   /**
    * The width of the menu. If not specified, the menu's width
    * will be set according to the widths of its children, using
    * proper keyline increments (64px for desktop, 56px otherwise).
    */
-  width: _propTypes4.default.stringOrNumber
+  width: _propTypes2.default.stringOrNumber
 } : void 0;
 exports.default = Menu;
 
@@ -20791,10 +20801,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -20819,9 +20825,9 @@ var _Menu = __webpack_require__("../node_modules/material-ui/Menu/Menu.js");
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
-var _propTypes4 = _interopRequireDefault(_propTypes3);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21039,7 +21045,6 @@ var MenuItem = function (_Component) {
           leftIcon: leftIconElement,
           ref: 'listItem',
           rightIcon: rightIconElement,
-          role: 'menuitem',
           style: mergedRootStyles
         }),
         children,
@@ -21061,84 +21066,84 @@ MenuItem.defaultProps = {
   insetChildren: false
 };
 MenuItem.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? MenuItem.propTypes = {
   /**
    * Location of the anchor for the popover of nested `MenuItem`
    * elements.
    */
-  anchorOrigin: _propTypes4.default.origin,
+  anchorOrigin: _propTypes2.default.origin,
   /**
    * Override the default animation component used.
    */
-  animation: _propTypes2.default.func,
+  animation: _react.PropTypes.func,
   /**
    * If true, a left check mark will be rendered.
    */
-  checked: _propTypes2.default.bool,
+  checked: _react.PropTypes.bool,
   /**
    * Elements passed as children to the underlying `ListItem`.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * @ignore
    * If true, the menu item will render with compact desktop
    * styles.
    */
-  desktop: _propTypes2.default.bool,
+  desktop: _react.PropTypes.bool,
   /**
    * If true, the menu item will be disabled.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
    * The focus state of the menu item. This prop is used to set the focus
    * state of the underlying `ListItem`.
    */
-  focusState: _propTypes2.default.oneOf(['none', 'focused', 'keyboard-focused']),
+  focusState: _react.PropTypes.oneOf(['none', 'focused', 'keyboard-focused']),
   /**
    * Override the inline-styles of the inner div.
    */
-  innerDivStyle: _propTypes2.default.object,
+  innerDivStyle: _react.PropTypes.object,
   /**
    * If true, the children will be indented.
    * This is only needed when there is no `leftIcon`.
    */
-  insetChildren: _propTypes2.default.bool,
+  insetChildren: _react.PropTypes.bool,
   /**
    * The `SvgIcon` or `FontIcon` to be displayed on the left side.
    */
-  leftIcon: _propTypes2.default.element,
+  leftIcon: _react.PropTypes.element,
   /**
    * `MenuItem` elements to nest within the menu item.
    */
-  menuItems: _propTypes2.default.node,
+  menuItems: _react.PropTypes.node,
   /**
    * Callback function fired when the menu item is touch-tapped.
    *
    * @param {object} event TouchTap event targeting the menu item.
    */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * Can be used to render primary text within the menu item.
    */
-  primaryText: _propTypes2.default.node,
+  primaryText: _react.PropTypes.node,
   /**
    * The `SvgIcon` or `FontIcon` to be displayed on the right side.
    */
-  rightIcon: _propTypes2.default.element,
+  rightIcon: _react.PropTypes.element,
   /**
    * Can be used to render secondary text within the menu item.
    */
-  secondaryText: _propTypes2.default.node,
+  secondaryText: _react.PropTypes.node,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * The value of the menu item.
    */
-  value: _propTypes2.default.any
+  value: _react.PropTypes.any
 } : void 0;
 exports.default = MenuItem;
 
@@ -21211,13 +21216,9 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
-
-var _propTypes4 = _interopRequireDefault(_propTypes3);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -21290,34 +21291,34 @@ Paper.defaultProps = {
   zDepth: 1
 };
 Paper.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Paper.propTypes = {
   /**
    * Children passed into the paper element.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * Set to true to generate a circlular paper container.
    */
-  circle: _propTypes2.default.bool,
+  circle: _react.PropTypes.bool,
   /**
    * By default, the paper container will have a border radius.
    * Set this to false to generate a container with sharp corners.
    */
-  rounded: _propTypes2.default.bool,
+  rounded: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * Set to false to disable CSS transitions for the paper element.
    */
-  transitionEnabled: _propTypes2.default.bool,
+  transitionEnabled: _react.PropTypes.bool,
   /**
    * This number represents the zDepth of the paper shadow.
    */
-  zDepth: _propTypes4.default.zDepth
+  zDepth: _propTypes2.default.zDepth
 } : void 0;
 exports.default = Paper;
 
@@ -21390,10 +21391,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -21406,9 +21403,9 @@ var _RenderToLayer = __webpack_require__("../node_modules/material-ui/internal/R
 
 var _RenderToLayer2 = _interopRequireDefault(_RenderToLayer);
 
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
-var _propTypes4 = _interopRequireDefault(_propTypes3);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _Paper = __webpack_require__("../node_modules/material-ui/Paper/index.js");
 
@@ -21786,14 +21783,14 @@ Popover.defaultProps = {
   zDepth: 1
 };
 Popover.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Popover.propTypes = {
   /**
    * This is the DOM element that will be used to set the position of the
    * popover.
    */
-  anchorEl: _propTypes2.default.object,
+  anchorEl: _react.PropTypes.object,
   /**
    * This is the point on the anchor where the popover's
    * `targetOrigin` will attach to.
@@ -21801,49 +21798,49 @@ Popover.contextTypes = {
    * vertical: [top, center, bottom]
    * horizontal: [left, middle, right].
    */
-  anchorOrigin: _propTypes4.default.origin,
+  anchorOrigin: _propTypes2.default.origin,
   /**
    * If true, the popover will apply transitions when
    * it is added to the DOM.
    */
-  animated: _propTypes2.default.bool,
+  animated: _react.PropTypes.bool,
   /**
    * Override the default animation component used.
    */
-  animation: _propTypes2.default.func,
+  animation: _react.PropTypes.func,
   /**
    * If true, the popover will hide when the anchor is scrolled off the screen.
    */
-  autoCloseWhenOffScreen: _propTypes2.default.bool,
+  autoCloseWhenOffScreen: _react.PropTypes.bool,
   /**
    * If true, the popover (potentially) ignores `targetOrigin`
    * and `anchorOrigin` to make itself fit on screen,
    * which is useful for mobile devices.
    */
-  canAutoPosition: _propTypes2.default.bool,
+  canAutoPosition: _react.PropTypes.bool,
   /**
    * The content of the popover.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The CSS class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * Callback function fired when the popover is requested to be closed.
    *
    * @param {string} reason The reason for the close request. Possibles values
    * are 'clickAway' and 'offScreen'.
    */
-  onRequestClose: _propTypes2.default.func,
+  onRequestClose: _react.PropTypes.func,
   /**
    * If true, the popover is visible.
    */
-  open: _propTypes2.default.bool,
+  open: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * This is the point on the popover which will attach to
    * the anchor's origin.
@@ -21851,17 +21848,17 @@ Popover.contextTypes = {
    * vertical: [top, center, bottom]
    * horizontal: [left, middle, right].
    */
-  targetOrigin: _propTypes4.default.origin,
+  targetOrigin: _propTypes2.default.origin,
   /**
    * If true, the popover will render on top of an invisible
    * layer, which will prevent clicks to the underlying
    * elements, and trigger an `onRequestClose('clickAway')` call.
    */
-  useLayerForClickAway: _propTypes2.default.bool,
+  useLayerForClickAway: _react.PropTypes.bool,
   /**
    * The zDepth of the popover.
    */
-  zDepth: _propTypes4.default.zDepth
+  zDepth: _propTypes2.default.zDepth
 } : void 0;
 exports.default = Popover;
 
@@ -21909,13 +21906,9 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
-
-var _propTypes4 = _interopRequireDefault(_propTypes3);
 
 var _Paper = __webpack_require__("../node_modules/material-ui/Paper/index.js");
 
@@ -22026,21 +22019,21 @@ PopoverAnimationDefault.defaultProps = {
   zDepth: 1
 };
 PopoverAnimationDefault.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? PopoverAnimationDefault.propTypes = {
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
-  open: _propTypes2.default.bool.isRequired,
+  className: _react.PropTypes.string,
+  open: _react.PropTypes.bool.isRequired,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
-  targetOrigin: _propTypes4.default.origin.isRequired,
-  zDepth: _propTypes4.default.zDepth
+  style: _react.PropTypes.object,
+  targetOrigin: _propTypes2.default.origin.isRequired,
+  zDepth: _propTypes2.default.zDepth
 } : void 0;
 exports.default = PopoverAnimationDefault;
 
@@ -22084,10 +22077,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _Paper = __webpack_require__("../node_modules/material-ui/Paper/index.js");
 
 var _Paper2 = _interopRequireDefault(_Paper);
@@ -22096,9 +22085,9 @@ var _transitions = __webpack_require__("../node_modules/material-ui/styles/trans
 
 var _transitions2 = _interopRequireDefault(_transitions);
 
-var _propTypes3 = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
+var _propTypes = __webpack_require__("../node_modules/material-ui/utils/propTypes.js");
 
-var _propTypes4 = _interopRequireDefault(_propTypes3);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22183,18 +22172,18 @@ PopoverAnimationVertical.defaultProps = {
   zDepth: 1
 };
 PopoverAnimationVertical.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? PopoverAnimationVertical.propTypes = {
-  children: _propTypes2.default.node,
-  className: _propTypes2.default.string,
-  open: _propTypes2.default.bool.isRequired,
+  children: _react.PropTypes.node,
+  className: _react.PropTypes.string,
+  open: _react.PropTypes.bool.isRequired,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
-  targetOrigin: _propTypes4.default.origin.isRequired,
-  zDepth: _propTypes4.default.zDepth
+  style: _react.PropTypes.object,
+  targetOrigin: _propTypes2.default.origin.isRequired,
+  zDepth: _propTypes2.default.zDepth
 } : void 0;
 exports.default = PopoverAnimationVertical;
 
@@ -22225,10 +22214,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22267,15 +22252,15 @@ Subheader.muiName = 'Subheader';
   /**
    * Node that will be placed inside the `Subheader`.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * If true, the `Subheader` will be indented.
    */
-  inset: _propTypes2.default.bool,
+  inset: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 
 Subheader.defaultProps = {
@@ -22283,7 +22268,7 @@ Subheader.defaultProps = {
 };
 
 Subheader.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
 
 exports.default = Subheader;
@@ -22356,10 +22341,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -22444,31 +22425,31 @@ SvgIcon.defaultProps = {
   viewBox: '0 0 24 24'
 };
 SvgIcon.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? SvgIcon.propTypes = {
   /**
    * Elements passed into the SVG Icon.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * This is the fill color of the svg icon.
    * If not specified, this component will default
    * to muiTheme.palette.textColor.
    */
-  color: _propTypes2.default.string,
+  color: _react.PropTypes.string,
   /**
    * This is the icon color when the mouse hovers over the icon.
    */
-  hoverColor: _propTypes2.default.string,
+  hoverColor: _react.PropTypes.string,
   /** @ignore */
-  onMouseEnter: _propTypes2.default.func,
+  onMouseEnter: _react.PropTypes.func,
   /** @ignore */
-  onMouseLeave: _propTypes2.default.func,
+  onMouseLeave: _react.PropTypes.func,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * Allows you to redefine what the coordinates
    * without units mean inside an svg element. For example,
@@ -22477,7 +22458,7 @@ SvgIcon.contextTypes = {
    * the svg will go from the top left corner (0,0) to bottom right (50,20)
    * and each unit will be worth 10px.
    */
-  viewBox: _propTypes2.default.string
+  viewBox: _react.PropTypes.string
 } : void 0;
 exports.default = SvgIcon;
 
@@ -22542,10 +22523,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
 var _transitions2 = _interopRequireDefault(_transitions);
@@ -22594,16 +22571,16 @@ var InkBar = function (_Component) {
 }(_react.Component);
 
 InkBar.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? InkBar.propTypes = {
-  color: _propTypes2.default.string,
-  left: _propTypes2.default.string.isRequired,
+  color: _react.PropTypes.string,
+  left: _react.PropTypes.string.isRequired,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
-  width: _propTypes2.default.string.isRequired
+  style: _react.PropTypes.object,
+  width: _react.PropTypes.string.isRequired
 } : void 0;
 exports.default = InkBar;
 
@@ -22654,10 +22631,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _EnhancedButton = __webpack_require__("../node_modules/material-ui/internal/EnhancedButton.js");
 
@@ -22771,61 +22744,61 @@ var Tab = function (_Component) {
 
 Tab.muiName = 'Tab';
 Tab.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Tab.propTypes = {
   /**
    * Override the inline-styles of the button element.
    */
-  buttonStyle: _propTypes2.default.object,
+  buttonStyle: _react.PropTypes.object,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * Sets the icon of the tab, you can pass `FontIcon` or `SvgIcon` elements.
    */
-  icon: _propTypes2.default.node,
+  icon: _react.PropTypes.node,
   /**
    * @ignore
    */
-  index: _propTypes2.default.any,
+  index: _react.PropTypes.any,
   /**
    * Sets the text value of the tab item to the string specified.
    */
-  label: _propTypes2.default.node,
+  label: _react.PropTypes.node,
   /**
    * Fired when the active tab changes by touch or tap.
    * Use this event to specify any functionality when an active tab changes.
    * For example - we are using this to route to home when the third tab becomes active.
    * This function will always recieve the active tab as it\'s first argument.
    */
-  onActive: _propTypes2.default.func,
+  onActive: _react.PropTypes.func,
   /**
    * @ignore
    * This property is overriden by the Tabs component.
    */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * @ignore
    * Defines if the current tab is selected or not.
    * The Tabs component is responsible for setting this property.
    */
-  selected: _propTypes2.default.bool,
+  selected: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * If value prop passed to Tabs component, this value prop is also required.
    * It assigns a value to the tab so that it can be selected by the Tabs.
    */
-  value: _propTypes2.default.any,
+  value: _react.PropTypes.any,
   /**
    * @ignore
    * This property is overriden by the Tabs component.
    */
-  width: _propTypes2.default.string
+  width: _react.PropTypes.string
 } : void 0;
 exports.default = Tab;
 
@@ -22848,10 +22821,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22880,9 +22849,9 @@ var TabTemplate = function TabTemplate(_ref) {
 };
 
  true ? TabTemplate.propTypes = {
-  children: _propTypes2.default.node,
-  selected: _propTypes2.default.bool,
-  style: _propTypes2.default.object
+  children: _react.PropTypes.node,
+  selected: _react.PropTypes.bool,
+  style: _react.PropTypes.object
 } : void 0;
 
 exports.default = TabTemplate;
@@ -22934,10 +22903,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _warning = __webpack_require__("../node_modules/warning/browser.js");
 
@@ -23156,60 +23121,60 @@ Tabs.defaultProps = {
   onChange: function onChange() {}
 };
 Tabs.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Tabs.propTypes = {
   /**
    * Should be used to pass `Tab` components.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * The css class name of the content's container.
    */
-  contentContainerClassName: _propTypes2.default.string,
+  contentContainerClassName: _react.PropTypes.string,
   /**
    * Override the inline-styles of the content's container.
    */
-  contentContainerStyle: _propTypes2.default.object,
+  contentContainerStyle: _react.PropTypes.object,
   /**
    * Specify initial visible tab index.
    * If `initialSelectedIndex` is set but larger than the total amount of specified tabs,
    * `initialSelectedIndex` will revert back to default.
    * If `initialSelectedIndex` is set to any negative value, no tab will be selected intially.
    */
-  initialSelectedIndex: _propTypes2.default.number,
+  initialSelectedIndex: _react.PropTypes.number,
   /**
    * Override the inline-styles of the InkBar.
    */
-  inkBarStyle: _propTypes2.default.object,
+  inkBarStyle: _react.PropTypes.object,
   /**
    * Called when the selected value change.
    */
-  onChange: _propTypes2.default.func,
+  onChange: _react.PropTypes.func,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * Override the inline-styles of the tab-labels container.
    */
-  tabItemContainerStyle: _propTypes2.default.object,
+  tabItemContainerStyle: _react.PropTypes.object,
   /**
    * Override the default tab template used to wrap the content of each tab element.
    */
-  tabTemplate: _propTypes2.default.func,
+  tabTemplate: _react.PropTypes.func,
   /**
    * Override the inline-styles of the tab template.
    */
-  tabTemplateStyle: _propTypes2.default.object,
+  tabTemplateStyle: _react.PropTypes.object,
   /**
    * Makes Tabs controllable and selects the tab whose value prop matches this prop.
    */
-  value: _propTypes2.default.any
+  value: _react.PropTypes.any
 } : void 0;
 exports.default = Tabs;
 
@@ -23288,10 +23253,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactEventListener = __webpack_require__("../node_modules/react-event-listener/lib/index.js");
 
 var _reactEventListener2 = _interopRequireDefault(_reactEventListener);
@@ -23320,7 +23281,7 @@ function getStyles(props, context, state) {
       // Visibility needed to hide the extra text area on ipads
       visibility: 'hidden',
       position: 'absolute',
-      height: 'auto'
+      height: 'initial'
     }
   };
 }
@@ -23390,10 +23351,9 @@ var EnhancedTextarea = function (_Component) {
     key: 'syncHeightWithShadow',
     value: function syncHeightWithShadow(newValue, event, props) {
       var shadow = this.refs.shadow;
-      var displayText = this.props.hintText && (newValue === '' || newValue === undefined || newValue === null) ? this.props.hintText : newValue;
 
-      if (displayText !== undefined) {
-        shadow.value = displayText;
+      if (newValue !== undefined) {
+        shadow.value = newValue;
       }
 
       var newHeight = shadow.scrollHeight;
@@ -23430,10 +23390,9 @@ var EnhancedTextarea = function (_Component) {
           rowsMax = _props.rowsMax,
           shadowStyle = _props.shadowStyle,
           style = _props.style,
-          hintText = _props.hintText,
           textareaStyle = _props.textareaStyle,
           valueLink = _props.valueLink,
-          other = (0, _objectWithoutProperties3.default)(_props, ['onChange', 'onHeightChange', 'rows', 'rowsMax', 'shadowStyle', 'style', 'hintText', 'textareaStyle', 'valueLink']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['onChange', 'onHeightChange', 'rows', 'rowsMax', 'shadowStyle', 'style', 'textareaStyle', 'valueLink']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var styles = getStyles(this.props, this.context, this.state);
@@ -23475,24 +23434,23 @@ EnhancedTextarea.defaultProps = {
   rows: 1
 };
 EnhancedTextarea.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? EnhancedTextarea.propTypes = {
-  defaultValue: _propTypes2.default.any,
-  disabled: _propTypes2.default.bool,
-  hintText: _propTypes2.default.string,
-  onChange: _propTypes2.default.func,
-  onHeightChange: _propTypes2.default.func,
-  rows: _propTypes2.default.number,
-  rowsMax: _propTypes2.default.number,
-  shadowStyle: _propTypes2.default.object,
+  defaultValue: _react.PropTypes.any,
+  disabled: _react.PropTypes.bool,
+  onChange: _react.PropTypes.func,
+  onHeightChange: _react.PropTypes.func,
+  rows: _react.PropTypes.number,
+  rowsMax: _react.PropTypes.number,
+  shadowStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
-  textareaStyle: _propTypes2.default.object,
-  value: _propTypes2.default.string,
-  valueLink: _propTypes2.default.object
+  style: _react.PropTypes.object,
+  textareaStyle: _react.PropTypes.object,
+  value: _react.PropTypes.string,
+  valueLink: _react.PropTypes.object
 } : void 0;
 exports.default = EnhancedTextarea;
 
@@ -23543,10 +23501,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -23703,9 +23657,7 @@ var TextField = function (_Component) {
         _this.props.onBlur(event);
       }
     }, _this.handleInputChange = function (event) {
-      if (!_this.props.hasOwnProperty('value')) {
-        _this.setState({ hasValue: isValid(event.target.value) });
-      }
+      _this.setState({ hasValue: isValid(event.target.value) });
       if (_this.props.onChange) {
         _this.props.onChange(event, event.target.value);
       }
@@ -23893,8 +23845,7 @@ var TextField = function (_Component) {
           style: childStyleMerged,
           textareaStyle: (0, _simpleAssign2.default)(styles.textarea, styles.inputNative, textareaStyle),
           rows: rows,
-          rowsMax: rowsMax,
-          hintText: hintText
+          rowsMax: rowsMax
         }, other, inputProps, {
           onHeightChange: this.handleHeightChange
         })) : _react2.default.createElement('input', (0, _extends3.default)({
@@ -23950,138 +23901,138 @@ TextField.defaultProps = {
   rows: 1
 };
 TextField.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? TextField.propTypes = {
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * The text string to use for the default value.
    */
-  defaultValue: _propTypes2.default.any,
+  defaultValue: _react.PropTypes.any,
   /**
    * Disables the text field if set to true.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
    * The style object to use to override error styles.
    */
-  errorStyle: _propTypes2.default.object,
+  errorStyle: _react.PropTypes.object,
   /**
    * The error content to display.
    */
-  errorText: _propTypes2.default.node,
+  errorText: _react.PropTypes.node,
   /**
    * If true, the floating label will float even when there is no value.
    */
-  floatingLabelFixed: _propTypes2.default.bool,
+  floatingLabelFixed: _react.PropTypes.bool,
   /**
    * The style object to use to override floating label styles when focused.
    */
-  floatingLabelFocusStyle: _propTypes2.default.object,
+  floatingLabelFocusStyle: _react.PropTypes.object,
   /**
    * The style object to use to override floating label styles when shrunk.
    */
-  floatingLabelShrinkStyle: _propTypes2.default.object,
+  floatingLabelShrinkStyle: _react.PropTypes.object,
   /**
    * The style object to use to override floating label styles.
    */
-  floatingLabelStyle: _propTypes2.default.object,
+  floatingLabelStyle: _react.PropTypes.object,
   /**
    * The content to use for the floating label element.
    */
-  floatingLabelText: _propTypes2.default.node,
+  floatingLabelText: _react.PropTypes.node,
   /**
    * If true, the field receives the property width 100%.
    */
-  fullWidth: _propTypes2.default.bool,
+  fullWidth: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the TextField's hint text element.
    */
-  hintStyle: _propTypes2.default.object,
+  hintStyle: _react.PropTypes.object,
   /**
    * The hint content to display.
    */
-  hintText: _propTypes2.default.node,
+  hintText: _react.PropTypes.node,
   /**
    * The id prop for the text field.
    */
-  id: _propTypes2.default.string,
+  id: _react.PropTypes.string,
   /**
    * Override the inline-styles of the TextField's input element.
    * When multiLine is false: define the style of the input element.
    * When multiLine is true: define the style of the container of the textarea.
    */
-  inputStyle: _propTypes2.default.object,
+  inputStyle: _react.PropTypes.object,
   /**
    * If true, a textarea element will be rendered.
    * The textarea also grows and shrinks according to the number of lines.
    */
-  multiLine: _propTypes2.default.bool,
+  multiLine: _react.PropTypes.bool,
   /**
    * Name applied to the input.
    */
-  name: _propTypes2.default.string,
+  name: _react.PropTypes.string,
   /** @ignore */
-  onBlur: _propTypes2.default.func,
+  onBlur: _react.PropTypes.func,
   /**
    * Callback function that is fired when the textfield's value changes.
    *
    * @param {object} event Change event targeting the text field.
    * @param {string} newValue The new value of the text field.
    */
-  onChange: _propTypes2.default.func,
+  onChange: _react.PropTypes.func,
   /** @ignore */
-  onFocus: _propTypes2.default.func,
+  onFocus: _react.PropTypes.func,
   /**
    * Number of rows to display when multiLine option is set to true.
    */
-  rows: _propTypes2.default.number,
+  rows: _react.PropTypes.number,
   /**
    * Maximum number of rows to display when
    * multiLine option is set to true.
    */
-  rowsMax: _propTypes2.default.number,
+  rowsMax: _react.PropTypes.number,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * Override the inline-styles of the TextField's textarea element.
    * The TextField use either a textarea or an input,
    * this property has effects only when multiLine is true.
    */
-  textareaStyle: _propTypes2.default.object,
+  textareaStyle: _react.PropTypes.object,
   /**
    * Specifies the type of input to display
    * such as "password" or "text".
    */
-  type: _propTypes2.default.string,
+  type: _react.PropTypes.string,
   /**
    * Override the inline-styles of the
    * TextField's underline element when disabled.
    */
-  underlineDisabledStyle: _propTypes2.default.object,
+  underlineDisabledStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the TextField's
    * underline element when focussed.
    */
-  underlineFocusStyle: _propTypes2.default.object,
+  underlineFocusStyle: _react.PropTypes.object,
   /**
    * If true, shows the underline for the text field.
    */
-  underlineShow: _propTypes2.default.bool,
+  underlineShow: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the TextField's underline element.
    */
-  underlineStyle: _propTypes2.default.object,
+  underlineStyle: _react.PropTypes.object,
   /**
    * The value of the text field.
    */
-  value: _propTypes2.default.any
+  value: _react.PropTypes.any
 } : void 0;
 exports.default = TextField;
 
@@ -24104,10 +24055,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -24151,19 +24098,19 @@ var TextFieldHint = function TextFieldHint(props) {
    * @ignore
    * The material-ui theme applied to this component.
    */
-  muiTheme: _propTypes2.default.object.isRequired,
+  muiTheme: _react.PropTypes.object.isRequired,
   /**
    * True if the hint text should be visible.
    */
-  show: _propTypes2.default.bool,
+  show: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * The hint text displayed.
    */
-  text: _propTypes2.default.node
+  text: _react.PropTypes.node
 } : void 0;
 
 TextFieldHint.defaultProps = {
@@ -24191,10 +24138,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -24251,42 +24194,42 @@ var TextFieldLabel = function TextFieldLabel(props) {
   /**
    * The label contents.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * Disables the label if set to true.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
    * The id of the target element that this label should refer to.
    */
-  htmlFor: _propTypes2.default.string,
+  htmlFor: _react.PropTypes.string,
   /**
    * @ignore
    * The material-ui theme applied to this component.
    */
-  muiTheme: _propTypes2.default.object.isRequired,
+  muiTheme: _react.PropTypes.object.isRequired,
   /**
    * Callback function for when the label is selected via a touch tap.
    *
    * @param {object} event TouchTap event targeting the text field label.
    */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * True if the floating label should shrink.
    */
-  shrink: _propTypes2.default.bool,
+  shrink: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element when shrunk.
    */
-  shrinkStyle: _propTypes2.default.object,
+  shrinkStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 
 TextFieldLabel.defaultProps = {
@@ -24316,10 +24259,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
 var _transitions2 = _interopRequireDefault(_transitions);
@@ -24330,36 +24269,36 @@ var propTypes = {
   /**
    * True if the parent `TextField` is disabled.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the underline when parent `TextField` is disabled.
    */
-  disabledStyle: _propTypes2.default.object,
+  disabledStyle: _react.PropTypes.object,
   /**
    * True if the parent `TextField` has an error.
    */
-  error: _propTypes2.default.bool,
+  error: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the underline when parent `TextField` has an error.
    */
-  errorStyle: _propTypes2.default.object,
+  errorStyle: _react.PropTypes.object,
   /**
    * True if the parent `TextField` is focused.
    */
-  focus: _propTypes2.default.bool,
+  focus: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the underline when parent `TextField` is focused.
    */
-  focusStyle: _propTypes2.default.object,
+  focusStyle: _react.PropTypes.object,
   /**
    * @ignore
    * The material-ui theme applied to this component.
    */
-  muiTheme: _propTypes2.default.object.isRequired,
+  muiTheme: _react.PropTypes.object.isRequired,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 };
 
 var defaultProps = {
@@ -24495,10 +24434,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _TimeDisplay = __webpack_require__("../node_modules/material-ui/TimePicker/TimeDisplay.js");
 
@@ -24695,13 +24630,13 @@ Clock.defaultProps = {
   initialTime: new Date()
 };
 Clock.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Clock.propTypes = {
-  format: _propTypes2.default.oneOf(['ampm', '24hr']),
-  initialTime: _propTypes2.default.object,
-  onChangeHours: _propTypes2.default.func,
-  onChangeMinutes: _propTypes2.default.func
+  format: _react.PropTypes.oneOf(['ampm', '24hr']),
+  initialTime: _react.PropTypes.object,
+  onChangeHours: _react.PropTypes.func,
+  onChangeMinutes: _react.PropTypes.func
 } : void 0;
 exports.default = Clock;
 
@@ -24740,10 +24675,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -24945,12 +24876,12 @@ ClockHours.defaultProps = {
   format: 'ampm'
 };
 ClockHours.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ClockHours.propTypes = {
-  format: _propTypes2.default.oneOf(['ampm', '24hr']),
-  initialHours: _propTypes2.default.number,
-  onChange: _propTypes2.default.func
+  format: _react.PropTypes.oneOf(['ampm', '24hr']),
+  initialHours: _react.PropTypes.number,
+  onChange: _react.PropTypes.func
 } : void 0;
 exports.default = ClockHours;
 
@@ -24989,10 +24920,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _ClockNumber = __webpack_require__("../node_modules/material-ui/TimePicker/ClockNumber.js");
 
@@ -25168,11 +25095,11 @@ ClockMinutes.defaultProps = {
   onChange: function onChange() {}
 };
 ClockMinutes.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ClockMinutes.propTypes = {
-  initialMinutes: _propTypes2.default.number,
-  onChange: _propTypes2.default.func
+  initialMinutes: _react.PropTypes.number,
+  onChange: _react.PropTypes.func
 } : void 0;
 exports.default = ClockMinutes;
 
@@ -25215,10 +25142,6 @@ var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _timeUtils = __webpack_require__("../node_modules/material-ui/TimePicker/timeUtils.js");
 
@@ -25315,13 +25238,13 @@ ClockNumber.defaultProps = {
   isSelected: false
 };
 ClockNumber.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ClockNumber.propTypes = {
-  isSelected: _propTypes2.default.bool,
-  onSelected: _propTypes2.default.func,
-  type: _propTypes2.default.oneOf(['hour', 'minute']),
-  value: _propTypes2.default.number
+  isSelected: _react.PropTypes.bool,
+  onSelected: _react.PropTypes.func,
+  type: _react.PropTypes.oneOf(['hour', 'minute']),
+  value: _react.PropTypes.number
 } : void 0;
 exports.default = ClockNumber;
 
@@ -25360,10 +25283,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _timeUtils = __webpack_require__("../node_modules/material-ui/TimePicker/timeUtils.js");
 
@@ -25473,12 +25392,12 @@ ClockPointer.defaultProps = {
   type: 'minute'
 };
 ClockPointer.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ClockPointer.propTypes = {
-  hasSelected: _propTypes2.default.bool,
-  type: _propTypes2.default.oneOf(['hour', 'minute']),
-  value: _propTypes2.default.number
+  hasSelected: _react.PropTypes.bool,
+  type: _react.PropTypes.oneOf(['hour', 'minute']),
+  value: _react.PropTypes.number
 } : void 0;
 exports.default = ClockPointer;
 
@@ -25533,10 +25452,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25723,16 +25638,16 @@ TimeDisplay.defaultProps = {
   mode: 'hour'
 };
 TimeDisplay.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? TimeDisplay.propTypes = {
-  affix: _propTypes2.default.oneOf(['', 'pm', 'am']),
-  format: _propTypes2.default.oneOf(['ampm', '24hr']),
-  mode: _propTypes2.default.oneOf(['hour', 'minute']),
-  onSelectAffix: _propTypes2.default.func,
-  onSelectHour: _propTypes2.default.func,
-  onSelectMin: _propTypes2.default.func,
-  selectedTime: _propTypes2.default.object.isRequired
+  affix: _react.PropTypes.oneOf(['', 'pm', 'am']),
+  format: _react.PropTypes.oneOf(['ampm', '24hr']),
+  mode: _react.PropTypes.oneOf(['hour', 'minute']),
+  onSelectAffix: _react.PropTypes.func,
+  onSelectHour: _react.PropTypes.func,
+  onSelectMin: _react.PropTypes.func,
+  selectedTime: _react.PropTypes.object.isRequired
 } : void 0;
 exports.default = TimeDisplay;
 
@@ -25783,10 +25698,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _TimePickerDialog = __webpack_require__("../node_modules/material-ui/TimePicker/TimePickerDialog.js");
 
@@ -25960,63 +25871,63 @@ TimePicker.defaultProps = {
   value: null
 };
 TimePicker.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? TimePicker.propTypes = {
   /**
    * If true, automatically accept and close the picker on set minutes.
    */
-  autoOk: _propTypes2.default.bool,
+  autoOk: _react.PropTypes.bool,
   /**
    * Override the label of the 'Cancel' button.
    */
-  cancelLabel: _propTypes2.default.node,
+  cancelLabel: _react.PropTypes.node,
   /**
    * The initial time value of the TimePicker.
    */
-  defaultTime: _propTypes2.default.object,
+  defaultTime: _react.PropTypes.object,
   /**
    * Override the inline-styles of TimePickerDialog's body element.
    */
-  dialogBodyStyle: _propTypes2.default.object,
+  dialogBodyStyle: _react.PropTypes.object,
   /**
    * Override the inline-styles of TimePickerDialog's root element.
    */
-  dialogStyle: _propTypes2.default.object,
+  dialogStyle: _react.PropTypes.object,
   /**
    * If true, the TimePicker is disabled.
    */
-  disabled: _propTypes2.default.bool,
+  disabled: _react.PropTypes.bool,
   /**
    * Tells the component to display the picker in `ampm` (12hr) format or `24hr` format.
    */
-  format: _propTypes2.default.oneOf(['ampm', '24hr']),
+  format: _react.PropTypes.oneOf(['ampm', '24hr']),
   /**
    * Override the label of the 'OK' button.
    */
-  okLabel: _propTypes2.default.node,
+  okLabel: _react.PropTypes.node,
   /**
    * Callback function that is fired when the time value changes. The time value is passed in a Date Object.
    * Since there is no particular event associated with the change the first argument will always be null
    * and the second argument will be the new Date instance.
    */
-  onChange: _propTypes2.default.func,
+  onChange: _react.PropTypes.func,
   /**
    * Callback function fired when the TimePicker dialog is dismissed.
    */
-  onDismiss: _propTypes2.default.func,
+  onDismiss: _react.PropTypes.func,
   /**
    * Callback function fired when the TimePicker `TextField` gains focus.
    */
-  onFocus: _propTypes2.default.func,
+  onFocus: _react.PropTypes.func,
   /**
    * Callback function fired when the TimePicker dialog is shown.
    */
-  onShow: _propTypes2.default.func,
+  onShow: _react.PropTypes.func,
   /**
    * Callback function fired when the TimePicker is tapped or clicked.
    */
-  onTouchTap: _propTypes2.default.func,
+  onTouchTap: _react.PropTypes.func,
   /**
    * If true, uses ("noon" / "midnight") instead of ("12 a.m." / "12 p.m.").
    *
@@ -26024,19 +25935,19 @@ TimePicker.contextTypes = {
    * and it avoids confusion between different locales. By default (for compatibility reasons) TimePicker uses
    * ("12 a.m." / "12 p.m.").
    */
-  pedantic: _propTypes2.default.bool,
+  pedantic: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * Override the inline-styles of TimePicker's TextField element.
    */
-  textFieldStyle: _propTypes2.default.object,
+  textFieldStyle: _react.PropTypes.object,
   /**
    * Sets the time for the Time Picker programmatically.
    */
-  value: _propTypes2.default.object
+  value: _react.PropTypes.object
 } : void 0;
 exports.default = TimePicker;
 
@@ -26087,10 +25998,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactEventListener = __webpack_require__("../node_modules/react-event-listener/lib/index.js");
 
@@ -26238,19 +26145,19 @@ TimePickerDialog.defaultProps = {
   cancelLabel: 'Cancel'
 };
 TimePickerDialog.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? TimePickerDialog.propTypes = {
-  autoOk: _propTypes2.default.bool,
-  bodyStyle: _propTypes2.default.object,
-  cancelLabel: _propTypes2.default.node,
-  format: _propTypes2.default.oneOf(['ampm', '24hr']),
-  initialTime: _propTypes2.default.object,
-  okLabel: _propTypes2.default.node,
-  onAccept: _propTypes2.default.func,
-  onDismiss: _propTypes2.default.func,
-  onShow: _propTypes2.default.func,
-  style: _propTypes2.default.object
+  autoOk: _react.PropTypes.bool,
+  bodyStyle: _react.PropTypes.object,
+  cancelLabel: _react.PropTypes.node,
+  format: _react.PropTypes.oneOf(['ampm', '24hr']),
+  initialTime: _react.PropTypes.object,
+  okLabel: _react.PropTypes.node,
+  onAccept: _react.PropTypes.func,
+  onDismiss: _react.PropTypes.func,
+  onShow: _react.PropTypes.func,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = TimePickerDialog;
 
@@ -26425,10 +26332,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getStyles(props, context) {
@@ -26486,25 +26389,25 @@ Toolbar.defaultProps = {
   noGutter: false
 };
 Toolbar.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Toolbar.propTypes = {
   /**
    * Can be a `ToolbarGroup` to render a group of related items.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * Do not apply `desktopGutter` to the `Toolbar`.
    */
-  noGutter: _propTypes2.default.bool,
+  noGutter: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = Toolbar;
 
@@ -26555,10 +26458,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26699,31 +26598,31 @@ ToolbarGroup.defaultProps = {
   lastChild: false
 };
 ToolbarGroup.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ToolbarGroup.propTypes = {
   /**
    * Can be any node or number of nodes.
    */
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * Set this to true for if the `ToolbarGroup` is the first child of `Toolbar`
    * to prevent setting the left gap.
    */
-  firstChild: _propTypes2.default.bool,
+  firstChild: _react.PropTypes.bool,
   /**
    * Set this to true for if the `ToolbarGroup` is the last child of `Toolbar`
    * to prevent setting the right gap.
    */
-  lastChild: _propTypes2.default.bool,
+  lastChild: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = ToolbarGroup;
 
@@ -26775,10 +26674,6 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getStyles(props, context) {
@@ -26825,17 +26720,17 @@ var ToolbarSeparator = function (_Component) {
 
 ToolbarSeparator.muiName = 'ToolbarSeparator';
 ToolbarSeparator.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ToolbarSeparator.propTypes = {
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = ToolbarSeparator;
 
@@ -26886,10 +26781,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26946,21 +26837,21 @@ var ToolbarTitle = function (_Component) {
 
 ToolbarTitle.muiName = 'ToolbarTitle';
 ToolbarTitle.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ToolbarTitle.propTypes = {
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
+  className: _react.PropTypes.string,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
+  style: _react.PropTypes.object,
   /**
    * The text to be displayed.
    */
-  text: _propTypes2.default.node
+  text: _react.PropTypes.node
 } : void 0;
 exports.default = ToolbarTitle;
 
@@ -27034,10 +26925,6 @@ var _inherits2 = __webpack_require__("../node_modules/babel-runtime/helpers/inhe
 var _inherits3 = _interopRequireDefault(_inherits2);
 
 var _react = __webpack_require__("../node_modules/react/react.js");
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27128,7 +27015,7 @@ var AutoLockScrolling = function (_Component) {
 }(_react.Component);
 
  true ? AutoLockScrolling.propTypes = {
-  lock: _propTypes2.default.bool.isRequired
+  lock: _react.PropTypes.bool.isRequired
 } : void 0;
 exports.default = AutoLockScrolling;
 
@@ -27175,10 +27062,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27277,19 +27160,19 @@ BeforeAfterWrapper.defaultProps = {
   elementType: 'div'
 };
 BeforeAfterWrapper.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? BeforeAfterWrapper.propTypes = {
-  afterElementType: _propTypes2.default.string,
-  afterStyle: _propTypes2.default.object,
-  beforeElementType: _propTypes2.default.string,
-  beforeStyle: _propTypes2.default.object,
-  children: _propTypes2.default.node,
-  elementType: _propTypes2.default.string,
+  afterElementType: _react.PropTypes.string,
+  afterStyle: _react.PropTypes.object,
+  beforeElementType: _react.PropTypes.string,
+  beforeStyle: _react.PropTypes.object,
+  children: _react.PropTypes.node,
+  elementType: _react.PropTypes.string,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = BeforeAfterWrapper;
 
@@ -27340,10 +27223,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -27461,14 +27340,14 @@ CircleRipple.defaultProps = {
   aborted: false
 };
 CircleRipple.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? CircleRipple.propTypes = {
-  aborted: _propTypes2.default.bool,
-  color: _propTypes2.default.string,
-  opacity: _propTypes2.default.number,
-  style: _propTypes2.default.object,
-  touchGenerated: _propTypes2.default.bool
+  aborted: _react.PropTypes.bool,
+  color: _react.PropTypes.string,
+  opacity: _react.PropTypes.number,
+  style: _react.PropTypes.object,
+  touchGenerated: _react.PropTypes.bool
 } : void 0;
 exports.default = CircleRipple;
 
@@ -27495,10 +27374,6 @@ var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _BeforeAfterWrapper = __webpack_require__("../node_modules/material-ui/internal/BeforeAfterWrapper.js");
 
@@ -27536,11 +27411,11 @@ var ClearFix = function ClearFix(_ref) {
 ClearFix.muiName = 'ClearFix';
 
  true ? ClearFix.propTypes = {
-  children: _propTypes2.default.node,
+  children: _react.PropTypes.node,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 
 exports.default = ClearFix;
@@ -27578,10 +27453,6 @@ var _inherits2 = __webpack_require__("../node_modules/babel-runtime/helpers/inhe
 var _inherits3 = _interopRequireDefault(_inherits2);
 
 var _react = __webpack_require__("../node_modules/react/react.js");
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -27676,8 +27547,8 @@ var ClickAwayListener = function (_Component) {
 }(_react.Component);
 
  true ? ClickAwayListener.propTypes = {
-  children: _propTypes2.default.element,
-  onClickAway: _propTypes2.default.func
+  children: _react.PropTypes.element,
+  onClickAway: _react.PropTypes.func
 } : void 0;
 exports.default = ClickAwayListener;
 
@@ -27728,10 +27599,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _childUtils = __webpack_require__("../node_modules/material-ui/utils/childUtils.js");
 
@@ -28065,32 +27932,32 @@ EnhancedButton.defaultProps = {
   type: 'button'
 };
 EnhancedButton.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? EnhancedButton.propTypes = {
-  centerRipple: _propTypes2.default.bool,
-  children: _propTypes2.default.node,
-  containerElement: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.element]),
-  disableFocusRipple: _propTypes2.default.bool,
-  disableKeyboardFocus: _propTypes2.default.bool,
-  disableTouchRipple: _propTypes2.default.bool,
-  disabled: _propTypes2.default.bool,
-  focusRippleColor: _propTypes2.default.string,
-  focusRippleOpacity: _propTypes2.default.number,
-  href: _propTypes2.default.string,
-  keyboardFocused: _propTypes2.default.bool,
-  onBlur: _propTypes2.default.func,
-  onClick: _propTypes2.default.func,
-  onFocus: _propTypes2.default.func,
-  onKeyDown: _propTypes2.default.func,
-  onKeyUp: _propTypes2.default.func,
-  onKeyboardFocus: _propTypes2.default.func,
-  onTouchTap: _propTypes2.default.func,
-  style: _propTypes2.default.object,
-  tabIndex: _propTypes2.default.number,
-  touchRippleColor: _propTypes2.default.string,
-  touchRippleOpacity: _propTypes2.default.number,
-  type: _propTypes2.default.string
+  centerRipple: _react.PropTypes.bool,
+  children: _react.PropTypes.node,
+  containerElement: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
+  disableFocusRipple: _react.PropTypes.bool,
+  disableKeyboardFocus: _react.PropTypes.bool,
+  disableTouchRipple: _react.PropTypes.bool,
+  disabled: _react.PropTypes.bool,
+  focusRippleColor: _react.PropTypes.string,
+  focusRippleOpacity: _react.PropTypes.number,
+  href: _react.PropTypes.string,
+  keyboardFocused: _react.PropTypes.bool,
+  onBlur: _react.PropTypes.func,
+  onClick: _react.PropTypes.func,
+  onFocus: _react.PropTypes.func,
+  onKeyDown: _react.PropTypes.func,
+  onKeyUp: _react.PropTypes.func,
+  onKeyboardFocus: _react.PropTypes.func,
+  onTouchTap: _react.PropTypes.func,
+  style: _react.PropTypes.object,
+  tabIndex: _react.PropTypes.number,
+  touchRippleColor: _react.PropTypes.string,
+  touchRippleOpacity: _react.PropTypes.number,
+  type: _react.PropTypes.string
 } : void 0;
 exports.default = EnhancedButton;
 
@@ -28133,10 +28000,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -28289,14 +28152,14 @@ var FocusRipple = function (_Component) {
 }(_react.Component);
 
 FocusRipple.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? FocusRipple.propTypes = {
-  color: _propTypes2.default.string,
-  innerStyle: _propTypes2.default.object,
-  opacity: _propTypes2.default.number,
-  show: _propTypes2.default.bool,
-  style: _propTypes2.default.object
+  color: _react.PropTypes.string,
+  innerStyle: _react.PropTypes.object,
+  opacity: _react.PropTypes.number,
+  show: _react.PropTypes.bool,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = FocusRipple;
 
@@ -28347,10 +28210,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -28438,16 +28297,16 @@ Overlay.defaultProps = {
   transitionEnabled: true
 };
 Overlay.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Overlay.propTypes = {
-  autoLockScrolling: _propTypes2.default.bool,
-  show: _propTypes2.default.bool.isRequired,
+  autoLockScrolling: _react.PropTypes.bool,
+  show: _react.PropTypes.bool.isRequired,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
-  transitionEnabled: _propTypes2.default.bool
+  style: _react.PropTypes.object,
+  transitionEnabled: _react.PropTypes.bool
 } : void 0;
 exports.default = Overlay;
 
@@ -28484,10 +28343,6 @@ var _inherits2 = __webpack_require__("../node_modules/babel-runtime/helpers/inhe
 var _inherits3 = _interopRequireDefault(_inherits2);
 
 var _react = __webpack_require__("../node_modules/react/react.js");
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -28631,13 +28486,13 @@ RenderToLayer.defaultProps = {
   useLayerForClickAway: true
 };
 RenderToLayer.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? RenderToLayer.propTypes = {
-  componentClickAway: _propTypes2.default.func,
-  open: _propTypes2.default.bool.isRequired,
-  render: _propTypes2.default.func.isRequired,
-  useLayerForClickAway: _propTypes2.default.bool
+  componentClickAway: _react.PropTypes.func,
+  open: _react.PropTypes.bool.isRequired,
+  render: _react.PropTypes.func.isRequired,
+  useLayerForClickAway: _react.PropTypes.bool
 } : void 0;
 exports.default = RenderToLayer;
 
@@ -28688,10 +28543,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactAddonsTransitionGroup = __webpack_require__("../node_modules/react-addons-transition-group/index.js");
 
@@ -28762,18 +28613,18 @@ ScaleIn.defaultProps = {
   enterDelay: 0
 };
 ScaleIn.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ScaleIn.propTypes = {
-  childStyle: _propTypes2.default.object,
-  children: _propTypes2.default.node,
-  enterDelay: _propTypes2.default.number,
-  maxScale: _propTypes2.default.number,
-  minScale: _propTypes2.default.number,
+  childStyle: _react.PropTypes.object,
+  children: _react.PropTypes.node,
+  enterDelay: _react.PropTypes.number,
+  maxScale: _react.PropTypes.number,
+  minScale: _react.PropTypes.number,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = ScaleIn;
 
@@ -28824,10 +28675,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -28943,14 +28790,14 @@ ScaleInChild.defaultProps = {
   minScale: 0
 };
 ScaleInChild.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? ScaleInChild.propTypes = {
-  children: _propTypes2.default.node,
-  enterDelay: _propTypes2.default.number,
-  maxScale: _propTypes2.default.number,
-  minScale: _propTypes2.default.number,
-  style: _propTypes2.default.object
+  children: _react.PropTypes.node,
+  enterDelay: _react.PropTypes.number,
+  maxScale: _react.PropTypes.number,
+  minScale: _react.PropTypes.number,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = ScaleInChild;
 
@@ -29001,10 +28848,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactAddonsTransitionGroup = __webpack_require__("../node_modules/react-addons-transition-group/index.js");
 
@@ -29088,14 +28931,14 @@ SlideIn.defaultProps = {
   direction: 'left'
 };
 SlideIn.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? SlideIn.propTypes = {
-  childStyle: _propTypes2.default.object,
-  children: _propTypes2.default.node,
-  direction: _propTypes2.default.oneOf(['left', 'right', 'up', 'down']),
-  enterDelay: _propTypes2.default.number,
-  style: _propTypes2.default.object
+  childStyle: _react.PropTypes.object,
+  children: _react.PropTypes.node,
+  direction: _react.PropTypes.oneOf(['left', 'right', 'up', 'down']),
+  enterDelay: _react.PropTypes.number,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = SlideIn;
 
@@ -29146,10 +28989,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -29246,15 +29085,15 @@ SlideInChild.defaultProps = {
   enterDelay: 0
 };
 SlideInChild.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? SlideInChild.propTypes = {
-  children: _propTypes2.default.node,
-  direction: _propTypes2.default.string,
-  enterDelay: _propTypes2.default.number,
+  children: _react.PropTypes.node,
+  direction: _react.PropTypes.string,
+  enterDelay: _react.PropTypes.number,
   // This callback is needed bacause the direction could change when leaving the DOM
-  getLeaveDirection: _propTypes2.default.func.isRequired,
-  style: _propTypes2.default.object
+  getLeaveDirection: _react.PropTypes.func.isRequired,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = SlideInChild;
 
@@ -29305,10 +29144,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _transitions = __webpack_require__("../node_modules/material-ui/styles/transitions.js");
 
@@ -29474,22 +29309,22 @@ var Tooltip = function (_Component) {
 }(_react.Component);
 
 Tooltip.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? Tooltip.propTypes = {
   /**
    * The css class name of the root element.
    */
-  className: _propTypes2.default.string,
-  horizontalPosition: _propTypes2.default.oneOf(['left', 'right', 'center']),
-  label: _propTypes2.default.node.isRequired,
-  show: _propTypes2.default.bool,
+  className: _react.PropTypes.string,
+  horizontalPosition: _react.PropTypes.oneOf(['left', 'right', 'center']),
+  label: _react.PropTypes.node.isRequired,
+  show: _react.PropTypes.bool,
   /**
    * Override the inline-styles of the root element.
    */
-  style: _propTypes2.default.object,
-  touch: _propTypes2.default.bool,
-  verticalPosition: _propTypes2.default.oneOf(['top', 'bottom'])
+  style: _react.PropTypes.object,
+  touch: _react.PropTypes.bool,
+  verticalPosition: _react.PropTypes.oneOf(['top', 'bottom'])
 } : void 0;
 exports.default = Tooltip;
 
@@ -29540,10 +29375,6 @@ var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
 var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactDom = __webpack_require__("../node_modules/react-dom/index.js");
 
@@ -29798,15 +29629,15 @@ TouchRipple.defaultProps = {
   abortOnScroll: true
 };
 TouchRipple.contextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? TouchRipple.propTypes = {
-  abortOnScroll: _propTypes2.default.bool,
-  centerRipple: _propTypes2.default.bool,
-  children: _propTypes2.default.node,
-  color: _propTypes2.default.string,
-  opacity: _propTypes2.default.number,
-  style: _propTypes2.default.object
+  abortOnScroll: _react.PropTypes.bool,
+  centerRipple: _react.PropTypes.bool,
+  children: _react.PropTypes.node,
+  color: _react.PropTypes.string,
+  opacity: _react.PropTypes.number,
+  style: _react.PropTypes.object
 } : void 0;
 exports.default = TouchRipple;
 
@@ -29844,10 +29675,6 @@ var _inherits3 = _interopRequireDefault(_inherits2);
 
 var _react = __webpack_require__("../node_modules/react/react.js");
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _getMuiTheme = __webpack_require__("../node_modules/material-ui/styles/getMuiTheme.js");
 
 var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
@@ -29879,11 +29706,11 @@ var MuiThemeProvider = function (_Component) {
 }(_react.Component);
 
 MuiThemeProvider.childContextTypes = {
-  muiTheme: _propTypes2.default.object.isRequired
+  muiTheme: _react.PropTypes.object.isRequired
 };
  true ? MuiThemeProvider.propTypes = {
-  children: _propTypes2.default.element,
-  muiTheme: _propTypes2.default.object
+  children: _react.PropTypes.element,
+  muiTheme: _react.PropTypes.object
 } : void 0;
 exports.default = MuiThemeProvider;
 
@@ -31135,6 +30962,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof2 = __webpack_require__("../node_modules/babel-runtime/helpers/typeof.js");
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
 exports.default = function (muiTheme) {
   var isClient = typeof navigator !== 'undefined';
   var userAgent = muiTheme.userAgent;
@@ -31149,8 +30980,6 @@ exports.default = function (muiTheme) {
     hasWarnedAboutUserAgent = true;
   }
 
-  var prefixAll = (0, _createPrefixer2.default)(_autoprefixerStatic2.default);
-
   if (userAgent === false) {
     // Disabled autoprefixer
     return null;
@@ -31158,7 +30987,7 @@ exports.default = function (muiTheme) {
     // Prefix for all user agent
     return function (style) {
       var isFlex = ['flex', 'inline-flex'].indexOf(style.display) !== -1;
-      var stylePrefixed = prefixAll(style);
+      var stylePrefixed = _inlineStylePrefixer2.default.prefixAll(style);
 
       if (isFlex) {
         var display = stylePrefixed.display;
@@ -31174,32 +31003,25 @@ exports.default = function (muiTheme) {
       return stylePrefixed;
     };
   } else {
-    var Prefixer = (0, _createPrefixer4.default)(_autoprefixerDynamic2.default, prefixAll);
-    var prefixer = new Prefixer({
-      userAgent: userAgent
-    });
+    var _ret = function () {
+      var prefixer = new _inlineStylePrefixer2.default({
+        userAgent: userAgent
+      });
 
-    return function (style) {
-      return prefixer.prefix(style);
-    };
+      return {
+        v: function v(style) {
+          return prefixer.prefix(style);
+        }
+      };
+    }();
+
+    if ((typeof _ret === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret)) === "object") return _ret.v;
   }
 };
 
-var _createPrefixer = __webpack_require__("../node_modules/inline-style-prefixer/static/createPrefixer.js");
+var _inlineStylePrefixer = __webpack_require__("../node_modules/inline-style-prefixer/lib/Prefixer.js");
 
-var _createPrefixer2 = _interopRequireDefault(_createPrefixer);
-
-var _createPrefixer3 = __webpack_require__("../node_modules/inline-style-prefixer/dynamic/createPrefixer.js");
-
-var _createPrefixer4 = _interopRequireDefault(_createPrefixer3);
-
-var _autoprefixerDynamic = __webpack_require__("../node_modules/material-ui/utils/autoprefixerDynamic.js");
-
-var _autoprefixerDynamic2 = _interopRequireDefault(_autoprefixerDynamic);
-
-var _autoprefixerStatic = __webpack_require__("../node_modules/material-ui/utils/autoprefixerStatic.js");
-
-var _autoprefixerStatic2 = _interopRequireDefault(_autoprefixerStatic);
+var _inlineStylePrefixer2 = _interopRequireDefault(_inlineStylePrefixer);
 
 var _warning = __webpack_require__("../node_modules/warning/browser.js");
 
@@ -31208,100 +31030,6 @@ var _warning2 = _interopRequireDefault(_warning);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var hasWarnedAboutUserAgent = false;
-
-/***/ }),
-
-/***/ "../node_modules/material-ui/utils/autoprefixerDynamic.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _calc = __webpack_require__("../node_modules/inline-style-prefixer/dynamic/plugins/calc.js");
-
-var _calc2 = _interopRequireDefault(_calc);
-
-var _flex = __webpack_require__("../node_modules/inline-style-prefixer/dynamic/plugins/flex.js");
-
-var _flex2 = _interopRequireDefault(_flex);
-
-var _flexboxIE = __webpack_require__("../node_modules/inline-style-prefixer/dynamic/plugins/flexboxIE.js");
-
-var _flexboxIE2 = _interopRequireDefault(_flexboxIE);
-
-var _flexboxOld = __webpack_require__("../node_modules/inline-style-prefixer/dynamic/plugins/flexboxOld.js");
-
-var _flexboxOld2 = _interopRequireDefault(_flexboxOld);
-
-var _gradient = __webpack_require__("../node_modules/inline-style-prefixer/dynamic/plugins/gradient.js");
-
-var _gradient2 = _interopRequireDefault(_gradient);
-
-var _sizing = __webpack_require__("../node_modules/inline-style-prefixer/dynamic/plugins/sizing.js");
-
-var _sizing2 = _interopRequireDefault(_sizing);
-
-var _transition = __webpack_require__("../node_modules/inline-style-prefixer/dynamic/plugins/transition.js");
-
-var _transition2 = _interopRequireDefault(_transition);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-  plugins: [_calc2.default, _flex2.default, _flexboxIE2.default, _flexboxOld2.default, _gradient2.default, _sizing2.default, _transition2.default],
-  prefixMap: { "chrome": { "transform": 35, "transformOrigin": 35, "transformOriginX": 35, "transformOriginY": 35, "backfaceVisibility": 35, "perspective": 35, "perspectiveOrigin": 35, "transformStyle": 35, "transformOriginZ": 35, "animation": 42, "animationDelay": 42, "animationDirection": 42, "animationFillMode": 42, "animationDuration": 42, "animationIterationCount": 42, "animationName": 42, "animationPlayState": 42, "animationTimingFunction": 42, "appearance": 60, "userSelect": 53, "fontKerning": 32, "textEmphasisPosition": 60, "textEmphasis": 60, "textEmphasisStyle": 60, "textEmphasisColor": 60, "boxDecorationBreak": 60, "clipPath": 54, "maskImage": 60, "maskMode": 60, "maskRepeat": 60, "maskPosition": 60, "maskClip": 60, "maskOrigin": 60, "maskSize": 60, "maskComposite": 60, "mask": 60, "maskBorderSource": 60, "maskBorderMode": 60, "maskBorderSlice": 60, "maskBorderWidth": 60, "maskBorderOutset": 60, "maskBorderRepeat": 60, "maskBorder": 60, "maskType": 60, "textDecorationStyle": 56, "textDecorationSkip": 56, "textDecorationLine": 56, "textDecorationColor": 56, "filter": 52, "fontFeatureSettings": 47, "breakAfter": 49, "breakBefore": 49, "breakInside": 49, "columnCount": 49, "columnFill": 49, "columnGap": 49, "columnRule": 49, "columnRuleColor": 49, "columnRuleStyle": 49, "columnRuleWidth": 49, "columns": 49, "columnSpan": 49, "columnWidth": 49 }, "safari": { "flex": 8, "flexBasis": 8, "flexDirection": 8, "flexGrow": 8, "flexFlow": 8, "flexShrink": 8, "flexWrap": 8, "alignContent": 8, "alignItems": 8, "alignSelf": 8, "justifyContent": 8, "order": 8, "transition": 6, "transitionDelay": 6, "transitionDuration": 6, "transitionProperty": 6, "transitionTimingFunction": 6, "transform": 8, "transformOrigin": 8, "transformOriginX": 8, "transformOriginY": 8, "backfaceVisibility": 8, "perspective": 8, "perspectiveOrigin": 8, "transformStyle": 8, "transformOriginZ": 8, "animation": 8, "animationDelay": 8, "animationDirection": 8, "animationFillMode": 8, "animationDuration": 8, "animationIterationCount": 8, "animationName": 8, "animationPlayState": 8, "animationTimingFunction": 8, "appearance": 10.1, "userSelect": 10.1, "backdropFilter": 10.1, "fontKerning": 9, "scrollSnapType": 10, "scrollSnapPointsX": 10, "scrollSnapPointsY": 10, "scrollSnapDestination": 10, "scrollSnapCoordinate": 10, "textEmphasisPosition": 7, "textEmphasis": 7, "textEmphasisStyle": 7, "textEmphasisColor": 7, "boxDecorationBreak": 10.1, "clipPath": 10.1, "maskImage": 10.1, "maskMode": 10.1, "maskRepeat": 10.1, "maskPosition": 10.1, "maskClip": 10.1, "maskOrigin": 10.1, "maskSize": 10.1, "maskComposite": 10.1, "mask": 10.1, "maskBorderSource": 10.1, "maskBorderMode": 10.1, "maskBorderSlice": 10.1, "maskBorderWidth": 10.1, "maskBorderOutset": 10.1, "maskBorderRepeat": 10.1, "maskBorder": 10.1, "maskType": 10.1, "textDecorationStyle": 10.1, "textDecorationSkip": 10.1, "textDecorationLine": 10.1, "textDecorationColor": 10.1, "shapeImageThreshold": 10, "shapeImageMargin": 10, "shapeImageOutside": 10, "filter": 9, "hyphens": 10.1, "flowInto": 10.1, "flowFrom": 10.1, "breakBefore": 8, "breakAfter": 8, "breakInside": 8, "regionFragment": 10.1, "columnCount": 8, "columnFill": 8, "columnGap": 8, "columnRule": 8, "columnRuleColor": 8, "columnRuleStyle": 8, "columnRuleWidth": 8, "columns": 8, "columnSpan": 8, "columnWidth": 8 }, "firefox": { "appearance": 55, "userSelect": 55, "boxSizing": 28, "textAlignLast": 48, "textDecorationStyle": 35, "textDecorationSkip": 35, "textDecorationLine": 35, "textDecorationColor": 35, "tabSize": 55, "hyphens": 42, "fontFeatureSettings": 33, "breakAfter": 51, "breakBefore": 51, "breakInside": 51, "columnCount": 51, "columnFill": 51, "columnGap": 51, "columnRule": 51, "columnRuleColor": 51, "columnRuleStyle": 51, "columnRuleWidth": 51, "columns": 51, "columnSpan": 51, "columnWidth": 51 }, "opera": { "flex": 16, "flexBasis": 16, "flexDirection": 16, "flexGrow": 16, "flexFlow": 16, "flexShrink": 16, "flexWrap": 16, "alignContent": 16, "alignItems": 16, "alignSelf": 16, "justifyContent": 16, "order": 16, "transform": 22, "transformOrigin": 22, "transformOriginX": 22, "transformOriginY": 22, "backfaceVisibility": 22, "perspective": 22, "perspectiveOrigin": 22, "transformStyle": 22, "transformOriginZ": 22, "animation": 29, "animationDelay": 29, "animationDirection": 29, "animationFillMode": 29, "animationDuration": 29, "animationIterationCount": 29, "animationName": 29, "animationPlayState": 29, "animationTimingFunction": 29, "appearance": 45, "userSelect": 40, "fontKerning": 19, "textEmphasisPosition": 45, "textEmphasis": 45, "textEmphasisStyle": 45, "textEmphasisColor": 45, "boxDecorationBreak": 45, "clipPath": 41, "maskImage": 45, "maskMode": 45, "maskRepeat": 45, "maskPosition": 45, "maskClip": 45, "maskOrigin": 45, "maskSize": 45, "maskComposite": 45, "mask": 45, "maskBorderSource": 45, "maskBorderMode": 45, "maskBorderSlice": 45, "maskBorderWidth": 45, "maskBorderOutset": 45, "maskBorderRepeat": 45, "maskBorder": 45, "maskType": 45, "textDecorationStyle": 43, "textDecorationSkip": 43, "textDecorationLine": 43, "textDecorationColor": 43, "filter": 39, "fontFeatureSettings": 34, "breakAfter": 36, "breakBefore": 36, "breakInside": 36, "columnCount": 36, "columnFill": 36, "columnGap": 36, "columnRule": 36, "columnRuleColor": 36, "columnRuleStyle": 36, "columnRuleWidth": 36, "columns": 36, "columnSpan": 36, "columnWidth": 36 }, "ie": { "flex": 10, "flexDirection": 10, "flexFlow": 10, "flexWrap": 10, "transform": 9, "transformOrigin": 9, "transformOriginX": 9, "transformOriginY": 9, "userSelect": 11, "wrapFlow": 11, "wrapThrough": 11, "wrapMargin": 11, "scrollSnapType": 11, "scrollSnapPointsX": 11, "scrollSnapPointsY": 11, "scrollSnapDestination": 11, "scrollSnapCoordinate": 11, "touchAction": 10, "hyphens": 11, "flowInto": 11, "flowFrom": 11, "breakBefore": 11, "breakAfter": 11, "breakInside": 11, "regionFragment": 11, "gridTemplateColumns": 11, "gridTemplateRows": 11, "gridTemplateAreas": 11, "gridTemplate": 11, "gridAutoColumns": 11, "gridAutoRows": 11, "gridAutoFlow": 11, "grid": 11, "gridRowStart": 11, "gridColumnStart": 11, "gridRowEnd": 11, "gridRow": 11, "gridColumn": 11, "gridColumnEnd": 11, "gridColumnGap": 11, "gridRowGap": 11, "gridArea": 11, "gridGap": 11, "textSizeAdjust": 11 }, "edge": { "userSelect": 15, "wrapFlow": 15, "wrapThrough": 15, "wrapMargin": 15, "scrollSnapType": 15, "scrollSnapPointsX": 15, "scrollSnapPointsY": 15, "scrollSnapDestination": 15, "scrollSnapCoordinate": 15, "hyphens": 15, "flowInto": 15, "flowFrom": 15, "breakBefore": 15, "breakAfter": 15, "breakInside": 15, "regionFragment": 15, "gridTemplateColumns": 15, "gridTemplateRows": 15, "gridTemplateAreas": 15, "gridTemplate": 15, "gridAutoColumns": 15, "gridAutoRows": 15, "gridAutoFlow": 15, "grid": 15, "gridRowStart": 15, "gridColumnStart": 15, "gridRowEnd": 15, "gridRow": 15, "gridColumn": 15, "gridColumnEnd": 15, "gridColumnGap": 15, "gridRowGap": 15, "gridArea": 15, "gridGap": 15 }, "ios_saf": { "flex": 8.1, "flexBasis": 8.1, "flexDirection": 8.1, "flexGrow": 8.1, "flexFlow": 8.1, "flexShrink": 8.1, "flexWrap": 8.1, "alignContent": 8.1, "alignItems": 8.1, "alignSelf": 8.1, "justifyContent": 8.1, "order": 8.1, "transition": 6, "transitionDelay": 6, "transitionDuration": 6, "transitionProperty": 6, "transitionTimingFunction": 6, "transform": 8.1, "transformOrigin": 8.1, "transformOriginX": 8.1, "transformOriginY": 8.1, "backfaceVisibility": 8.1, "perspective": 8.1, "perspectiveOrigin": 8.1, "transformStyle": 8.1, "transformOriginZ": 8.1, "animation": 8.1, "animationDelay": 8.1, "animationDirection": 8.1, "animationFillMode": 8.1, "animationDuration": 8.1, "animationIterationCount": 8.1, "animationName": 8.1, "animationPlayState": 8.1, "animationTimingFunction": 8.1, "appearance": 10, "userSelect": 10, "backdropFilter": 10, "fontKerning": 10, "scrollSnapType": 10, "scrollSnapPointsX": 10, "scrollSnapPointsY": 10, "scrollSnapDestination": 10, "scrollSnapCoordinate": 10, "boxDecorationBreak": 10, "clipPath": 10, "maskImage": 10, "maskMode": 10, "maskRepeat": 10, "maskPosition": 10, "maskClip": 10, "maskOrigin": 10, "maskSize": 10, "maskComposite": 10, "mask": 10, "maskBorderSource": 10, "maskBorderMode": 10, "maskBorderSlice": 10, "maskBorderWidth": 10, "maskBorderOutset": 10, "maskBorderRepeat": 10, "maskBorder": 10, "maskType": 10, "textSizeAdjust": 10, "textDecorationStyle": 10, "textDecorationSkip": 10, "textDecorationLine": 10, "textDecorationColor": 10, "shapeImageThreshold": 10, "shapeImageMargin": 10, "shapeImageOutside": 10, "filter": 9, "hyphens": 10, "flowInto": 10, "flowFrom": 10, "breakBefore": 8.1, "breakAfter": 8.1, "breakInside": 8.1, "regionFragment": 10, "columnCount": 8.1, "columnFill": 8.1, "columnGap": 8.1, "columnRule": 8.1, "columnRuleColor": 8.1, "columnRuleStyle": 8.1, "columnRuleWidth": 8.1, "columns": 8.1, "columnSpan": 8.1, "columnWidth": 8.1 }, "android": { "borderImage": 4.2, "borderImageOutset": 4.2, "borderImageRepeat": 4.2, "borderImageSlice": 4.2, "borderImageSource": 4.2, "borderImageWidth": 4.2, "flex": 4.2, "flexBasis": 4.2, "flexDirection": 4.2, "flexGrow": 4.2, "flexFlow": 4.2, "flexShrink": 4.2, "flexWrap": 4.2, "alignContent": 4.2, "alignItems": 4.2, "alignSelf": 4.2, "justifyContent": 4.2, "order": 4.2, "transition": 4.2, "transitionDelay": 4.2, "transitionDuration": 4.2, "transitionProperty": 4.2, "transitionTimingFunction": 4.2, "transform": 4.4, "transformOrigin": 4.4, "transformOriginX": 4.4, "transformOriginY": 4.4, "backfaceVisibility": 4.4, "perspective": 4.4, "perspectiveOrigin": 4.4, "transformStyle": 4.4, "transformOriginZ": 4.4, "animation": 4.4, "animationDelay": 4.4, "animationDirection": 4.4, "animationFillMode": 4.4, "animationDuration": 4.4, "animationIterationCount": 4.4, "animationName": 4.4, "animationPlayState": 4.4, "animationTimingFunction": 4.4, "appearance": 53, "userSelect": 53, "fontKerning": 4.4, "textEmphasisPosition": 53, "textEmphasis": 53, "textEmphasisStyle": 53, "textEmphasisColor": 53, "boxDecorationBreak": 53, "clipPath": 53, "maskImage": 53, "maskMode": 53, "maskRepeat": 53, "maskPosition": 53, "maskClip": 53, "maskOrigin": 53, "maskSize": 53, "maskComposite": 53, "mask": 53, "maskBorderSource": 53, "maskBorderMode": 53, "maskBorderSlice": 53, "maskBorderWidth": 53, "maskBorderOutset": 53, "maskBorderRepeat": 53, "maskBorder": 53, "maskType": 53, "filter": 4.4, "fontFeatureSettings": 4.4, "breakAfter": 53, "breakBefore": 53, "breakInside": 53, "columnCount": 53, "columnFill": 53, "columnGap": 53, "columnRule": 53, "columnRuleColor": 53, "columnRuleStyle": 53, "columnRuleWidth": 53, "columns": 53, "columnSpan": 53, "columnWidth": 53 }, "and_chr": { "appearance": 56, "textEmphasisPosition": 56, "textEmphasis": 56, "textEmphasisStyle": 56, "textEmphasisColor": 56, "boxDecorationBreak": 56, "maskImage": 56, "maskMode": 56, "maskRepeat": 56, "maskPosition": 56, "maskClip": 56, "maskOrigin": 56, "maskSize": 56, "maskComposite": 56, "mask": 56, "maskBorderSource": 56, "maskBorderMode": 56, "maskBorderSlice": 56, "maskBorderWidth": 56, "maskBorderOutset": 56, "maskBorderRepeat": 56, "maskBorder": 56, "maskType": 56, "textDecorationStyle": 56, "textDecorationSkip": 56, "textDecorationLine": 56, "textDecorationColor": 56 }, "and_uc": { "flex": 11, "flexBasis": 11, "flexDirection": 11, "flexGrow": 11, "flexFlow": 11, "flexShrink": 11, "flexWrap": 11, "alignContent": 11, "alignItems": 11, "alignSelf": 11, "justifyContent": 11, "order": 11, "transition": 11, "transitionDelay": 11, "transitionDuration": 11, "transitionProperty": 11, "transitionTimingFunction": 11, "transform": 11, "transformOrigin": 11, "transformOriginX": 11, "transformOriginY": 11, "backfaceVisibility": 11, "perspective": 11, "perspectiveOrigin": 11, "transformStyle": 11, "transformOriginZ": 11, "animation": 11, "animationDelay": 11, "animationDirection": 11, "animationFillMode": 11, "animationDuration": 11, "animationIterationCount": 11, "animationName": 11, "animationPlayState": 11, "animationTimingFunction": 11, "appearance": 11, "userSelect": 11, "fontKerning": 11, "textEmphasisPosition": 11, "textEmphasis": 11, "textEmphasisStyle": 11, "textEmphasisColor": 11, "maskImage": 11, "maskMode": 11, "maskRepeat": 11, "maskPosition": 11, "maskClip": 11, "maskOrigin": 11, "maskSize": 11, "maskComposite": 11, "mask": 11, "maskBorderSource": 11, "maskBorderMode": 11, "maskBorderSlice": 11, "maskBorderWidth": 11, "maskBorderOutset": 11, "maskBorderRepeat": 11, "maskBorder": 11, "maskType": 11, "textSizeAdjust": 11, "filter": 11, "hyphens": 11, "flowInto": 11, "flowFrom": 11, "breakBefore": 11, "breakAfter": 11, "breakInside": 11, "regionFragment": 11, "fontFeatureSettings": 11, "columnCount": 11, "columnFill": 11, "columnGap": 11, "columnRule": 11, "columnRuleColor": 11, "columnRuleStyle": 11, "columnRuleWidth": 11, "columns": 11, "columnSpan": 11, "columnWidth": 11 }, "op_mini": {} }
-}; /* eslint-disable */
-
-/***/ }),
-
-/***/ "../node_modules/material-ui/utils/autoprefixerStatic.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _calc = __webpack_require__("../node_modules/inline-style-prefixer/static/plugins/calc.js");
-
-var _calc2 = _interopRequireDefault(_calc);
-
-var _flex = __webpack_require__("../node_modules/inline-style-prefixer/static/plugins/flex.js");
-
-var _flex2 = _interopRequireDefault(_flex);
-
-var _flexboxIE = __webpack_require__("../node_modules/inline-style-prefixer/static/plugins/flexboxIE.js");
-
-var _flexboxIE2 = _interopRequireDefault(_flexboxIE);
-
-var _flexboxOld = __webpack_require__("../node_modules/inline-style-prefixer/static/plugins/flexboxOld.js");
-
-var _flexboxOld2 = _interopRequireDefault(_flexboxOld);
-
-var _gradient = __webpack_require__("../node_modules/inline-style-prefixer/static/plugins/gradient.js");
-
-var _gradient2 = _interopRequireDefault(_gradient);
-
-var _sizing = __webpack_require__("../node_modules/inline-style-prefixer/static/plugins/sizing.js");
-
-var _sizing2 = _interopRequireDefault(_sizing);
-
-var _transition = __webpack_require__("../node_modules/inline-style-prefixer/static/plugins/transition.js");
-
-var _transition2 = _interopRequireDefault(_transition);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-  plugins: [_calc2.default, _flex2.default, _flexboxIE2.default, _flexboxOld2.default, _gradient2.default, _sizing2.default, _transition2.default],
-  prefixMap: { "transform": ["Webkit", "ms"], "transformOrigin": ["Webkit", "ms"], "transformOriginX": ["Webkit", "ms"], "transformOriginY": ["Webkit", "ms"], "backfaceVisibility": ["Webkit"], "perspective": ["Webkit"], "perspectiveOrigin": ["Webkit"], "transformStyle": ["Webkit"], "transformOriginZ": ["Webkit"], "animation": ["Webkit"], "animationDelay": ["Webkit"], "animationDirection": ["Webkit"], "animationFillMode": ["Webkit"], "animationDuration": ["Webkit"], "animationIterationCount": ["Webkit"], "animationName": ["Webkit"], "animationPlayState": ["Webkit"], "animationTimingFunction": ["Webkit"], "appearance": ["Webkit", "Moz"], "userSelect": ["Webkit", "Moz", "ms"], "fontKerning": ["Webkit"], "textEmphasisPosition": ["Webkit"], "textEmphasis": ["Webkit"], "textEmphasisStyle": ["Webkit"], "textEmphasisColor": ["Webkit"], "boxDecorationBreak": ["Webkit"], "clipPath": ["Webkit"], "maskImage": ["Webkit"], "maskMode": ["Webkit"], "maskRepeat": ["Webkit"], "maskPosition": ["Webkit"], "maskClip": ["Webkit"], "maskOrigin": ["Webkit"], "maskSize": ["Webkit"], "maskComposite": ["Webkit"], "mask": ["Webkit"], "maskBorderSource": ["Webkit"], "maskBorderMode": ["Webkit"], "maskBorderSlice": ["Webkit"], "maskBorderWidth": ["Webkit"], "maskBorderOutset": ["Webkit"], "maskBorderRepeat": ["Webkit"], "maskBorder": ["Webkit"], "maskType": ["Webkit"], "textDecorationStyle": ["Webkit", "Moz"], "textDecorationSkip": ["Webkit", "Moz"], "textDecorationLine": ["Webkit", "Moz"], "textDecorationColor": ["Webkit", "Moz"], "filter": ["Webkit"], "fontFeatureSettings": ["Webkit", "Moz"], "breakAfter": ["Webkit", "Moz", "ms"], "breakBefore": ["Webkit", "Moz", "ms"], "breakInside": ["Webkit", "Moz", "ms"], "columnCount": ["Webkit", "Moz"], "columnFill": ["Webkit", "Moz"], "columnGap": ["Webkit", "Moz"], "columnRule": ["Webkit", "Moz"], "columnRuleColor": ["Webkit", "Moz"], "columnRuleStyle": ["Webkit", "Moz"], "columnRuleWidth": ["Webkit", "Moz"], "columns": ["Webkit", "Moz"], "columnSpan": ["Webkit", "Moz"], "columnWidth": ["Webkit", "Moz"], "flex": ["Webkit", "ms"], "flexBasis": ["Webkit"], "flexDirection": ["Webkit", "ms"], "flexGrow": ["Webkit"], "flexFlow": ["Webkit", "ms"], "flexShrink": ["Webkit"], "flexWrap": ["Webkit", "ms"], "alignContent": ["Webkit"], "alignItems": ["Webkit"], "alignSelf": ["Webkit"], "justifyContent": ["Webkit"], "order": ["Webkit"], "transitionDelay": ["Webkit"], "transitionDuration": ["Webkit"], "transitionProperty": ["Webkit"], "transitionTimingFunction": ["Webkit"], "backdropFilter": ["Webkit"], "scrollSnapType": ["Webkit", "ms"], "scrollSnapPointsX": ["Webkit", "ms"], "scrollSnapPointsY": ["Webkit", "ms"], "scrollSnapDestination": ["Webkit", "ms"], "scrollSnapCoordinate": ["Webkit", "ms"], "shapeImageThreshold": ["Webkit"], "shapeImageMargin": ["Webkit"], "shapeImageOutside": ["Webkit"], "hyphens": ["Webkit", "Moz", "ms"], "flowInto": ["Webkit", "ms"], "flowFrom": ["Webkit", "ms"], "regionFragment": ["Webkit", "ms"], "boxSizing": ["Moz"], "textAlignLast": ["Moz"], "tabSize": ["Moz"], "wrapFlow": ["ms"], "wrapThrough": ["ms"], "wrapMargin": ["ms"], "touchAction": ["ms"], "gridTemplateColumns": ["ms"], "gridTemplateRows": ["ms"], "gridTemplateAreas": ["ms"], "gridTemplate": ["ms"], "gridAutoColumns": ["ms"], "gridAutoRows": ["ms"], "gridAutoFlow": ["ms"], "grid": ["ms"], "gridRowStart": ["ms"], "gridColumnStart": ["ms"], "gridRowEnd": ["ms"], "gridRow": ["ms"], "gridColumn": ["ms"], "gridColumnEnd": ["ms"], "gridColumnGap": ["ms"], "gridRowGap": ["ms"], "gridArea": ["ms"], "gridGap": ["ms"], "textSizeAdjust": ["Webkit", "ms"], "borderImage": ["Webkit"], "borderImageOutset": ["Webkit"], "borderImageRepeat": ["Webkit"], "borderImageSlice": ["Webkit"], "borderImageSource": ["Webkit"], "borderImageWidth": ["Webkit"] }
-}; /* eslint-disable */
 
 /***/ }),
 
@@ -31767,33 +31495,29 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
+var _react = __webpack_require__("../node_modules/react/react.js");
 
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var horizontal = _propTypes2.default.oneOf(['left', 'middle', 'right']);
-var vertical = _propTypes2.default.oneOf(['top', 'center', 'bottom']);
+var horizontal = _react.PropTypes.oneOf(['left', 'middle', 'right']);
+var vertical = _react.PropTypes.oneOf(['top', 'center', 'bottom']);
 
 exports.default = {
 
-  corners: _propTypes2.default.oneOf(['bottom-left', 'bottom-right', 'top-left', 'top-right']),
+  corners: _react.PropTypes.oneOf(['bottom-left', 'bottom-right', 'top-left', 'top-right']),
 
   horizontal: horizontal,
 
   vertical: vertical,
 
-  origin: _propTypes2.default.shape({
+  origin: _react.PropTypes.shape({
     horizontal: horizontal,
     vertical: vertical
   }),
 
-  cornersAndCenter: _propTypes2.default.oneOf(['bottom-center', 'bottom-left', 'bottom-right', 'top-center', 'top-left', 'top-right']),
+  cornersAndCenter: _react.PropTypes.oneOf(['bottom-center', 'bottom-left', 'bottom-right', 'top-center', 'top-left', 'top-right']),
 
-  stringOrNumber: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
+  stringOrNumber: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
 
-  zDepth: _propTypes2.default.oneOf([0, 1, 2, 3, 4, 5])
+  zDepth: _react.PropTypes.oneOf([0, 1, 2, 3, 4, 5])
 
 };
 
@@ -122991,620 +122715,6 @@ OPENLAYERS.ol = ol;
 
 /***/ }),
 
-/***/ "../node_modules/prop-types/checkPropTypes.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-
-
-if (true) {
-  var invariant = __webpack_require__("../node_modules/fbjs/lib/invariant.js");
-  var warning = __webpack_require__("../node_modules/fbjs/lib/warning.js");
-  var ReactPropTypesSecret = __webpack_require__("../node_modules/prop-types/lib/ReactPropTypesSecret.js");
-  var loggedTypeFailures = {};
-}
-
-/**
- * Assert that the values match with the type specs.
- * Error messages are memorized and will only be shown once.
- *
- * @param {object} typeSpecs Map of name to a ReactPropType
- * @param {object} values Runtime values that need to be type-checked
- * @param {string} location e.g. "prop", "context", "child context"
- * @param {string} componentName Name of the component for error messages.
- * @param {?Function} getStack Returns the component stack.
- * @private
- */
-function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
-  if (true) {
-    for (var typeSpecName in typeSpecs) {
-      if (typeSpecs.hasOwnProperty(typeSpecName)) {
-        var error;
-        // Prop type validation may throw. In case they do, we don't want to
-        // fail the render phase where it didn't fail before. So we log it.
-        // After these have been cleaned up, we'll let them throw.
-        try {
-          // This is intentionally an invariant that gets caught. It's the same
-          // behavior as without this statement except with a better message.
-          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'React.PropTypes.', componentName || 'React class', location, typeSpecName);
-          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
-        } catch (ex) {
-          error = ex;
-        }
-        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
-        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
-          // Only monitor this failure once because there tends to be a lot of the
-          // same error.
-          loggedTypeFailures[error.message] = true;
-
-          var stack = getStack ? getStack() : '';
-
-          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
-        }
-      }
-    }
-  }
-}
-
-module.exports = checkPropTypes;
-
-
-/***/ }),
-
-/***/ "../node_modules/prop-types/factoryWithTypeCheckers.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-
-
-var emptyFunction = __webpack_require__("../node_modules/fbjs/lib/emptyFunction.js");
-var invariant = __webpack_require__("../node_modules/fbjs/lib/invariant.js");
-var warning = __webpack_require__("../node_modules/fbjs/lib/warning.js");
-
-var ReactPropTypesSecret = __webpack_require__("../node_modules/prop-types/lib/ReactPropTypesSecret.js");
-var checkPropTypes = __webpack_require__("../node_modules/prop-types/checkPropTypes.js");
-
-module.exports = function(isValidElement, throwOnDirectAccess) {
-  /* global Symbol */
-  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
-
-  /**
-   * Returns the iterator method function contained on the iterable object.
-   *
-   * Be sure to invoke the function with the iterable as context:
-   *
-   *     var iteratorFn = getIteratorFn(myIterable);
-   *     if (iteratorFn) {
-   *       var iterator = iteratorFn.call(myIterable);
-   *       ...
-   *     }
-   *
-   * @param {?object} maybeIterable
-   * @return {?function}
-   */
-  function getIteratorFn(maybeIterable) {
-    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
-    if (typeof iteratorFn === 'function') {
-      return iteratorFn;
-    }
-  }
-
-  /**
-   * Collection of methods that allow declaration and validation of props that are
-   * supplied to React components. Example usage:
-   *
-   *   var Props = require('ReactPropTypes');
-   *   var MyArticle = React.createClass({
-   *     propTypes: {
-   *       // An optional string prop named "description".
-   *       description: Props.string,
-   *
-   *       // A required enum prop named "category".
-   *       category: Props.oneOf(['News','Photos']).isRequired,
-   *
-   *       // A prop named "dialog" that requires an instance of Dialog.
-   *       dialog: Props.instanceOf(Dialog).isRequired
-   *     },
-   *     render: function() { ... }
-   *   });
-   *
-   * A more formal specification of how these methods are used:
-   *
-   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
-   *   decl := ReactPropTypes.{type}(.isRequired)?
-   *
-   * Each and every declaration produces a function with the same signature. This
-   * allows the creation of custom validation functions. For example:
-   *
-   *  var MyLink = React.createClass({
-   *    propTypes: {
-   *      // An optional string or URI prop named "href".
-   *      href: function(props, propName, componentName) {
-   *        var propValue = props[propName];
-   *        if (propValue != null && typeof propValue !== 'string' &&
-   *            !(propValue instanceof URI)) {
-   *          return new Error(
-   *            'Expected a string or an URI for ' + propName + ' in ' +
-   *            componentName
-   *          );
-   *        }
-   *      }
-   *    },
-   *    render: function() {...}
-   *  });
-   *
-   * @internal
-   */
-
-  var ANONYMOUS = '<<anonymous>>';
-
-  // Important!
-  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
-  var ReactPropTypes = {
-    array: createPrimitiveTypeChecker('array'),
-    bool: createPrimitiveTypeChecker('boolean'),
-    func: createPrimitiveTypeChecker('function'),
-    number: createPrimitiveTypeChecker('number'),
-    object: createPrimitiveTypeChecker('object'),
-    string: createPrimitiveTypeChecker('string'),
-    symbol: createPrimitiveTypeChecker('symbol'),
-
-    any: createAnyTypeChecker(),
-    arrayOf: createArrayOfTypeChecker,
-    element: createElementTypeChecker(),
-    instanceOf: createInstanceTypeChecker,
-    node: createNodeChecker(),
-    objectOf: createObjectOfTypeChecker,
-    oneOf: createEnumTypeChecker,
-    oneOfType: createUnionTypeChecker,
-    shape: createShapeTypeChecker
-  };
-
-  /**
-   * inlined Object.is polyfill to avoid requiring consumers ship their own
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
-   */
-  /*eslint-disable no-self-compare*/
-  function is(x, y) {
-    // SameValue algorithm
-    if (x === y) {
-      // Steps 1-5, 7-10
-      // Steps 6.b-6.e: +0 != -0
-      return x !== 0 || 1 / x === 1 / y;
-    } else {
-      // Step 6.a: NaN == NaN
-      return x !== x && y !== y;
-    }
-  }
-  /*eslint-enable no-self-compare*/
-
-  /**
-   * We use an Error-like object for backward compatibility as people may call
-   * PropTypes directly and inspect their output. However, we don't use real
-   * Errors anymore. We don't inspect their stack anyway, and creating them
-   * is prohibitively expensive if they are created too often, such as what
-   * happens in oneOfType() for any type before the one that matched.
-   */
-  function PropTypeError(message) {
-    this.message = message;
-    this.stack = '';
-  }
-  // Make `instanceof Error` still work for returned errors.
-  PropTypeError.prototype = Error.prototype;
-
-  function createChainableTypeChecker(validate) {
-    if (true) {
-      var manualPropTypeCallCache = {};
-      var manualPropTypeWarningCount = 0;
-    }
-    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
-      componentName = componentName || ANONYMOUS;
-      propFullName = propFullName || propName;
-
-      if (secret !== ReactPropTypesSecret) {
-        if (throwOnDirectAccess) {
-          // New behavior only for users of `prop-types` package
-          invariant(
-            false,
-            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-            'Use `PropTypes.checkPropTypes()` to call them. ' +
-            'Read more at http://fb.me/use-check-prop-types'
-          );
-        } else if ("development" !== 'production' && typeof console !== 'undefined') {
-          // Old behavior for people using React.PropTypes
-          var cacheKey = componentName + ':' + propName;
-          if (
-            !manualPropTypeCallCache[cacheKey] &&
-            // Avoid spamming the console because they are often not actionable except for lib authors
-            manualPropTypeWarningCount < 3
-          ) {
-            warning(
-              false,
-              'You are manually calling a React.PropTypes validation ' +
-              'function for the `%s` prop on `%s`. This is deprecated ' +
-              'and will throw in the standalone `prop-types` package. ' +
-              'You may be seeing this warning due to a third-party PropTypes ' +
-              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.',
-              propFullName,
-              componentName
-            );
-            manualPropTypeCallCache[cacheKey] = true;
-            manualPropTypeWarningCount++;
-          }
-        }
-      }
-      if (props[propName] == null) {
-        if (isRequired) {
-          if (props[propName] === null) {
-            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
-          }
-          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
-        }
-        return null;
-      } else {
-        return validate(props, propName, componentName, location, propFullName);
-      }
-    }
-
-    var chainedCheckType = checkType.bind(null, false);
-    chainedCheckType.isRequired = checkType.bind(null, true);
-
-    return chainedCheckType;
-  }
-
-  function createPrimitiveTypeChecker(expectedType) {
-    function validate(props, propName, componentName, location, propFullName, secret) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== expectedType) {
-        // `propValue` being instance of, say, date/regexp, pass the 'object'
-        // check, but we can offer a more precise error message here rather than
-        // 'of type `object`'.
-        var preciseType = getPreciseType(propValue);
-
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createAnyTypeChecker() {
-    return createChainableTypeChecker(emptyFunction.thatReturnsNull);
-  }
-
-  function createArrayOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
-      }
-      var propValue = props[propName];
-      if (!Array.isArray(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
-      }
-      for (var i = 0; i < propValue.length; i++) {
-        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
-        if (error instanceof Error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createElementTypeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      if (!isValidElement(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createInstanceTypeChecker(expectedClass) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!(props[propName] instanceof expectedClass)) {
-        var expectedClassName = expectedClass.name || ANONYMOUS;
-        var actualClassName = getClassName(props[propName]);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createEnumTypeChecker(expectedValues) {
-    if (!Array.isArray(expectedValues)) {
-       true ? warning(false, 'Invalid argument supplied to oneOf, expected an instance of array.') : void 0;
-      return emptyFunction.thatReturnsNull;
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      for (var i = 0; i < expectedValues.length; i++) {
-        if (is(propValue, expectedValues[i])) {
-          return null;
-        }
-      }
-
-      var valuesString = JSON.stringify(expectedValues);
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createObjectOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
-      }
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
-      }
-      for (var key in propValue) {
-        if (propValue.hasOwnProperty(key)) {
-          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
-          if (error instanceof Error) {
-            return error;
-          }
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createUnionTypeChecker(arrayOfTypeCheckers) {
-    if (!Array.isArray(arrayOfTypeCheckers)) {
-       true ? warning(false, 'Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
-      return emptyFunction.thatReturnsNull;
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-        var checker = arrayOfTypeCheckers[i];
-        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret) == null) {
-          return null;
-        }
-      }
-
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createNodeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!isNode(props[propName])) {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createShapeTypeChecker(shapeTypes) {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
-      }
-      for (var key in shapeTypes) {
-        var checker = shapeTypes[key];
-        if (!checker) {
-          continue;
-        }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
-        if (error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function isNode(propValue) {
-    switch (typeof propValue) {
-      case 'number':
-      case 'string':
-      case 'undefined':
-        return true;
-      case 'boolean':
-        return !propValue;
-      case 'object':
-        if (Array.isArray(propValue)) {
-          return propValue.every(isNode);
-        }
-        if (propValue === null || isValidElement(propValue)) {
-          return true;
-        }
-
-        var iteratorFn = getIteratorFn(propValue);
-        if (iteratorFn) {
-          var iterator = iteratorFn.call(propValue);
-          var step;
-          if (iteratorFn !== propValue.entries) {
-            while (!(step = iterator.next()).done) {
-              if (!isNode(step.value)) {
-                return false;
-              }
-            }
-          } else {
-            // Iterator will provide entry [k,v] tuples rather than values.
-            while (!(step = iterator.next()).done) {
-              var entry = step.value;
-              if (entry) {
-                if (!isNode(entry[1])) {
-                  return false;
-                }
-              }
-            }
-          }
-        } else {
-          return false;
-        }
-
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  function isSymbol(propType, propValue) {
-    // Native Symbol.
-    if (propType === 'symbol') {
-      return true;
-    }
-
-    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
-    if (propValue['@@toStringTag'] === 'Symbol') {
-      return true;
-    }
-
-    // Fallback for non-spec compliant Symbols which are polyfilled.
-    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
-      return true;
-    }
-
-    return false;
-  }
-
-  // Equivalent of `typeof` but with special handling for array and regexp.
-  function getPropType(propValue) {
-    var propType = typeof propValue;
-    if (Array.isArray(propValue)) {
-      return 'array';
-    }
-    if (propValue instanceof RegExp) {
-      // Old webkits (at least until Android 4.0) return 'function' rather than
-      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
-      // passes PropTypes.object.
-      return 'object';
-    }
-    if (isSymbol(propType, propValue)) {
-      return 'symbol';
-    }
-    return propType;
-  }
-
-  // This handles more types than `getPropType`. Only used for error messages.
-  // See `createPrimitiveTypeChecker`.
-  function getPreciseType(propValue) {
-    var propType = getPropType(propValue);
-    if (propType === 'object') {
-      if (propValue instanceof Date) {
-        return 'date';
-      } else if (propValue instanceof RegExp) {
-        return 'regexp';
-      }
-    }
-    return propType;
-  }
-
-  // Returns class name of the object, if any.
-  function getClassName(propValue) {
-    if (!propValue.constructor || !propValue.constructor.name) {
-      return ANONYMOUS;
-    }
-    return propValue.constructor.name;
-  }
-
-  ReactPropTypes.checkPropTypes = checkPropTypes;
-  ReactPropTypes.PropTypes = ReactPropTypes;
-
-  return ReactPropTypes;
-};
-
-
-/***/ }),
-
-/***/ "../node_modules/prop-types/index.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-if (true) {
-  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-    Symbol.for &&
-    Symbol.for('react.element')) ||
-    0xeac7;
-
-  var isValidElement = function(object) {
-    return typeof object === 'object' &&
-      object !== null &&
-      object.$$typeof === REACT_ELEMENT_TYPE;
-  };
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = __webpack_require__("../node_modules/prop-types/factoryWithTypeCheckers.js")(isValidElement, throwOnDirectAccess);
-} else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = require('./factoryWithThrowingShims')();
-}
-
-
-/***/ }),
-
-/***/ "../node_modules/prop-types/lib/ReactPropTypesSecret.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-module.exports = ReactPropTypesSecret;
-
-
-/***/ }),
-
 /***/ "../node_modules/qs/lib/formats.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -123740,26 +122850,27 @@ var parseKeys = function parseQueryStringKeys(givenKey, val, options) {
 
     // The regex chunks
 
-    var parent = /^([^[]*)/;
+    var brackets = /(\[[^[\]]*])/;
     var child = /(\[[^[\]]*])/g;
 
     // Get the parent
 
-    var segment = parent.exec(key);
+    var segment = brackets.exec(key);
+    var parent = segment ? key.slice(0, segment.index) : key;
 
     // Stash the parent if it exists
 
     var keys = [];
-    if (segment[1]) {
+    if (parent) {
         // If we aren't using plain objects, optionally prefix keys
         // that would overwrite object prototype properties
-        if (!options.plainObjects && has.call(Object.prototype, segment[1])) {
+        if (!options.plainObjects && has.call(Object.prototype, parent)) {
             if (!options.allowPrototypes) {
                 return;
             }
         }
 
-        keys.push(segment[1]);
+        keys.push(parent);
     }
 
     // Loop through children appending to the array until we hit depth
@@ -123851,6 +122962,7 @@ var defaults = {
     delimiter: '&',
     encode: true,
     encoder: utils.encode,
+    encodeValuesOnly: false,
     serializeDate: function serializeDate(date) { // eslint-disable-line func-name-matching
         return toISO.call(date);
     },
@@ -123869,7 +122981,8 @@ var stringify = function stringify( // eslint-disable-line func-name-matching
     sort,
     allowDots,
     serializeDate,
-    formatter
+    formatter,
+    encodeValuesOnly
 ) {
     var obj = object;
     if (typeof filter === 'function') {
@@ -123878,7 +122991,7 @@ var stringify = function stringify( // eslint-disable-line func-name-matching
         obj = serializeDate(obj);
     } else if (obj === null) {
         if (strictNullHandling) {
-            return encoder ? encoder(prefix) : prefix;
+            return encoder && !encodeValuesOnly ? encoder(prefix) : prefix;
         }
 
         obj = '';
@@ -123886,7 +122999,8 @@ var stringify = function stringify( // eslint-disable-line func-name-matching
 
     if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || utils.isBuffer(obj)) {
         if (encoder) {
-            return [formatter(encoder(prefix)) + '=' + formatter(encoder(obj))];
+            var keyValue = encodeValuesOnly ? prefix : encoder(prefix);
+            return [formatter(keyValue) + '=' + formatter(encoder(obj))];
         }
         return [formatter(prefix) + '=' + formatter(String(obj))];
     }
@@ -123924,7 +123038,8 @@ var stringify = function stringify( // eslint-disable-line func-name-matching
                 sort,
                 allowDots,
                 serializeDate,
-                formatter
+                formatter,
+                encodeValuesOnly
             ));
         } else {
             values = values.concat(stringify(
@@ -123938,7 +123053,8 @@ var stringify = function stringify( // eslint-disable-line func-name-matching
                 sort,
                 allowDots,
                 serializeDate,
-                formatter
+                formatter,
+                encodeValuesOnly
             ));
         }
     }
@@ -123958,10 +123074,11 @@ module.exports = function (object, opts) {
     var strictNullHandling = typeof options.strictNullHandling === 'boolean' ? options.strictNullHandling : defaults.strictNullHandling;
     var skipNulls = typeof options.skipNulls === 'boolean' ? options.skipNulls : defaults.skipNulls;
     var encode = typeof options.encode === 'boolean' ? options.encode : defaults.encode;
-    var encoder = encode ? (typeof options.encoder === 'function' ? options.encoder : defaults.encoder) : null;
+    var encoder = typeof options.encoder === 'function' ? options.encoder : defaults.encoder;
     var sort = typeof options.sort === 'function' ? options.sort : null;
     var allowDots = typeof options.allowDots === 'undefined' ? false : options.allowDots;
     var serializeDate = typeof options.serializeDate === 'function' ? options.serializeDate : defaults.serializeDate;
+    var encodeValuesOnly = typeof options.encodeValuesOnly === 'boolean' ? options.encodeValuesOnly : defaults.encodeValuesOnly;
     if (typeof options.format === 'undefined') {
         options.format = formats.default;
     } else if (!Object.prototype.hasOwnProperty.call(formats.formatters, options.format)) {
@@ -124017,12 +123134,13 @@ module.exports = function (object, opts) {
             generateArrayPrefix,
             strictNullHandling,
             skipNulls,
-            encoder,
+            encode ? encoder : null,
             filter,
             sort,
             allowDots,
             serializeDate,
-            formatter
+            formatter,
+            encodeValuesOnly
         ));
     }
 
@@ -124069,7 +123187,9 @@ exports.merge = function (target, source, options) {
         if (Array.isArray(target)) {
             target.push(source);
         } else if (typeof target === 'object') {
-            target[source] = true;
+            if (options.plainObjects || options.allowPrototypes || !has.call(Object.prototype, source)) {
+                target[source] = true;
+            }
         } else {
             return [target, source];
         }
@@ -124223,358 +123343,14 @@ exports.isBuffer = function (obj) {
 /***/ "../node_modules/react-addons-create-fragment/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/**
- * Copyright 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
+module.exports = __webpack_require__("../node_modules/react/lib/ReactFragment.js").create;
 
+/***/ }),
 
+/***/ "../node_modules/react-addons-shallow-compare/index.js":
+/***/ (function(module, exports, __webpack_require__) {
 
-var React = __webpack_require__("../node_modules/react/react.js");
-
-var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-  Symbol.for &&
-  Symbol.for('react.element')) ||
-  0xeac7;
-
-var emptyFunction = __webpack_require__("../node_modules/fbjs/lib/emptyFunction.js");
-var invariant = __webpack_require__("../node_modules/fbjs/lib/invariant.js");
-var warning = __webpack_require__("../node_modules/fbjs/lib/warning.js");
-
-var SEPARATOR = '.';
-var SUBSEPARATOR = ':';
-
-var didWarnAboutMaps = false;
-
-var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
-
-function getIteratorFn(maybeIterable) {
-  var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
-  if (typeof iteratorFn === 'function') {
-    return iteratorFn;
-  }
-}
-
-function escape(key) {
-  var escapeRegex = /[=:]/g;
-  var escaperLookup = {
-    '=': '=0',
-    ':': '=2'
-  };
-  var escapedString = ('' + key).replace(escapeRegex, function(match) {
-    return escaperLookup[match];
-  });
-
-  return '$' + escapedString;
-}
-
-function getComponentKey(component, index) {
-  // Do some typechecking here since we call this blindly. We want to ensure
-  // that we don't block potential future ES APIs.
-  if (component && typeof component === 'object' && component.key != null) {
-    // Explicit key
-    return escape(component.key);
-  }
-  // Implicit key determined by the index in the set
-  return index.toString(36);
-}
-
-function traverseAllChildrenImpl(
-  children,
-  nameSoFar,
-  callback,
-  traverseContext
-) {
-  var type = typeof children;
-
-  if (type === 'undefined' || type === 'boolean') {
-    // All of the above are perceived as null.
-    children = null;
-  }
-
-  if (
-    children === null ||
-    type === 'string' ||
-    type === 'number' ||
-    // The following is inlined from ReactElement. This means we can optimize
-    // some checks. React Fiber also inlines this logic for similar purposes.
-    (type === 'object' && children.$$typeof === REACT_ELEMENT_TYPE)
-  ) {
-    callback(
-      traverseContext,
-      children,
-      // If it's the only child, treat the name as if it was wrapped in an array
-      // so that it's consistent if the number of children grows.
-      nameSoFar === '' ? SEPARATOR + getComponentKey(children, 0) : nameSoFar
-    );
-    return 1;
-  }
-
-  var child;
-  var nextName;
-  var subtreeCount = 0; // Count of children found in the current subtree.
-  var nextNamePrefix = nameSoFar === '' ? SEPARATOR : nameSoFar + SUBSEPARATOR;
-
-  if (Array.isArray(children)) {
-    for (var i = 0; i < children.length; i++) {
-      child = children[i];
-      nextName = nextNamePrefix + getComponentKey(child, i);
-      subtreeCount += traverseAllChildrenImpl(
-        child,
-        nextName,
-        callback,
-        traverseContext
-      );
-    }
-  } else {
-    var iteratorFn = getIteratorFn(children);
-    if (iteratorFn) {
-      if (true) {
-        // Warn about using Maps as children
-        if (iteratorFn === children.entries) {
-          warning(
-            didWarnAboutMaps,
-            'Using Maps as children is unsupported and will likely yield ' +
-              'unexpected results. Convert it to a sequence/iterable of keyed ' +
-              'ReactElements instead.'
-          );
-          didWarnAboutMaps = true;
-        }
-      }
-
-      var iterator = iteratorFn.call(children);
-      var step;
-      var ii = 0;
-      while (!(step = iterator.next()).done) {
-        child = step.value;
-        nextName = nextNamePrefix + getComponentKey(child, ii++);
-        subtreeCount += traverseAllChildrenImpl(
-          child,
-          nextName,
-          callback,
-          traverseContext
-        );
-      }
-    } else if (type === 'object') {
-      var addendum = '';
-      if (true) {
-        addendum = ' If you meant to render a collection of children, use an array ' +
-          'instead or wrap the object using createFragment(object) from the ' +
-          'React add-ons.';
-      }
-      var childrenString = '' + children;
-      invariant(
-        false,
-        'Objects are not valid as a React child (found: %s).%s',
-        childrenString === '[object Object]'
-          ? 'object with keys {' + Object.keys(children).join(', ') + '}'
-          : childrenString,
-        addendum
-      );
-    }
-  }
-
-  return subtreeCount;
-}
-
-function traverseAllChildren(children, callback, traverseContext) {
-  if (children == null) {
-    return 0;
-  }
-
-  return traverseAllChildrenImpl(children, '', callback, traverseContext);
-}
-
-var userProvidedKeyEscapeRegex = /\/+/g;
-function escapeUserProvidedKey(text) {
-  return ('' + text).replace(userProvidedKeyEscapeRegex, '$&/');
-}
-
-function cloneAndReplaceKey(oldElement, newKey) {
-  return React.cloneElement(
-    oldElement,
-    { key: newKey },
-    oldElement.props !== undefined
-      ? oldElement.props.children
-      : undefined
-  );
-};
-
-var DEFAULT_POOL_SIZE = 10;
-var DEFAULT_POOLER = oneArgumentPooler;
-
-var oneArgumentPooler = function(copyFieldsFrom) {
-  var Klass = this;
-  if (Klass.instancePool.length) {
-    var instance = Klass.instancePool.pop();
-    Klass.call(instance, copyFieldsFrom);
-    return instance;
-  } else {
-    return new Klass(copyFieldsFrom);
-  }
-};
-
-var addPoolingTo = function addPoolingTo(
-  CopyConstructor,
-  pooler
-) {
-  // Casting as any so that flow ignores the actual implementation and trusts
-  // it to match the type we declared
-  var NewKlass = CopyConstructor;
-  NewKlass.instancePool = [];
-  NewKlass.getPooled = pooler || DEFAULT_POOLER;
-  if (!NewKlass.poolSize) {
-    NewKlass.poolSize = DEFAULT_POOL_SIZE;
-  }
-  NewKlass.release = standardReleaser;
-  return NewKlass;
-};
-
-var standardReleaser = function standardReleaser(instance) {
-  var Klass = this;
-  invariant(
-    instance instanceof Klass,
-    'Trying to release an instance into a pool of a different type.'
-  );
-  instance.destructor();
-  if (Klass.instancePool.length < Klass.poolSize) {
-    Klass.instancePool.push(instance);
-  }
-};
-
-var fourArgumentPooler = function fourArgumentPooler(a1, a2, a3, a4) {
-  var Klass = this;
-  if (Klass.instancePool.length) {
-    var instance = Klass.instancePool.pop();
-    Klass.call(instance, a1, a2, a3, a4);
-    return instance;
-  } else {
-    return new Klass(a1, a2, a3, a4);
-  }
-};
-
-function MapBookKeeping(mapResult, keyPrefix, mapFunction, mapContext) {
-  this.result = mapResult;
-  this.keyPrefix = keyPrefix;
-  this.func = mapFunction;
-  this.context = mapContext;
-  this.count = 0;
-}
-MapBookKeeping.prototype.destructor = function() {
-  this.result = null;
-  this.keyPrefix = null;
-  this.func = null;
-  this.context = null;
-  this.count = 0;
-};
-addPoolingTo(MapBookKeeping, fourArgumentPooler);
-
-function mapSingleChildIntoContext(bookKeeping, child, childKey) {
-  var result = bookKeeping.result;
-  var keyPrefix = bookKeeping.keyPrefix;
-  var func = bookKeeping.func;
-  var context = bookKeeping.context;
-
-  var mappedChild = func.call(context, child, bookKeeping.count++);
-  if (Array.isArray(mappedChild)) {
-    mapIntoWithKeyPrefixInternal(
-      mappedChild,
-      result,
-      childKey,
-      emptyFunction.thatReturnsArgument
-    );
-  } else if (mappedChild != null) {
-    if (React.isValidElement(mappedChild)) {
-      mappedChild = cloneAndReplaceKey(
-        mappedChild,
-        // Keep both the (mapped) and old keys if they differ, just as
-        // traverseAllChildren used to do for objects as children
-        keyPrefix +
-          (mappedChild.key && (!child || child.key !== mappedChild.key)
-            ? escapeUserProvidedKey(mappedChild.key) + '/'
-            : '') +
-          childKey
-      );
-    }
-    result.push(mappedChild);
-  }
-}
-
-function mapIntoWithKeyPrefixInternal(children, array, prefix, func, context) {
-  var escapedPrefix = '';
-  if (prefix != null) {
-    escapedPrefix = escapeUserProvidedKey(prefix) + '/';
-  }
-  var traverseContext = MapBookKeeping.getPooled(
-    array,
-    escapedPrefix,
-    func,
-    context
-  );
-  traverseAllChildren(children, mapSingleChildIntoContext, traverseContext);
-  MapBookKeeping.release(traverseContext);
-}
-
-var numericPropertyRegex = /^\d+$/;
-
-var warnedAboutNumeric = false;
-
-function createReactFragment(object) {
-  if (typeof object !== 'object' || !object || Array.isArray(object)) {
-    warning(
-      false,
-      'React.addons.createFragment only accepts a single object. Got: %s',
-      object
-    );
-    return object;
-  }
-  if (React.isValidElement(object)) {
-    warning(
-      false,
-      'React.addons.createFragment does not accept a ReactElement ' +
-        'without a wrapper object.'
-    );
-    return object;
-  }
-
-  invariant(
-    object.nodeType !== 1,
-    'React.addons.createFragment(...): Encountered an invalid child; DOM ' +
-      'elements are not valid children of React components.'
-  );
-
-  var result = [];
-
-  for (var key in object) {
-    if (true) {
-      if (!warnedAboutNumeric && numericPropertyRegex.test(key)) {
-        warning(
-          false,
-          'React.addons.createFragment(...): Child objects should have ' +
-            'non-numeric keys so ordering is preserved.'
-        );
-        warnedAboutNumeric = true;
-      }
-    }
-    mapIntoWithKeyPrefixInternal(
-      object[key],
-      result,
-      key,
-      emptyFunction.thatReturnsArgument
-    );
-  }
-
-  return result;
-}
-
-module.exports = createReactFragment;
-
+module.exports = __webpack_require__("../node_modules/react/lib/shallowCompare.js");
 
 /***/ }),
 
@@ -124761,13 +123537,9 @@ var _react = __webpack_require__("../node_modules/react/react.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__("../node_modules/prop-types/index.js");
+var _reactAddonsShallowCompare = __webpack_require__("../node_modules/react-addons-shallow-compare/index.js");
 
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _shallowEqual = __webpack_require__("../node_modules/fbjs/lib/shallowEqual.js");
-
-var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
+var _reactAddonsShallowCompare2 = _interopRequireDefault(_reactAddonsShallowCompare);
 
 var _warning = __webpack_require__("../node_modules/warning/browser.js");
 
@@ -124781,11 +123553,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* eslint-disable prefer-spread */
+
 var defaultEventOptions = {
   capture: false,
   passive: false
 };
-/* eslint-disable prefer-spread */
 
 function mergeDefaultEventOptions(options) {
   return (0, _assign2.default)({}, defaultEventOptions, options);
@@ -124816,6 +123589,8 @@ function off(target, eventName, callback, options) {
     target.detachEvent('on' + eventName, callback);
   }
 }
+
+var state = {};
 
 function forEachListener(props, iteratee) {
   var children = props.children,
@@ -124874,7 +123649,10 @@ var EventListener = function (_Component) {
   }, {
     key: 'shouldComponentUpdate',
     value: function shouldComponentUpdate(nextProps) {
-      return !(0, _shallowEqual2.default)(this.props, nextProps);
+      return (0, _reactAddonsShallowCompare2.default)({
+        props: this.props,
+        state: state
+      }, nextProps, state);
     }
   }, {
     key: 'componentWillUpdate',
@@ -124930,11 +123708,11 @@ var EventListener = function (_Component) {
   /**
    * You can provide a single child too.
    */
-  children: _propTypes2.default.element,
+  children: _react.PropTypes.element,
   /**
    * The DOM target to listen to.
    */
-  target: _propTypes2.default.oneOfType([_propTypes2.default.object, _propTypes2.default.string]).isRequired
+  target: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string]).isRequired
 } : void 0;
 exports.default = EventListener;
 
@@ -126307,6 +125085,81 @@ should be injected by the application.'
 
 /***/ }),
 
+/***/ "../node_modules/react/lib/ReactFragment.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+
+
+var _prodInvariant = __webpack_require__("../node_modules/react/lib/reactProdInvariant.js");
+
+var ReactChildren = __webpack_require__("../node_modules/react/lib/ReactChildren.js");
+var ReactElement = __webpack_require__("../node_modules/react/lib/ReactElement.js");
+
+var emptyFunction = __webpack_require__("../node_modules/fbjs/lib/emptyFunction.js");
+var invariant = __webpack_require__("../node_modules/fbjs/lib/invariant.js");
+var warning = __webpack_require__("../node_modules/fbjs/lib/warning.js");
+
+/**
+ * We used to allow keyed objects to serve as a collection of ReactElements,
+ * or nested sets. This allowed us a way to explicitly key a set or fragment of
+ * components. This is now being replaced with an opaque data structure.
+ * The upgrade path is to call React.addons.createFragment({ key: value }) to
+ * create a keyed fragment. The resulting data structure is an array.
+ */
+
+var numericPropertyRegex = /^\d+$/;
+
+var warnedAboutNumeric = false;
+
+var ReactFragment = {
+  /**
+   * Wrap a keyed object in an opaque proxy that warns you if you access any
+   * of its properties.
+   * See https://facebook.github.io/react/docs/create-fragment.html
+   */
+  create: function (object) {
+    if (typeof object !== 'object' || !object || Array.isArray(object)) {
+       true ? warning(false, 'React.addons.createFragment only accepts a single object. Got: %s', object) : void 0;
+      return object;
+    }
+    if (ReactElement.isValidElement(object)) {
+       true ? warning(false, 'React.addons.createFragment does not accept a ReactElement ' + 'without a wrapper object.') : void 0;
+      return object;
+    }
+
+    !(object.nodeType !== 1) ?  true ? invariant(false, 'React.addons.createFragment(...): Encountered an invalid child; DOM elements are not valid children of React components.') : _prodInvariant('0') : void 0;
+
+    var result = [];
+
+    for (var key in object) {
+      if (true) {
+        if (!warnedAboutNumeric && numericPropertyRegex.test(key)) {
+           true ? warning(false, 'React.addons.createFragment(...): Child objects should have ' + 'non-numeric keys so ordering is preserved.') : void 0;
+          warnedAboutNumeric = true;
+        }
+      }
+      ReactChildren.mapIntoWithKeyPrefixInternal(object[key], result, key, emptyFunction.thatReturnsArgument);
+    }
+
+    return result;
+  }
+};
+
+module.exports = ReactFragment;
+
+/***/ }),
+
 /***/ "../node_modules/react/lib/ReactTransitionChildMapping.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -126734,6 +125587,37 @@ module.exports = flattenChildren;
 
 /***/ }),
 
+/***/ "../node_modules/react/lib/shallowCompare.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+
+
+var shallowEqual = __webpack_require__("../node_modules/fbjs/lib/shallowEqual.js");
+
+/**
+ * Does a shallow comparison for props and state.
+ * See ReactComponentWithPureRenderMixin
+ * See also https://facebook.github.io/react/docs/shallow-compare.html
+ */
+function shallowCompare(instance, nextProps, nextState) {
+  return !shallowEqual(instance.props, nextProps) || !shallowEqual(instance.state, nextState);
+}
+
+module.exports = shallowCompare;
+
+/***/ }),
+
 /***/ "../node_modules/recompose/compose.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -126802,37 +125686,42 @@ exports.default = createFactory;
 
 
 exports.__esModule = true;
-
-var _wrapDisplayName = __webpack_require__("../node_modules/recompose/wrapDisplayName.js");
-
-var _wrapDisplayName2 = _interopRequireDefault(_wrapDisplayName);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var createHelper = function createHelper(func, helperName) {
   var setDisplayName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
   var noArgs = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
   if ("development" !== 'production' && setDisplayName) {
-    if (noArgs) {
-      return function (BaseComponent) {
-        var Component = func(BaseComponent);
-        Component.displayName = (0, _wrapDisplayName2.default)(BaseComponent, helperName);
-        return Component;
-      };
-    }
+    var _ret = function () {
+      /* eslint-disable global-require */
+      var wrapDisplayName = __webpack_require__("../node_modules/recompose/wrapDisplayName.js").default;
+      /* eslint-enable global-require */
 
-    return function () {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
+      if (noArgs) {
+        return {
+          v: function v(BaseComponent) {
+            var Component = func(BaseComponent);
+            Component.displayName = wrapDisplayName(BaseComponent, helperName);
+            return Component;
+          }
+        };
       }
 
-      return function (BaseComponent) {
-        var Component = func.apply(undefined, args)(BaseComponent);
-        Component.displayName = (0, _wrapDisplayName2.default)(BaseComponent, helperName);
-        return Component;
+      return {
+        v: function v() {
+          for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          return function (BaseComponent) {
+            var Component = func.apply(undefined, args)(BaseComponent);
+            Component.displayName = wrapDisplayName(BaseComponent, helperName);
+            return Component;
+          };
+        }
       };
-    };
+    }();
+
+    if (typeof _ret === "object") return _ret.v;
   }
 
   return func;
@@ -127121,9 +126010,9 @@ function defaultTitleFormatter(options) {
   return function (action, time, took) {
     var parts = ['action'];
 
-    if (timestamp) parts.push('@ ' + time);
-    parts.push(String(action.type));
-    if (duration) parts.push('(in ' + took.toFixed(2) + ' ms)');
+    parts.push('%c' + String(action.type));
+    if (timestamp) parts.push('%c@ ' + time);
+    if (duration) parts.push('%c(in ' + took.toFixed(2) + ' ms)');
 
     return parts.join(' ');
   };
@@ -127163,15 +126052,19 @@ function printBuffer(buffer, options) {
     }, action, logEntry) : collapsed;
 
     var formattedTime = (0, _helpers.formatTime)(startedTime);
-    var titleCSS = colors.title ? 'color: ' + colors.title(formattedAction) + ';' : null;
+    var titleCSS = colors.title ? 'color: ' + colors.title(formattedAction) + ';' : '';
+    var headerCSS = ['color: gray; font-weight: lighter;'];
+    headerCSS.push(titleCSS);
+    if (options.timestamp) headerCSS.push('color: gray; font-weight: lighter;');
+    if (options.duration) headerCSS.push('color: gray; font-weight: lighter;');
     var title = titleFormatter(formattedAction, formattedTime, took);
 
     // Render
     try {
       if (isCollapsed) {
-        if (colors.title) logger.groupCollapsed('%c ' + title, titleCSS);else logger.groupCollapsed(title);
+        if (colors.title) logger.groupCollapsed.apply(logger, ['%c ' + title].concat(headerCSS));else logger.groupCollapsed(title);
       } else {
-        if (colors.title) logger.group('%c ' + title, titleCSS);else logger.group(title);
+        if (colors.title) logger.group.apply(logger, ['%c ' + title].concat(headerCSS));else logger.group(title);
       }
     } catch (e) {
       logger.log(title);
@@ -127187,11 +126080,11 @@ function printBuffer(buffer, options) {
     }
 
     if (actionLevel) {
-      if (colors.action) logger[actionLevel]('%c action', 'color: ' + colors.action(formattedAction) + '; font-weight: bold', formattedAction);else logger[actionLevel]('action', formattedAction);
+      if (colors.action) logger[actionLevel]('%c action    ', 'color: ' + colors.action(formattedAction) + '; font-weight: bold', formattedAction);else logger[actionLevel]('action    ', formattedAction);
     }
 
     if (error && errorLevel) {
-      if (colors.error) logger[errorLevel]('%c error', 'color: ' + colors.error(error, prevState) + '; font-weight: bold', error);else logger[errorLevel]('error', error);
+      if (colors.error) logger[errorLevel]('%c error     ', 'color: ' + colors.error(error, prevState) + '; font-weight: bold;', error);else logger[errorLevel]('error     ', error);
     }
 
     if (nextStateLevel) {
@@ -127401,6 +126294,7 @@ var timer = exports.timer = typeof performance !== "undefined" && performance !=
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.logger = exports.defaults = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -127465,7 +126359,7 @@ function createLogger() {
   // Detect if 'createLogger' was passed directly to 'applyMiddleware'.
   if (options.getState && options.dispatch) {
     // eslint-disable-next-line no-console
-    console.error('redux-logger not installed. Make sure to pass logger instance as middleware:\n\nimport createLogger from \'redux-logger\';\n\nconst logger = createLogger();\nconst store = createStore(\n  reducer,\n  applyMiddleware(logger)\n);');
+    console.error('[redux-logger] redux-logger not installed. Make sure to pass logger instance as middleware:\n\n// Logger with default options\nimport { logger } from \'redux-logger\'\nconst store = createStore(\n  reducer,\n  applyMiddleware(logger)\n)\n\n\n// Or you can create your own logger with custom options http://bit.ly/redux-logger-options\nimport createLogger from \'redux-logger\'\n\nconst logger = createLogger({\n  // ...options\n});\n\nconst store = createStore(\n  reducer,\n  applyMiddleware(logger)\n)\n');
 
     return function () {
       return function (next) {
@@ -127521,8 +126415,11 @@ function createLogger() {
   };
 }
 
+var defaultLogger = createLogger();
+
+exports.defaults = _defaults2.default;
+exports.logger = defaultLogger;
 exports.default = createLogger;
-module.exports = exports['default'];
 
 /***/ }),
 
@@ -128343,34 +127240,6 @@ module.exports = warning;
 module.exports = function() {
 	throw new Error("define cannot be used indirect");
 };
-
-
-/***/ }),
-
-/***/ "../node_modules/webpack/buildin/global.js":
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
 
 
 /***/ }),

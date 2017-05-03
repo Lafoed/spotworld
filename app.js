@@ -7,7 +7,6 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var compression = require('compression');
 var fs = require('fs');
-var passport = require('./services/middleware/passport');
 
 var GraphSchema = require('./services/graph');
 var graphqlHTTP = require('express-graphql');
@@ -30,11 +29,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(session({secret:'keyboard cat', resave: true, saveUninitialized: true}));
 
-//TODO get passport stuff to auth service
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use('/auth', routes.auth);
+app.use('/', routes.auth);
 app.use('/api', routes.api);
 
 app.use('/graphql', graphqlHTTP({

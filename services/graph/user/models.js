@@ -1,22 +1,10 @@
 var graphql = require('graphql');
-// var mongoose = require('mongoose');
-var db =require('../../db');
+var db = require('../../db');
 
-const GUserModel = db.model('User');
+const UserModel = db.model('User');
 
-// const schema = new mongoose.Schema({
-//     firstName: {
-//         type: String
-//     },
-//     lastName: {
-//         type: String
-//     }
-// });
-//
-// var GUserModel = mongoose.model('GUser', schema);
-
-var GUserType = new graphql.GraphQLObjectType({
-    name: 'GUser',
+var UserType = new graphql.GraphQLObjectType({
+    name: 'User',
     fields: {
         _id: {
             type: graphql.GraphQLID
@@ -33,8 +21,8 @@ var GUserType = new graphql.GraphQLObjectType({
     }
 });
 
-var GUserInput = new graphql.GraphQLInputObjectType({
-    name: 'GUserInput',
+var UserInput = new graphql.GraphQLInputObjectType({
+    name: 'UserInput',
     fields: {
         username: {
             type: graphql.GraphQLString
@@ -49,7 +37,7 @@ var GUserInput = new graphql.GraphQLInputObjectType({
 });
 
 module.exports={
-    GUserModel:GUserModel,
-    GUserType:GUserType,
-    GUserInput:GUserInput,
+    UserModel:UserModel,
+    UserType:UserType,
+    UserInput:UserInput,
 }
