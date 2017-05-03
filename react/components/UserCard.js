@@ -45,7 +45,7 @@ export default class  UserCard extends React.Component {
     }
 
     logout(){
-        location.assign("/logout");
+        location.assign("/auth/logout");
     }
 
     handleChange (event, index, value){

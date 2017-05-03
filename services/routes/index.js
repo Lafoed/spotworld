@@ -1,5 +1,7 @@
 var api = require('./api');
+var auth = require('./auth');
 
 module.exports = {
-    api:api
+    api:api,
+    auth:auth
 }
