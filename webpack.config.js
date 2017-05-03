@@ -159,7 +159,8 @@ module.exports = {
         compress: isProd,
         stats: { colors: true },
         proxy: {
-            "/api": "http://localhost:3333"
+            "/api": "http://localhost:3333",
+            "/auth": "http://localhost:3333"
         }
     }
 };

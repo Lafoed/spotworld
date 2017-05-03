@@ -6,8 +6,8 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('./services/middleware/passport');
-var fs = require('fs');
 
+var fs = require('fs');
 
 var https = require('https');
 var http = require('http');
@@ -51,13 +51,10 @@ app.get('/logout', function(req, res){
     req.logout();
     res.redirect('/');
 });
-//TODO get users somewhere else
-app.use('/api/user',(req,res,err)=>{
-    if (req.user) res.json(req.user);
-    else res.sendStatus(404);
-});
+
 
 app.use('/api', routes.api);
+
 
 app.listen(config.get("port"), ()=>{
     console.log(`App listening on port ${config.get("port")}!`);

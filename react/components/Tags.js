@@ -1,5 +1,5 @@
 import ChipInput from 'material-ui-chip-input'
-//TODO autocomplite tags
+//TODO autocomplite tags when db is ready
 export default class Tags extends React.Component {
 
     state = {

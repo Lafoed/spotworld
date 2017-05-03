@@ -4,8 +4,6 @@ import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import TimePicker from 'material-ui/TimePicker';
 import Tags from './Tags'
-
-
 import Datepicker from './Datepicker'
 
 import {popup} from '../style'
@@ -21,7 +19,6 @@ export default class Constructor extends React.Component {
         tags:[]
     }
 
-
     save = evt =>{
         var { user } = this.props.request;
         var { coordsClick } = this.props.ui;
@@ -31,7 +28,7 @@ export default class Constructor extends React.Component {
         var data = Object.assign({}, {
             start_time:start_time,
             end_time:end_time,
-            user_id:user._id,
+            profile_id:user._id,
             coords : coordsClick,
             title: title,
             description: description,

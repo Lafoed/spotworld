@@ -4,7 +4,6 @@ import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/Chip';
 
 export default class Main extends React.Component {
-    state = {}
     style = {
         evt:{
             marginTop: "-88px",
@@ -17,17 +16,25 @@ export default class Main extends React.Component {
     }
     chipClick=()=>alert('add chip to search')
 
+    componentDidMount(){
+        var { popupId } = this.props.ui;
+        var {user, events} = this.props.request;
+        var data = events.find(evt=>evt._id===popupId);
+        if (data.profile_id) this.props.actions.get(`users/${data.profile_id}`);
+    }
+
     render() {
         var { popupId } = this.props.ui
-        var {user, events} = this.props.request;
+        var { events } = this.props.request;
+        var user = this.props.request[`users/${popupId}`]
         var data = events.find(evt=>evt._id===popupId);
         if ( !data ) return;
         return (
             <Card>
                 <CardHeader
-                    title={data.user_id}
-                    subtitle={data.user_id}
-                    avatar={"https://pp.userapi.com/c633526/v633526599/1a853/ZXHy0-sh7Eg.jpg" || user && user.photo}
+                    title={user.username}
+                    subtitle={user.username}
+                    avatar={user.photo}
                 />
                 {/*<CardMedia*/}
                     {/*overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}*/}

@@ -6,7 +6,7 @@ var schema = new Schema({
         type: ["Number"],
         required: true
     },
-    user_id: {
+    profile_id: {
         type: "String",
         required: true
     },
