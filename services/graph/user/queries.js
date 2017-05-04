@@ -11,7 +11,7 @@ const User = {
     },
     resolve (root, args, req) {
         return mod.UserModel
-            .findById(args.id)
+            .findById(root.get('profile_id')||args.id)
             .exec()
     }
 };

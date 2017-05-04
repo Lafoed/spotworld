@@ -23,7 +23,7 @@ const Events = {
         return mod.EventModel
             .find()
             .exec()
-    }
+    },
 };
 
 module.exports= {

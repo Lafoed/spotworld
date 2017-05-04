@@ -1,6 +1,8 @@
 var graphql = require('graphql');
 var db = require('../../db');
 
+// var EventQ = require('../event/queries');
+
 const UserModel = db.model('User');
 
 var UserType = new graphql.GraphQLObjectType({
@@ -17,7 +19,9 @@ var UserType = new graphql.GraphQLObjectType({
         },
         accessToken: {
             type: graphql.GraphQLString
-        }
+        },
+        // events:EventQ.Events
+
     }
 });
 

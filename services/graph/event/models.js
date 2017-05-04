@@ -1,34 +1,10 @@
 var graphql = require('graphql');
+var GraphQLDate = require('graphql-date');
 var db = require('../../db');
 
 const EventModel = db.model('Event');
+var UserQ = require('../user/queries');
 
-var schema = new Schema({
-    coords: {
-        type: ["Number"],
-        required: true
-    },
-    profile_id: {
-        type: "String",
-        required: true
-    },
-    description: {
-        type: "String",
-        required: false
-    },
-    tags:{
-        type:["String"],
-        required:false
-    },
-    start_time: {
-        type: Date,
-        default: Date.now
-    },
-    end_time: {
-        type: Date,
-        default: Date.now
-    }
-});
 
 var EventType = new graphql.GraphQLObjectType({
     name: 'Event',
@@ -36,29 +12,55 @@ var EventType = new graphql.GraphQLObjectType({
         _id: {
             type: graphql.GraphQLID
         },
-        username: {
-            type: graphql.GraphQLString
+        coords: {
+            type: new graphql.GraphQLList(graphql.GraphQLFloat),
+            description:"wow descriptiom"
         },
         profile_id: {
-            type: graphql.GraphQLInt
-        },
-        accessToken: {
             type: graphql.GraphQLString
-        }
+        },
+        title: {
+            type: graphql.GraphQLString
+        },
+        description: {
+            type: graphql.GraphQLString
+        },
+        tags: {
+            type: new graphql.GraphQLList(graphql.GraphQLString)
+        },
+        start_time: {
+            type: GraphQLDate
+        },
+        end_time: {
+            type: GraphQLDate
+        },
+        user: UserQ.User
     }
 });
 
 var EventInput = new graphql.GraphQLInputObjectType({
     name: 'EventInput',
     fields: {
-        username: {
-            type: graphql.GraphQLString
+        coords: {
+            type: new graphql.GraphQLList(graphql.GraphQLFloat)
         },
         profile_id: {
-            type: graphql.GraphQLInt
-        },
-        accessToken: {
             type: graphql.GraphQLString
+        },
+        title: {
+            type: graphql.GraphQLString
+        },
+        description: {
+            type: graphql.GraphQLString
+        },
+        tags: {
+            type: new graphql.GraphQLList(graphql.GraphQLString)
+        },
+        start_time: {
+            type: GraphQLDate
+        },
+        end_time: {
+            type: GraphQLDate
         }
     }
 });
