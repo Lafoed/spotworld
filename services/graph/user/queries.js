@@ -6,12 +6,14 @@ const User = {
     args: {
         id: {
             name: 'id',
-            type: new graphql.GraphQLNonNull(graphql.GraphQLID)
+            type: graphql.GraphQLID
         }
     },
     resolve (root, args, req) {
+        var id = root.get('profile_id') || args.id
+        if ( id ) throw 'no avalible profile id'
         return mod.UserModel
-            .findById(root.get('profile_id')||args.id)
+            .findById( id )
             .exec()
     }
 };
