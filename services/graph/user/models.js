@@ -1,9 +1,10 @@
 var graphql = require('graphql');
 var db = require('../../db');
+var GraphQLDate = require('graphql-date');
 
-// var EventQ = require('../event/queries');
 
 const UserModel = db.model('User');
+const EventModel = db.model('Event');
 
 var UserType = new graphql.GraphQLObjectType({
     name: 'User',
@@ -20,7 +21,49 @@ var UserType = new graphql.GraphQLObjectType({
         accessToken: {
             type: graphql.GraphQLString
         },
-        // events:EventQ.Events
+        events: {
+            type: new graphql.GraphQLList(new graphql.GraphQLObjectType({
+                name: 'Event',
+                fields: ()=>({
+                    _id: {
+                        type: graphql.GraphQLID
+                    },
+                    coords: {
+                        type: new graphql.GraphQLList(graphql.GraphQLFloat),
+                        description:"wow descriptiom"
+                    },
+                    user_id: {
+                        type: graphql.GraphQLString
+                    },
+                    title: {
+                        type: graphql.GraphQLString
+                    },
+                    description: {
+                        type: graphql.GraphQLString
+                    },
+                    tags: {
+                        type: new graphql.GraphQLList(graphql.GraphQLString)
+                    },
+                    start_time: {
+                        type: GraphQLDate
+                    },
+                    end_time: {
+                        type: GraphQLDate
+                    },
+                    user: {
+                        type: UserType,
+                        resolve(model,args){
+                            console.log(model.get('id'));
+                            return UserModel.find({user_id:model.get('id')}).exec()
+                        }
+                    }
+                })
+            })),
+            resolve(model,args){
+                return EventModel.find({}).exec()
+            }
+        }
+
 
     }
 });

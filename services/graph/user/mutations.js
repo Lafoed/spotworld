@@ -2,8 +2,6 @@ var graphql = require('graphql');
 
 var mod = require('./models');
 
-
-
 const UserCreate = {
     type: graphql.GraphQLBoolean,
     args:{

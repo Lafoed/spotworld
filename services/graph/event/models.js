@@ -3,12 +3,12 @@ var GraphQLDate = require('graphql-date');
 var db = require('../../db');
 
 const EventModel = db.model('Event');
-var UserQ = require('../user/queries');
+var UserModels = require('../user/models');
 
 
 var EventType = new graphql.GraphQLObjectType({
     name: 'Event',
-    fields: {
+    fields: ()=>({
         _id: {
             type: graphql.GraphQLID
         },
@@ -16,7 +16,7 @@ var EventType = new graphql.GraphQLObjectType({
             type: new graphql.GraphQLList(graphql.GraphQLFloat),
             description:"wow descriptiom"
         },
-        profile_id: {
+        user_id: {
             type: graphql.GraphQLString
         },
         title: {
@@ -34,8 +34,14 @@ var EventType = new graphql.GraphQLObjectType({
         end_time: {
             type: GraphQLDate
         },
-        user: UserQ.User
-    }
+        user: {
+            type: UserModels.UserType,
+            resolve(model,args){
+                console.log(model.get('id'));
+                return UserModels.UserModel.find({user_id:model.get('id')}).exec()
+            }
+        }
+    })
 });
 
 var EventInput = new graphql.GraphQLInputObjectType({

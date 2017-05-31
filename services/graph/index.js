@@ -1,19 +1,16 @@
 var graphql = require('graphql');
+var queries = require('./queries')
 
-var UserQueries =  require('./user/queries');
-var UserMutations = require('./user/mutations');
-var EventQueries =  require('./event/queries');
-var EventMutations = require('./event/mutations');
 
 
 module.exports = new graphql.GraphQLSchema({
     query: new graphql.GraphQLObjectType({
         name: 'Queries',
-        fields: Object.assign({},UserQueries, EventQueries)
+        fields: ()=>queries
     }),
-    mutation: new graphql.GraphQLObjectType({
-        name: 'Mutations',
-        fields: Object.assign({},UserMutations, EventMutations)
-    }),
+    // mutation: new graphql.GraphQLObjectType({
+    //     name: 'Mutations',
+    //     fields: ()=>Object.assign({},UserMutations, EventMutations)
+    // }),
 })
 

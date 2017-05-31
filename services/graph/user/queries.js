@@ -10,7 +10,7 @@ const User = {
         }
     },
     resolve (root, args, req) {
-        var id = root.get('profile_id') || args.id
+        var id = root.get('user_id') || args.id
         if ( id ) throw 'no avalible profile id'
         return mod.UserModel
             .findById( id )
