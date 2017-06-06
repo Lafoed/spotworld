@@ -1,10 +1,5 @@
 var graphql = require('graphql');
 var GraphQLDate = require('graphql-date');
-var db = require('../../db');
-
-const EventModel = db.model('Event');
-var UserModels = require('../user/models');
-
 
 var EventType = new graphql.GraphQLObjectType({
     name: 'Event',
@@ -34,13 +29,26 @@ var EventType = new graphql.GraphQLObjectType({
         end_time: {
             type: GraphQLDate
         },
-        user: {
-            type: UserModels.UserType,
-            resolve(model,args){
-                console.log(model.get('id'));
-                return UserModels.UserModel.find({user_id:model.get('id')}).exec()
-            }
-        }
+        users: require('./queries').Users
+    })
+});
+
+var UserType = new graphql.GraphQLObjectType({
+    name: 'User',
+    fields: ()=>({
+        _id: {
+            type: graphql.GraphQLID
+        },
+        username: {
+            type: graphql.GraphQLString
+        },
+        profile_id: {
+            type: graphql.GraphQLInt
+        },
+        accessToken: {
+            type: graphql.GraphQLString
+        },
+        events: require('./queries').Events
     })
 });
 
@@ -71,8 +79,27 @@ var EventInput = new graphql.GraphQLInputObjectType({
     }
 });
 
-module.exports={
-    EventModel:EventModel,
+
+
+var UserInput = new graphql.GraphQLInputObjectType({
+    name: 'UserInput',
+    fields: {
+        username: {
+            type: graphql.GraphQLString
+        },
+        profile_id: {
+            type: graphql.GraphQLInt
+        },
+        accessToken: {
+            type: graphql.GraphQLString
+        }
+    }
+});
+
+
+module.exports = {
+    UserType:UserType,
     EventType:EventType,
-    EventInput:EventInput,
+    UserInput:UserInput,
+    EventInput:EventInput
 }
