@@ -11,8 +11,6 @@ import Constructor from './Constructor'
 import * as reqActions from '../Actions/request'
 import * as uiActions from '../Actions/ui'
 
-
-
 class App extends React.Component {
     constructor(props) {
         super();
