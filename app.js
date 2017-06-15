@@ -20,7 +20,7 @@ var http = require('http');
 // var privateKey = fs.readFileSync( './static/privatekey.pem' );
 // var certificate = fs.readFileSync( './static/certificate.pem' );
 
-console.log(process.env.NODE_ENV);
+console.log("mode: "+process.env.NODE_ENV);
 //TODO make some middleware block
 app.use(express.static(__dirname +'/static'));
 app.use(bodyParser.json({ type : '*/*' }));
@@ -29,13 +29,13 @@ app.use(compression());
 app.use(cookieParser());
 app.use(session({secret:'keyboard cat', resave: true, saveUninitialized: true}));
 
-app.use('/', routes.auth);
-app.use('/api', routes.api);
+// app.use('/', routes.auth);
+// app.use('/api', routes.api);
 
-app.use('/graphql', graphqlHTTP({
-    schema: GraphSchema,
-    graphiql: true
-}));
+// app.use('/graphql', graphqlHTTP({
+//     schema: GraphSchema,
+//     graphiql: true
+// }));
 
 app.listen(config.get("port"), ()=>{
     console.log(`App listening on port ${config.get("port")}!`);

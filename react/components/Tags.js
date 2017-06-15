@@ -21,7 +21,6 @@ export default class Tags extends React.Component {
     render() {
         return (
             <ChipInput
-                style={{overflow:"auto"}}
                 hintText={"tags"}
                 fullWidth={true}
                 value={this.state.tags}

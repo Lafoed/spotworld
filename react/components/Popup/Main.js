@@ -2,18 +2,19 @@ import React from 'react'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/Chip';
+var style = {
+    evt:{
+        marginTop: "-88px",
+        float: "right"
+    },
+    chip:{
+        display:"inline-block",
+        marginLeft:"7px"
+    }
+}
 
 export default class Main extends React.Component {
-    style = {
-        evt:{
-            marginTop: "-88px",
-            float: "right"
-        },
-        chip:{
-            display:"inline-block",
-            marginLeft:"7px"
-        }
-    }
+
     chipClick=()=>alert('add chip to search')
 
     componentDidMount(){
@@ -42,10 +43,10 @@ export default class Main extends React.Component {
                     {/*<img src="images/nature-600-337.jpg" />*/}
                 {/*</CardMedia>*/}
                 <CardTitle
-                    style={this.style.evt}
+                    style={style.evt}
                     title={data.title}
                     subtitle={`${moment(data.start_time).format("DD MMMM")} : ${moment(data.start_time).format("HH:mm")} - ${moment(data.end_time).format("HH:mm")}`}/>
-                {data.tags.map( (tag,i)=><Chip style={this.style.chip} onTouchTap={this.chipClick} key={i}>{tag}</Chip>)}
+                {data.tags.map( (tag,i)=><Chip style={style.chip} onTouchTap={this.chipClick} key={i}>{tag}</Chip>)}
                 <CardText>{data.description}</CardText>
                 <CardActions>
                     <FlatButton label="Пойду" />

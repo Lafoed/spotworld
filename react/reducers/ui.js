@@ -34,7 +34,7 @@ export default function ui(state = initialState, action) {
 
 
         default:
-            return state
+            return {...state}
     }
 }
 

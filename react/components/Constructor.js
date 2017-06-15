@@ -6,7 +6,16 @@ import TimePicker from 'material-ui/TimePicker';
 import Tags from './Tags'
 import Datepicker from './Datepicker'
 
-import {popup} from '../style'
+var style = {
+    evt:{
+        marginTop: "-88px",
+        float: "right"
+    },
+    chip:{
+        display:"inline-block",
+        marginLeft:"7px"
+    }
+}
 
 export default class Constructor extends React.Component {
     state = {
@@ -73,7 +82,6 @@ export default class Constructor extends React.Component {
         return (
             <Dialog
                 title={'Create event'}
-                actionsContainerStyle={popup.actionContainer}
                 actions={actions}
                 modal={true}
                 open={constructorOpen}

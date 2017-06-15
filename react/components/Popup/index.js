@@ -2,9 +2,20 @@ import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import Main from './PopWindows/Main'
+import Main from './Main'
 
-import {popup} from '../style'
+var popup={
+    title:{
+        block:"none"
+    },
+    body:{
+        padding:"0px"
+    },
+    actionContainer:{
+        borderTop:"none",
+        marginTop:"-30px"
+    }
+}
 
 export default class Popup extends React.Component {
 

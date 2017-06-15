@@ -14,10 +14,10 @@ const store = configureStore();
 
 const muiTheme = getMuiTheme({
     palette: {
-        textColor: cyan500,
+        // textColor: cyan500,
     },
     appBar: {
-        height: 50,
+        // height: 50,
     },
 });
 

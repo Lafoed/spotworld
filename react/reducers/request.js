@@ -1,6 +1,9 @@
+import {events} from './data'
+
+
 const initialState = {
     user: null,
-    events: []
+    events: events
 };
 
 export default function request(state = initialState, action) {
@@ -30,7 +33,9 @@ export default function request(state = initialState, action) {
             return {...state}
 
         default:
-            return state
+            return {...state}
     }
 }
+
+
 

@@ -30,6 +30,7 @@ export default class MapReact extends React.Component {
                 this.map.addMarker(event.coords, event._id);
             });
         }
+
         if ( userLocation[0]!=0 && this.state.location ) {
             this.setState({location:false})
             this.map.setView(userLocation, 8);
@@ -63,7 +64,7 @@ export default class MapReact extends React.Component {
             <div>
                 <div
                     id="map"
-                    style={{height: document.documentElement.clientHeight}}
+                    style={{ height: document.documentElement.clientHeight,position:"absolute",right:0, top:0, width:"50%"}}
                     className={this.props.ui.markerMode?"cursorMarker":""}
                 ></div>
             </div>)
