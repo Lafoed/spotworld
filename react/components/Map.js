@@ -1,5 +1,4 @@
 import {render} from 'react-dom'
-import moment from 'moment'
 import Map from '../../services/lib/Map'
 
 
@@ -49,7 +48,7 @@ export default class MapReact extends React.Component {
         }
         var feature = Map.getFeatures(evt.pixel);
         if ( !feature ) return;
-        this.map.setView( feature.getGeometry().flatCoordinates );
+        // this.map.setView( feature.getGeometry().flatCoordinates );
 
         var id = feature.getId();
         if ( !id ) return;

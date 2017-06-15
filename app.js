@@ -11,11 +11,8 @@ var fs = require('fs');
 var GraphSchema = require('./services/graph');
 var graphqlHTTP = require('express-graphql');
 
-
-
 var https = require('https');
 var http = require('http');
-
 
 // var privateKey = fs.readFileSync( './static/privatekey.pem' );
 // var certificate = fs.readFileSync( './static/certificate.pem' );
@@ -29,8 +26,8 @@ app.use(compression());
 app.use(cookieParser());
 app.use(session({secret:'keyboard cat', resave: true, saveUninitialized: true}));
 
-// app.use('/', routes.auth);
-// app.use('/api', routes.api);
+app.use('/', routes.auth);
+app.use('/api', routes.api);
 
 // app.use('/graphql', graphqlHTTP({
 //     schema: GraphSchema,

@@ -254,7 +254,7 @@ var event = {
     ]
 }
 
-var user = {
+export var user = {
     "_id":"5909b23a5189d75f87f315da",
     "profile_id":19268599,
     "username":"Павел Наджафов",

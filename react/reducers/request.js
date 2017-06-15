@@ -1,8 +1,8 @@
-import {events} from './data'
+import {events, user} from './data'
 
 
 const initialState = {
-    user: null,
+    user: user,
     events: events
 };
 
