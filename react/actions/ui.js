@@ -1,26 +1,3 @@
-import { userGeolocation } from '../../services/lib/tools'
-
-export function getUserLocation() {
-    return (dispatch) => {
-        dispatch({
-            type: "LOCATION_WAIT"
-        });
-        userGeolocation()
-            .then(location=>{
-                dispatch({
-                    type: "LOCATION_OK",
-                    location: location
-                });
-            })
-            .catch(err=>{
-                dispatch({
-                    type: "LOCATION_ERR",
-                    payload: err
-                })
-            })
-    }
-}
-
 export function setUiState(field, data) {
     return (dispatch) => {
         dispatch({
@@ -31,12 +8,20 @@ export function setUiState(field, data) {
     }
 }
 
-
 export function toggleState(field) {
     return (dispatch) => {
         dispatch({
             type: "TOGGLE_UI_STATE",
             field: field
+        });
+    }
+}
+
+export function openEvent(payload) {
+    return (dispatch) => {
+        dispatch({
+            type: "OPEN_EVENT",
+            payload: payload
         });
     }
 }

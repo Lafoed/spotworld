@@ -47,6 +47,8 @@
     "formsy-react": "^0.19.2",
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",
+    "leaflet": "^1.0.3",
+    "lodash": "^4.17.4",
     "material-components-web": "^0.6.0",
     "material-ui": "^0.17.1",
     "material-ui-chip-input": "^0.13.1",
@@ -61,7 +63,7 @@
     "redux": "^3.6.0",
     "redux-logger": "^2.7.4",
     "redux-thunk": "^2.1.0",
-    "style-loader": "^0.16.0",
+    "style-loader": "^0.16.1",
     "webpack": "^2.2.0",
     "webpack-dev-server": "^2.4.5"
   }

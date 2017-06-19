@@ -7,7 +7,7 @@ export default class Header extends React.Component{
         header:{
             // maxHeight: "120px",
             // height: "auto",
-            // position: "absolute",
+            position: "fixed",
             // width: "100%",
             // top: "0px",
             // padding:"0 12px",

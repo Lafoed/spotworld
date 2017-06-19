@@ -11,13 +11,14 @@ import Constructor from './Constructor'
 
 import * as reqActions from '../Actions/request'
 import * as uiActions from '../Actions/ui'
+import * as mapActions from '../Actions/map'
 
 class App extends React.Component {
 
     componentDidMount(){
         // this.props.actions.get('user');
         // this.props.actions.get('events');
-        this.props.actions.getUserLocation();
+        // this.props.actions.getUserLocation();
     }
 
     render() {
@@ -27,10 +28,10 @@ class App extends React.Component {
                 <Tags/>
                 <UserCard {...this.props}/>
             </Header>
+            <Map {...this.props}/>
             <News {...this.props}/>
             <Popup {...this.props}/>
             <Constructor {...this.props}/>
-            <Map {...this.props}/>
         </div>
     }
 }
@@ -41,6 +42,7 @@ function mapDispatchToProps(dispatch) {
         actions:{
             ...Redux.bindActionCreators(reqActions, dispatch),
             ...Redux.bindActionCreators(uiActions, dispatch),
+            ...Redux.bindActionCreators(mapActions, dispatch),
         }
     }
 }

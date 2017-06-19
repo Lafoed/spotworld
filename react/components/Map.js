@@ -1,5 +1,5 @@
 import {render} from 'react-dom'
-import Map from '../../services/lib/Map'
+import data from '../reducers/data'
 
 
 export default class MapReact extends React.Component {
@@ -13,27 +13,34 @@ export default class MapReact extends React.Component {
     }
 
     componentDidMount() {
-        this.map = new Map( 'map' );
-        this.map.on( 'click', this.mapClick.bind( this ) );
+        this.props.actions.createMap();
+        this.props.actions.setUserLocation();
+        this.props.actions.addMarkers(this.props.request);
+
+        // this.map.on( 'click', this.mapClick.bind( this ) );
         // this.map.on( 'click', this.props.actions.mapClick );
     }
 
     componentWillReceiveProps( props ){
         var { userLocation } = props.ui;
         var { events } = props.request;
-
-        if ( events.length && this.state.events ){
-            this.setState( {events:false} )
-
-            events.forEach( event => {
-                this.map.addMarker(event.coords, event._id);
-            });
+        console.log(this.props.map.mapInstance);
+        console.log(props.map.mapInstance);
+        if (this.props.map.mapInstance != props.map.mapInstance){
+            props.map.mapInstance.on('popupopen', wtf=>this.props.actions.openEvent({id:wtf.popup._source.id}) )
         }
-
-        if ( userLocation[0]!=0 && this.state.location ) {
-            this.setState({location:false})
-            this.map.setView(userLocation, 8);
-        }
+        // if ( events.length && this.state.events ){
+        //     this.setState( {events:false} )
+        //
+        //     events.forEach( event => {
+        //         this.map.addMarker(event.coords, event._id);
+        //     });
+        // }
+        //
+        // if ( userLocation[0]!=0 && this.state.location ) {
+        //     this.setState({location:false})
+        //     this.map.setView(userLocation, 8);
+        // }
 
     }
 
@@ -60,13 +67,12 @@ export default class MapReact extends React.Component {
 
     render() {
         return (
-            <div>
                 <div
                     id="map"
-                    style={{ height: document.documentElement.clientHeight,position:"absolute",right:0, top:0, width:"50%"}}
+                    style={{position:"fixed", height: document.documentElement.clientHeight, width:"100%"}}
                     className={this.props.ui.markerMode?"cursorMarker":""}
                 ></div>
-            </div>)
+            )
     }
 }
 

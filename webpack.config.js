@@ -30,7 +30,8 @@ const plugins = [
         'React':  'react',
         'ReactRedux':'react-redux',
         'Redux' : 'redux',
-        'ReactDom' : 'react-dom'
+        'ReactDom' : 'react-dom',
+        '_':'lodash'
     }),
     // new HtmlWebpackPlugin({
     //     template: sourcePath + '/index.ejs',
@@ -62,6 +63,10 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.css$/,
+                use:['style-loader', 'css-loader']
+            },
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,

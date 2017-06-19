@@ -6,10 +6,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4199409.951,
-            7543046.55
-        ],
+        "coords":[55.7777886, 37.608585],
         img:'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
         title:'Breakfast',
         author:'jill111',
@@ -21,10 +18,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4299409.95240746,
-            7543046.55365444
-        ],
+        "coords":[56.7777886, 37.708585],
         img:'http://www.material-ui.com/images/grid-list/burger-827309_640.jpg',
         title:'Tasty burger',
         author:'pashminu',
@@ -36,10 +30,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4399409.95340746,
-            7543046.55365444
-        ],
+        "coords":[55.7777886, 37.808585],
         img:'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
         title:'Camera',
         author:'Danson67',
@@ -51,10 +42,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4499409.95440746,
-            7543046.55365444
-        ],
+        "coords":[56.7777886, 37.908585],
         img:'http://www.material-ui.com/images/grid-list/morning-819362_640.jpg',
         title:'Morning',
         author:'fancycrave1',
@@ -66,10 +54,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4599409.95540746,
-            7543046.55365444
-        ],
+        "coords":[55.7777886, 37.128585],
         img:'http://www.material-ui.com/images/grid-list/hats-829509_640.jpg',
         title:'Hats',
         author:'Hans',
@@ -81,10 +66,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4699409.95640746,
-            7543046.55365444
-        ],
+        "coords":[55.7777886, 37.188585],
         img:'http://www.material-ui.com/images/grid-list/honey-823614_640.jpg',
         title:'Honey',
         author:'fancycravel',
@@ -96,10 +78,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4799409.95770746,
-            7543046.55365444
-        ],
+        "coords":[56.7777886, 37.208585],
         img:'http://www.material-ui.com/images/grid-list/vegetables-790022_640.jpg',
         title:'Vegetables',
         author:'jill111',
@@ -111,10 +90,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4899409.95840746,
-            7513046.55365444
-        ],
+        "coords":[55.0777886, 37.308585],
         img:'http://www.material-ui.com/images/grid-list/water-plant-821293_640.jpg',
         title:'Water plant',
         author:'BkrmadtyaKarki',
@@ -126,10 +102,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4999409.95940746,
-            7512046.55365444
-        ],
+        "coords":[55.9777886, 37.408585],
         img:'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
         title:'Breakfast',
         author:'jill111',
@@ -141,10 +114,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4199409.96,
-            7510046.55365444
-        ],
+        "coords":[56.7877886, 37.508585],
         img:'http://www.material-ui.com/images/grid-list/burger-827309_640.jpg',
         title:'Tasty burger',
         author:'pashminu',
@@ -156,10 +126,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4199409.97,
-            7593046.55365444
-        ],
+        "coords":[56.7777886, 37.608585],
         img:'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
         title:'Camera',
         author:'Danson67',
@@ -171,10 +138,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4199409.98,
-            7583046.55365444
-        ],
+        "coords":[55.5777886, 37.608585],
         img:'http://www.material-ui.com/images/grid-list/morning-819362_640.jpg',
         title:'Morning',
         author:'fancycrave1',
@@ -186,10 +150,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4199409.99,
-            7573046.55365444
-        ],
+        "coords":[55.4777886, 37.608585],
         img:'http://www.material-ui.com/images/grid-list/hats-829509_640.jpg',
         title:'Hats',
         author:'Hans',
@@ -201,10 +162,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4199409.91240746,
-            7563046.55365444
-        ],
+        "coords":[55.3777886, 37.608585],
         img:'http://www.material-ui.com/images/grid-list/honey-823614_640.jpg',
         title:'Honey',
         author:'fancycravel',
@@ -216,10 +174,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4199409.92240746,
-            7553046.55365444
-        ],
+        "coords":[55.2777886, 37.608585],
         img:'http://www.material-ui.com/images/grid-list/vegetables-790022_640.jpg',
         title:'Vegetables',
         author:'jill111',
@@ -231,10 +186,7 @@ export var events = [
         "end_time":"2017-05-04T15:30:00.000Z",
         "start_time":"2017-05-03T09:00:00.000Z",
         "tags":[],
-        "coords":[
-            4199409.93240746,
-            7543046.55365444
-        ],
+        "coords":[55.1777886, 37.608585],
         img:'http://www.material-ui.com/images/grid-list/water-plant-821293_640.jpg',
         title:'Water plant',
         author:'BkrmadtyaKarki',
@@ -248,10 +200,7 @@ var event = {
     "end_time":"2017-05-04T15:30:00.000Z",
     "start_time":"2017-05-03T09:00:00.000Z",
     "tags":[],
-    "coords":[
-        4199409.94240746,
-        7533046.55365444
-    ]
+    "coords":[55.7777886, 37.608585]
 }
 
 export var user = {
