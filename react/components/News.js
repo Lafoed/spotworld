@@ -13,7 +13,7 @@ const styles = {
         top:90,
         width:"40%",
         padding:10
-    },
+    }
 };
 
 export default class News extends React.Component {
@@ -22,6 +22,17 @@ export default class News extends React.Component {
         this.state = { open:true };
     }
 
+    eventRender=event=>(
+        <div style={{fontSize:10}}>
+            <div>{moment(event.end_time).format('MM.DD HH:mm')}</div>
+            <div>{moment(event.start_time).format('MM.DD HH:mm')}</div>
+            <div>{event.tags.concat(',')}</div>
+            <div>{event.title}</div>
+            <div>{event.author}</div>
+            <img src={event.img}/>
+        </div>
+
+    )
 
     render() {
         var events = this.props.request.events;
@@ -31,15 +42,12 @@ export default class News extends React.Component {
                     cellHeight={240}
                     cols={1}
                 >
-                    {events.map( ( event, i ) => (
+                    {events.map( event => (
                         <GridTile
-                            key={i}
-                            title={event.title}
-                            subtitle={<span>by <b>{event.author}</b></span>}
+                            key={event._id}
                             actionIcon={<IconButton><StarBorder color="white"/></IconButton>}
-                        >
-                            <img src={event.img}/>
-                        </GridTile>
+                            children={this.eventRender(event)}
+                        />
                     ) )}
                 </GridList>
             </Paper>

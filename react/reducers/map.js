@@ -1,4 +1,5 @@
 import Leaflet from 'leaflet'
+import {render} from 'react-dom'
 
 const initialState = {
     mapInstance:null,
@@ -13,9 +14,9 @@ export default function ui(state = initialState, action) {
             return {...state}
 
         case "LOCATION_OK":
-            var coords = [action.location.coords.latitude,action.location.coords.longitude];
+            var coords = [action.location.coords.latitude,action.location.coords.longitude-0.08];
             console.log(coords);
-            state.mapInstance.setView( coords, 10 );
+            state.mapInstance.setView( coords, 11 );
             return { ...state, userLocation:coords }
 
         case "LOCATION_ERR":
@@ -30,10 +31,11 @@ export default function ui(state = initialState, action) {
             return { ...state, mapInstance:map }
 
         case "ADD_MARKERS":
-            var {events} = action.payload;
+            var {events, popupRender} = action.payload;
             var markers = events.map(event=>{
                 var marker = Leaflet.marker(event.coords).addTo(state.mapInstance);
-                marker.bindPopup(`${event.title}`);
+                var elem = render( popupRender(event), document.createElement('div') );
+                marker.bindPopup( elem );
                 marker.id = event._id;
                 return marker;
             })

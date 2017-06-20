@@ -1,6 +1,3 @@
-import {render} from 'react-dom'
-import data from '../reducers/data'
-
 
 export default class MapReact extends React.Component {
     constructor(props) {
@@ -15,7 +12,7 @@ export default class MapReact extends React.Component {
     componentDidMount() {
         this.props.actions.createMap();
         this.props.actions.setUserLocation();
-        this.props.actions.addMarkers(this.props.request);
+        this.props.actions.addMarkers({events:this.props.request.events, popupRender:this.renderPopup});
 
         // this.map.on( 'click', this.mapClick.bind( this ) );
         // this.map.on( 'click', this.props.actions.mapClick );
@@ -24,10 +21,15 @@ export default class MapReact extends React.Component {
     componentWillReceiveProps( props ){
         var { userLocation } = props.ui;
         var { events } = props.request;
-        console.log(this.props.map.mapInstance);
-        console.log(props.map.mapInstance);
         if (this.props.map.mapInstance != props.map.mapInstance){
-            props.map.mapInstance.on('popupopen', wtf=>this.props.actions.openEvent({id:wtf.popup._source.id}) )
+            props.map.mapInstance.on('popupopen', wtf=>{
+                console.log('OPEN POPUP')
+                // this.props.actions.openEvent({id:wtf.popup._source.id})
+            } );
+            props.map.mapInstance.on('move', wtf=>{
+                console.log('move !')
+                // this.props.actions.openEvent({id:wtf.popup._source.id})
+            } );
         }
         // if ( events.length && this.state.events ){
         //     this.setState( {events:false} )
@@ -43,6 +45,17 @@ export default class MapReact extends React.Component {
         // }
 
     }
+
+    renderPopup=(event)=>(
+        <div>
+            <div>{moment(event.end_time).format('MM.DD HH:mm')}</div>
+            <div>{moment(event.start_time).format('MM.DD HH:mm')}</div>
+            <div>{event.tags.concat(',')}</div>
+            <div>{event.title}</div>
+            <div>{event.author}</div>
+            <img style={{maxWidth:50}} src={event.img}/>
+        </div>
+    )
 
 
     mapClick(Map, evt) {

@@ -1,4 +1,4 @@
-import * as reqst from'../../services/lib/Req'
+import axios from 'axios'
 
 export function get( name, options ) {
     return (dispatch) => {
@@ -6,7 +6,7 @@ export function get( name, options ) {
             type: "GET_WAIT",
             payload: name
         });
-        reqst.api( "api/"+name, options )
+        axios( "api/"+name, options )
             .then(({data})=>{
                 dispatch({
                     type: "GET_OK",
@@ -30,7 +30,7 @@ export function saveEvent( event ) {
             type: "SAVE_EVENT_WAIT",
             payload: event
         });
-        reqst.api( "api/events", {method:"post",data:event} )
+        axios( "api/events", {method:"post",data:event} )
             .then(({data})=>{
                 dispatch({
                     type: "SAVE_EVENT_OK",
