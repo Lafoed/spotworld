@@ -1,5 +1,6 @@
 const initialState = {
     menu:false,
+    popup:false,
 };
 
 export default function ui(state = initialState, action) {

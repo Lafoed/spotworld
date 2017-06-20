@@ -23,8 +23,7 @@ export default class MapReact extends React.Component {
         var { events } = props.request;
         if (this.props.map.mapInstance != props.map.mapInstance){
             props.map.mapInstance.on('popupopen', wtf=>{
-                console.log('OPEN POPUP')
-                // this.props.actions.openEvent({id:wtf.popup._source.id})
+                console.log('open popup');
             } );
             props.map.mapInstance.on('move', wtf=>{
                 console.log('move !')

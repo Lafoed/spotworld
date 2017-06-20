@@ -61,6 +61,7 @@ export default class Constructor extends React.Component {
     }
 
     render() {
+        return null
         var {  startDate, endDate, startTime, endTime, description, title } = this.state;
         var {toggleState} = this.props.actions;
         var {constructorOpen} = this.props.ui;

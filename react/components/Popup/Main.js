@@ -25,6 +25,7 @@ export default class Main extends React.Component {
     }
 
     render() {
+        return <div>null</div>;
         var { popupId } = this.props.ui
         var { events } = this.props.request;
         var user = this.props.request[`users/${popupId}`]

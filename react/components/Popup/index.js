@@ -4,49 +4,42 @@ import Dialog from 'material-ui/Dialog';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Main from './Main'
 
-var popup={
-    title:{
-        block:"none"
-    },
+var styles={
     body:{
         padding:"0px"
-    },
-    actionContainer:{
-        borderTop:"none",
-        marginTop:"-30px"
     }
 }
 
 export default class Popup extends React.Component {
 
+    close=()=>{
+        this.props.actions.toggleView('popup');
+    }
+
     render() {
-        var {toggleState} = this.props.actions;
-        var {popupOpen} = this.props.ui;
+        var isOpen = this.props.view.popup;
+
 
         const actions = [
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onTouchTap={toggleState.bind(null,'popupOpen')}
+                onTouchTap={this.close}
             />
         ];
 
         return (
                 <Dialog
-                    titleStyle={popup.title}
-                    bodyStyle={popup.body}
-                    actionsContainerStyle={popup.actionContainer}
+                    bodyStyle={styles.body}
                     actions={actions}
                     modal={false}
-                    open={popupOpen}
-                    onRequestClose={toggleState.bind(null,'popupOpen')}
+                    open={isOpen}
+                    onRequestClose={this.close}
                     autoScrollBodyContent={true}
                 >
                     <Tabs>
                         <Tab label="Main" >
-
                             <Main {...this.props}/>
-
                         </Tab>
                         <Tab label="Another" >
                             <div>someinfo</div>

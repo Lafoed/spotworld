@@ -20,7 +20,7 @@ export default class SideMenu extends React.Component {
         return (
             <div>
             <Drawer
-                width={"50%"}
+                width={"30%"}
                 open={isOpen}
                 docked={false}
                 onRequestChange={this.toggle}

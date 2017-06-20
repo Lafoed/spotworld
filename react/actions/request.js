@@ -24,25 +24,4 @@ export function get( name, options ) {
     }
 }
 
-export function saveEvent( event ) {
-    return (dispatch) => {
-        dispatch({
-            type: "SAVE_EVENT_WAIT",
-            payload: event
-        });
-        axios( "api/events", {method:"post",data:event} )
-            .then(({data})=>{
-                dispatch({
-                    type: "SAVE_EVENT_OK",
-                    payload: event
-                });
-            })
-            .catch(err=>{
-                dispatch({
-                    type: "SAVE_EVENT_ERR",
-                    payload: err
-                })
-            })
-    }
-}
 
