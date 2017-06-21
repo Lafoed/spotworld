@@ -30,9 +30,10 @@ export default class News extends React.Component {
         this.state = { open:true };
     }
 
-    openEvent=()=>{
-        var {toggleView} = this.props.actions;
+    openEvent=event=>{
+        var {toggleView, uiInput} = this.props.actions;
         toggleView('popup');
+        uiInput( {chosenPopupId:event._id} )
     }
 
     eventRender = event=>(
@@ -69,7 +70,7 @@ export default class News extends React.Component {
                 >
                     {events.map( event => (
                         <GridTile
-                            onTouchTap={this.openEvent}
+                            onTouchTap={this.openEvent.bind(this,event)}
                             className="event_news"
                             key={event._id}
                             actionIcon={<IconButton><StarBorder color="white"/></IconButton>}

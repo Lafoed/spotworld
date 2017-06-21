@@ -4,22 +4,16 @@ import Dialog from 'material-ui/Dialog';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Main from './Main'
 
-var styles={
-    body:{
-        padding:"0px"
-    }
-}
-
 export default class Popup extends React.Component {
 
     close=()=>{
         this.props.actions.toggleView('popup');
+        this.props.actions.uiInput({chosenPopupId:null});
     }
 
     render() {
         var isOpen = this.props.view.popup;
-
-
+        var chosenEvent = this.props.request.events.find( event=>event._id === this.props.ui.chosenPopupId );
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -30,24 +24,13 @@ export default class Popup extends React.Component {
 
         return (
                 <Dialog
-                    bodyStyle={styles.body}
                     actions={actions}
                     modal={false}
                     open={isOpen}
                     onRequestClose={this.close}
                     autoScrollBodyContent={true}
                 >
-                    <Tabs>
-                        <Tab label="Main" >
-                            <Main {...this.props}/>
-                        </Tab>
-                        <Tab label="Another" >
-                            <div>someinfo</div>
-                        </Tab>
-                        <Tab label="Else" >
-                            <div>someinfo</div>
-                        </Tab>
-                    </Tabs>
+                    <Main event={chosenEvent}/>
                 </Dialog>
         );
     }

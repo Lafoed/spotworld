@@ -1,0 +1,198 @@
+var events = [
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.7777886, longitude:37.608585},
+        img:'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
+        title:'Breakfast',
+        author:'jill111',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:56.7777886, longitude:37.708585},
+        img:'http://www.material-ui.com/images/grid-list/burger-827309_640.jpg',
+        title:'Tasty burger',
+        author:'pashminu',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.7777886, longitude:37.808585},
+        img:'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
+        title:'Camera',
+        author:'Danson67',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:56.7777886, longitude:37.908585},
+        img:'http://www.material-ui.com/images/grid-list/morning-819362_640.jpg',
+        title:'Morning',
+        author:'fancycrave1',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.7777886, longitude:37.128585},
+        img:'http://www.material-ui.com/images/grid-list/hats-829509_640.jpg',
+        title:'Hats',
+        author:'Hans',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.7777886, longitude:37.188585},
+        img:'http://www.material-ui.com/images/grid-list/honey-823614_640.jpg',
+        title:'Honey',
+        author:'fancycravel',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:56.7777886, longitude:37.208585},
+        img:'http://www.material-ui.com/images/grid-list/vegetables-790022_640.jpg',
+        title:'Vegetables',
+        author:'jill111',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.0777886, longitude:37.308585},
+        img:'http://www.material-ui.com/images/grid-list/water-plant-821293_640.jpg',
+        title:'Water plant',
+        author:'BkrmadtyaKarki',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.9777886, longitude:37.408585},
+        img:'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
+        title:'Breakfast',
+        author:'jill111',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:56.7877886, longitude:37.508585},
+        img:'http://www.material-ui.com/images/grid-list/burger-827309_640.jpg',
+        title:'Tasty burger',
+        author:'pashminu',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:56.7777886, longitude:37.608585},
+        img:'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
+        title:'Camera',
+        author:'Danson67',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.5777886, longitude:37.608585},
+        img:'http://www.material-ui.com/images/grid-list/morning-819362_640.jpg',
+        title:'Morning',
+        author:'fancycrave1',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.4777886, longitude:37.608585},
+        img:'http://www.material-ui.com/images/grid-list/hats-829509_640.jpg',
+        title:'Hats',
+        author:'Hans',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.3777886, longitude:37.608585},
+        img:'http://www.material-ui.com/images/grid-list/honey-823614_640.jpg',
+        title:'Honey',
+        author:'fancycravel',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.2777886, longitude:37.608585},
+        img:'http://www.material-ui.com/images/grid-list/vegetables-790022_640.jpg',
+        title:'Vegetables',
+        author:'jill111',
+    },
+    {
+
+        "relatedUser":"5909b23a5189d75f87f315da",
+        "description":"123",
+        "endTime":"2017-05-04T15:30:00.000Z",
+        "startTime":"2017-05-03T09:00:00.000Z",
+        "tags":[],
+        "coords":{latitude:55.1777886, longitude:37.608585},
+        img:'http://www.material-ui.com/images/grid-list/water-plant-821293_640.jpg',
+        title:'Water plant',
+        author:'BkrmadtyaKarki',
+    },
+];
+
+module.exports={
+    events:events
+}

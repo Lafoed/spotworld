@@ -7,3 +7,12 @@ export function toggleView(field) {
     }
 }
 
+export function uiInput(payload) {
+    return (dispatch) => {
+        dispatch({
+            type: "UI_INPUT",
+            payload: payload
+        });
+    }
+}
+
