@@ -1,4 +1,4 @@
-export function setUserLocation() {
+export function getUserCoords() {
     return (dispatch) => {
         dispatch({
             type: "LOCATION_WAIT"
@@ -7,7 +7,7 @@ export function setUserLocation() {
             .then(location=>{
                 dispatch({
                     type: "LOCATION_OK",
-                    location: location
+                    payload: location
                 });
             })
             .catch(err=>{
@@ -16,23 +16,6 @@ export function setUserLocation() {
                     payload: err
                 })
             })
-    }
-}
-
-export function createMap() {
-    return (dispatch) => {
-        dispatch({
-            type: "CREATE_MAP",
-        });
-    }
-}
-
-export function addMarkers(data) {
-    return (dispatch) => {
-        dispatch({
-            type: "ADD_MARKERS",
-            payload:data
-        });
     }
 }
 

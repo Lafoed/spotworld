@@ -72,7 +72,7 @@ export default class News extends React.Component {
                         <GridTile
                             onTouchTap={this.openEvent.bind(this,event)}
                             className="event_news"
-                            key={event._id}
+                            key={event.objectId}
                             actionIcon={<IconButton><StarBorder color="white"/></IconButton>}
                             children={this.eventRender(event)}
                         />

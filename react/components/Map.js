@@ -1,70 +1,55 @@
-export default class MapReact extends React.Component {
-    constructor( props ) {
-        super( props );
-        this.map = null;
-        this.state = {
-            events:true,
-            location:true,
-        }
-    }
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import Paper from 'material-ui/Paper'
+
+export default class MapLeaf extends React.Component {
 
     componentDidMount() {
-        this.props.actions.createMap();
-        this.props.actions.setUserLocation();
-
-
-        // this.map.on( 'click', this.mapClick.bind( this ) );
-        // this.map.on( 'click', this.props.actions.mapClick );
+        this.props.actions.getUserCoords();
     }
 
-    componentWillReceiveProps( props ) {
-        if ( isPropChanged( this.props.request.events, props.request.events ) ) {
-            this.props.actions.addMarkers( { events:props.request.events, popupRender:this.renderPopup } );
-        }
-        function isPropChanged(  oldProp, newProp ) {
-            return !_.isEqual( oldProp, newProp )
-        }
+    click = evt => {
+        console.log(evt);
     }
 
-    renderPopup = ( event )=>(
-        <div>
-            <div>{moment( event.end_time ).format( 'MM.DD HH:mm' )}</div>
-            <div>{moment( event.start_time ).format( 'MM.DD HH:mm' )}</div>
-            <div>{event.tags.concat( ',' )}</div>
-            <div>{event.title}</div>
-            <div>{event.author}</div>
-            <img style={{ maxWidth:50 }} src={event.img}/>
-        </div>
+    onViewportChanged = viewport => {
+        // The viewport got changed by the user, keep track in state
+        console.log(viewport);
+    }
+    markerClick=console.log;
+    popupClick=console.log;
+    innerDivClick=console.log;
+
+    renderMarker = event=>(
+        <Marker key={event.objectId} position={[ event.coords.latitude, event.coords.longitude ]} onClick={this.markerClick}>
+            <Popup >
+                <div>
+                    <div>{moment( event.end_time ).format( 'MM.DD HH:mm' )}</div>
+                    <div>{moment( event.start_time ).format( 'MM.DD HH:mm' )}</div>
+                    <div>{event.tags.concat( ',' )}</div>
+                    <div>{event.title}</div>
+                    <div>{event.author}</div>
+                    <img style={{ maxWidth:50 }} src={event.img}/>
+                </div>
+            </Popup>
+        </Marker>
     )
 
-
-    mapClick( Map, evt ) {
-        var { actions, ui } = this.props;
-        if ( ui.markerMode ) {
-            actions.setUiState( "coordsClick", evt.coordinate );
-            actions.toggleState( "constructorOpen" );
-            actions.toggleState( "markerMode" );
-            return;
-        }
-        var feature = Map.getFeatures( evt.pixel );
-        if ( !feature ) return;
-        // this.map.setView( feature.getGeometry().flatCoordinates );
-
-        var id = feature.getId();
-        if ( !id ) return;
-
-        actions.setUiState( 'popupId', id );
-        actions.toggleState( "popupOpen" );
-    }
-
-
     render() {
+        var { events } = this.props.request;
+        var { center, zoom } = this.props.map;
+        console.log('map render');
         return (
-            <div
-                id="map"
-                style={{ position:"fixed", height:document.documentElement.clientHeight, width:"100%" }}
-                className={this.props.ui.markerMode ? "cursorMarker" : ""}
-            ></div>
+            <Map center={[ center.latitude, center.longitude ]}
+                 style={{ position:"fixed", height:document.documentElement.clientHeight, width:"100%" }}
+                 zoom={zoom}
+                 onViewportChanged={this.onViewportChanged}
+                 onClick={this.click}>
+                <TileLayer
+                    url='https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGFmb2VkIiwiYSI6ImNqMHA2MHk5ODAwMDgzMnFxamQyNmVha3IifQ.8r9fW0pPDrNW7iwBqkVhhg'
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                />
+                { events.map( event=>this.renderMarker( event ) ) }
+            </Map>
         )
     }
 }
