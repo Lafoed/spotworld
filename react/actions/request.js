@@ -1,6 +1,30 @@
-import axios from 'axios'
+import Parse from 'parse'
 
-export function get( name, options ) {
+Parse.initialize("spotwolrdappid");
+Parse.serverURL = 'https://spotworld.dimkk.ru/parse';
+
+var Event = new Parse.Query('Event');
+
+export function getAllEvents() {
+    return (dispatch) => {
+        dispatch({
+            type: "GET_ALL_EVENTS_WAIT",
+        })
+        Event.find(
+            events=>dispatch({
+                type: "GET_ALL_EVENTS_OK",
+                payload: events,
+            }),
+            err=>dispatch({
+                type: "GET_ALL_EVENTS_ERR",
+                payload: err,
+            })
+        )
+
+    }
+}
+
+export function get() {
     return (dispatch) => {
         dispatch({
             type: "GET_WAIT",
@@ -23,5 +47,7 @@ export function get( name, options ) {
             })
     }
 }
+
+
 
 

@@ -1,9 +1,9 @@
-import {events, user} from './data'
+// import {events, user} from './data'
 
 
 const initialState = {
-    user: user,
-    events: events
+    user: null,
+    events: []
 };
 
 export default function request(state = initialState, action) {
@@ -17,6 +17,17 @@ export default function request(state = initialState, action) {
             return {...state, [name]:payload}
 
         case "GET_ERR":
+            console.error(action.payload);
+            return {...state}
+
+        case "GET_ALL_EVENTS_WAIT":
+            return {...state}
+
+        case "GET_ALL_EVENTS_OK":
+            var events = action.payload;
+            return {...state, events:events.map(event=>event.toJSON())}
+
+        case "GET_ALL_EVENTS_ERR":
             console.error(action.payload);
             return {...state}
 

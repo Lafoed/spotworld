@@ -33,7 +33,7 @@ export default function ui(state = initialState, action) {
         case "ADD_MARKERS":
             var {events, popupRender} = action.payload;
             var markers = events.map(event=>{
-                var marker = Leaflet.marker(event.coords).addTo(state.mapInstance);
+                var marker = Leaflet.marker([event.coords.latitude, event.coords.longitude]).addTo(state.mapInstance);
                 var elem = render( popupRender(event), document.createElement('div') );
                 marker.bindPopup( elem );
                 marker.id = event._id;

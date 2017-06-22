@@ -91,13 +91,13 @@ module.exports = {
     plugins: plugins,
     devServer: {
         contentBase: './static',
-        historyApiFallback: true,
-        port: 8081,
+        historyApiFallback: false,
+        port: 8080,
         hot: true,
-        compress: isProd,
+        compress: false,
         stats: { colors: true },
         proxy: {
-            "/api": "http://localhost:3333",
+            "/graphiql": "http://localhost:3333/graphiql",
             "/auth": "http://localhost:3333"
         }
     }

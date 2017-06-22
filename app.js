@@ -29,10 +29,10 @@ app.use(session({secret:'keyboard cat', resave: true, saveUninitialized: true}))
 app.use('/', routes.auth);
 app.use('/api', routes.api);
 
-// app.use('/graphql', graphqlHTTP({
-//     schema: GraphSchema,
-//     graphiql: true
-// }));
+app.use('/graphiql', graphqlHTTP({
+    schema: GraphSchema,
+    graphiql: true
+}));
 
 app.listen(config.get("port"), ()=>{
     console.log(`App listening on port ${config.get("port")}!`);
