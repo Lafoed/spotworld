@@ -12,23 +12,26 @@ import Constructor from './Constructor'
 import * as reqActions from '../Actions/request'
 import * as uiActions from '../Actions/ui'
 import * as mapActions from '../Actions/map'
+import * as authActions from '../Actions/auth'
 
-
-// FB.getLoginStatus(function(response) {
-//     console.log(response);
-//     if (response.status==="not_authorized"){
-//         FB.login()
-//     }
-// });
+Parse.initialize("spotwolrdappid");
+Parse.serverURL = 'https://spotworld.dimkk.ru/parse';
+window.fbAsyncInit = function() {
+    Parse.FacebookUtils.init({ // this line replaces FB.init({
+        appId      : '198503764011682', // Facebook App ID
+        status     : true,  // check Facebook Login status
+        cookie     : true,  // enable cookies to allow Parse to access the session
+        xfbml      : true,  // initialize Facebook social plugins on the page
+        version    : 'v2.8' // point to the latest Facebook Graph API version
+    });
+    // Run code after the Facebook SDK is loaded.
+};
 
 class App extends React.Component {
 
     componentDidMount(){
+        this.props.actions.checkAuth();
         this.props.actions.getAllEvents();
-
-
-        // this.props.actions.get('events');
-        // this.props.actions.getUserLocation();
     }
 
     render() {
@@ -53,9 +56,10 @@ function mapDispatchToProps(dispatch) {
             ...Redux.bindActionCreators(reqActions, dispatch),
             ...Redux.bindActionCreators(uiActions, dispatch),
             ...Redux.bindActionCreators(mapActions, dispatch),
+            ...Redux.bindActionCreators(authActions, dispatch),
         }
     }
 }
-export default ReactRedux.connect(state=>state, mapDispatchToProps)(App)
+export default ReactRedux.connect( state=>state, mapDispatchToProps )( App )
 
 

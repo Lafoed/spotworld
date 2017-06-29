@@ -1,7 +1,4 @@
-import Parse from 'parse'
 
-Parse.initialize("spotwolrdappid");
-Parse.serverURL = 'https://spotworld.dimkk.ru/parse';
 
 var Event = new Parse.Query('Event');
 

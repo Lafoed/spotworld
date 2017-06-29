@@ -31,7 +31,8 @@ const plugins = [
         'ReactRedux':'react-redux',
         'Redux' : 'redux',
         'ReactDom' : 'react-dom',
-        '_':'lodash'
+        '_':'lodash',
+        'Parse':'parse'
     }),
     // new HtmlWebpackPlugin({
     //     template: sourcePath + '/index.ejs',
@@ -54,6 +55,7 @@ module.exports = {
             'react',
             'react-dom',
             'moment',
+            'parse'
         ]
     },
     output: {

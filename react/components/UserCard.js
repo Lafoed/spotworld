@@ -7,36 +7,37 @@ import MenuItem from 'material-ui/MenuItem';
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 
+var style = {
+    menu:{
+        marginRight:"0"
+    },
+    dialog:{
+        width: 'auto',
+        textAlign:"center",
+        maxWidth:"30%"
+    },
+    icon:{
+        width: "48px",
+        height: "48px",
+    },
+    title:{
+        textAlign:"center"
+    },
+    button:{
+        width: `100%`,
+        color: `black`,
+        whiteSpace: `nowrap`,
+        overflow:`none`,
+        height: `auto`
+    }
+}
+
 export default class  UserCard extends React.Component {
     constructor(){
         super();
         this.state = {
             isDialog:false,
             value:1
-        }
-        this.style ={
-            menu:{
-                marginRight:"0"
-            },
-            dialog:{
-                width: 'auto',
-                textAlign:"center",
-                maxWidth:"30%"
-            },
-            icon:{
-                width: "48px",
-                height: "48px",
-            },
-            title:{
-                textAlign:"center"
-            },
-            button:{
-                width: `100%`,
-                color: `black`,
-                whiteSpace: `nowrap`,
-                overflow:`none`,
-                height: `auto`
-            }
         }
     }
 
@@ -52,20 +53,10 @@ export default class  UserCard extends React.Component {
         return this.setState({value});
     }
 
-    logIcons(){
-        return [
-            <IconButton
-                key={Math.random()}
-                iconClassName="fa fa-vk"
-                onTouchTap={this.login}
-            />,
-            <IconButton
-                key={Math.random()}
-                iconClassName="fa fa-facebook"
-                onTouchTap={this.dialogAction.bind(this,'close')}
-            />,
-        ];
+    loginFB=()=>{
+        this.props.actions.loginWithFB()
     }
+
 
     dialogAction(cmd){
         switch (cmd){
@@ -77,8 +68,22 @@ export default class  UserCard extends React.Component {
                 break;
             default:
                 this.setState({isDialog:!this.state.isDialog});
-
         }
+    }
+
+    renderIcons(){
+        return [
+            <IconButton
+                key={Math.random()}
+                iconClassName="fa fa-vk"
+                onTouchTap={this.login}
+            />,
+            <IconButton
+                key={Math.random()}
+                iconClassName="fa fa-facebook"
+                onTouchTap={this.loginFB}
+            />
+        ];
     }
 
     render() {
@@ -89,19 +94,18 @@ export default class  UserCard extends React.Component {
                 <Dialog
                 title="ВОЙТИ"
                 modal={false}
-                contentStyle={this.style.dialog}
+                contentStyle={style.dialog}
                 open={this.state.isDialog}
-                titleStyle={this.style.title}
-                onRequestClose={this.dialogAction.bind(this,'close')}
-            >
-                    {this.logIcons()}
+                titleStyle={style.title}
+                onRequestClose={this.dialogAction.bind(this,'close')}>
+                    {this.renderIcons()}
             </Dialog>
             </div>)
             : <IconMenu
-                style={this.style.menu}
+                style={style.menu}
                 iconButtonElement={
                         <FlatButton
-                            style={this.style.button}
+                            style={style.button}
                             label={user.username}
                             labelPosition="before"
                             primary={true}
