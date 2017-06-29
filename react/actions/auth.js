@@ -1,34 +1,54 @@
 
 
-export function loginWithFB() {
+export function loginFB() {
     return (dispatch) => {
         dispatch({
             type: "LOGIN_FB_WAIT",
         })
-        debugger;
-        FB.getLoginStatus(response=>{
-            console.log(response);
-            switch (response){
-                case "connected":
-                    FB.login(resp=>{
-                        debugger;
-                        dispatch({
-                            type: "LOGIN_FB_OK",
-                            payload: response,
-                        })
-                    });
-                    break;
-                case "not_authorized":
-                    break;
-                case "unknown":
-                    break;
-                default :
-                    dispatch({
-                        type: "LOGIN_FB_ERR",
-                        payload: response,
-                    })
-            }
+        FB.login(resp=>{
+            console.log(resp);
+            dispatch({
+                type: "LOGIN_FB_ERR",
+                payload: resp,
+            })
         })
+    }
+}
+
+export function loginVK() {
+    return (dispatch) => {
+        dispatch({
+            type: "LOGIN_VK_WAIT",
+        })
+        console.log("PARSE LINK SHIT")
+        VK.Auth.login((authData)=>{
+            let user = new Parse.User();
+            let fakeAuthData = {
+                "twitter": {
+                    "id": "user's Twitter id number as a string",
+                    "screen_name": "user's Twitter screen name",
+                    "consumer_key": "your application's consumer key",
+                    "consumer_secret": "your application's consumer secret",
+                    "auth_token": "an authorized Twitter token for the user with your application",
+                    "auth_token_secret": "the secret associated with the auth_token"
+                }
+            }
+            user._linkWith('twitter', fakeAuthData).then(function(user){
+                debugger;
+                dispatch({
+                    type: "LOGIN_VK_OK",
+                    payload: user,
+                })
+            }, err=>{
+                debugger;
+                dispatch({
+                    type: "LOGIN_VK_ERR",
+                    payload: user,
+                })
+            });
+
+        })
+
     }
 }
 
@@ -43,7 +63,7 @@ export function checkAuth() {
 
 }
 
-export function logIn(username, password){
+export function login({username, password}){
     return (dispatch) => {
         dispatch({
             type:"LOGIN_WAIT"
@@ -62,18 +82,6 @@ export function logIn(username, password){
     }
 }
 
-
-
-// window.fbAsyncInit = function() {
-//     debugger;
-//     FB.init({
-//         appId      : '198503764011682',
-//         cookie     : true,
-//         xfbml      : true,
-//         version    : 'v2.8'
-//     });
-//     FB.AppEvents.logPageView();
-// };
 
 
 

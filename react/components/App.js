@@ -17,15 +17,18 @@ import * as authActions from '../Actions/auth'
 Parse.initialize("spotwolrdappid");
 Parse.serverURL = 'https://spotworld.dimkk.ru/parse';
 window.fbAsyncInit = function() {
-    Parse.FacebookUtils.init({ // this line replaces FB.init({
+    FB.init({ // this line replaces FB.init({
         appId      : '198503764011682', // Facebook App ID
-        status     : true,  // check Facebook Login status
+        status     : true,
         cookie     : true,  // enable cookies to allow Parse to access the session
         xfbml      : true,  // initialize Facebook social plugins on the page
-        version    : 'v2.8' // point to the latest Facebook Graph API version
+        version    : 'v2.6' // point to the latest Facebook Graph API version
     });
-    // Run code after the Facebook SDK is loaded.
 };
+VK.init({
+    apiId: 5922563
+});
+
 
 class App extends React.Component {
 
