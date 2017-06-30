@@ -1,6 +1,7 @@
 const initialState = {
     menu:false,
     popup:false,
+    createMarker:false
 };
 
 export default function ui(state = initialState, action) {

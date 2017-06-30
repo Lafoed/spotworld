@@ -1,3 +1,5 @@
+
+
 export function getUserCoords() {
     return (dispatch) => {
         dispatch({
@@ -29,4 +31,34 @@ function userGeolocation(){
             console.log("Geolocation is not supported by this browser.");
         }
     })
+}
+
+
+export function editEvent(data){
+    return (dispatch) => {
+        dispatch({
+            type: "EDIT_EVENT",
+            payload:data
+        });
+    }
+}
+
+export function saveEvent(event){
+    return (dispatch) => {
+        dispatch({
+            type: "SAVE_EVENT_WAIT"
+        });
+        event.save(null,resp=>{
+                dispatch({
+                    type: "SAVE_EVENT_OK",
+                    payload: resp
+                });
+            })
+            .catch(err=>{
+                dispatch({
+                    type: "SAVE_EVENT_ERR",
+                    payload: err
+                })
+            })
+    }
 }

@@ -7,11 +7,17 @@ export default class MapLeaf extends React.Component {
         this.props.actions.getUserCoords();
     }
 
-    click = evt => {
+    mapClick = evt => {
         console.log(evt);
+        if (this.props.view.createMarker) {
+            this.props.actions.editEvent({coords:evt.latlng});
+            this.props.actions.saveEvent(this.props.map.editEvent);
+            this.props.actions.toggleView("createMarker");
+        }
     }
 
     onViewportChanged = viewport => {
+
         // The viewport got changed by the user, keep track in state
         console.log(viewport);
     }
@@ -43,7 +49,7 @@ export default class MapLeaf extends React.Component {
                  style={{ position:"fixed", height:document.documentElement.clientHeight, width:"100%" }}
                  zoom={zoom}
                  onViewportChanged={this.onViewportChanged}
-                 onClick={this.click}>
+                 onClick={this.mapClick}>
                 <TileLayer
                     url='https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGFmb2VkIiwiYSI6ImNqMHA2MHk5ODAwMDgzMnFxamQyNmVha3IifQ.8r9fW0pPDrNW7iwBqkVhhg'
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

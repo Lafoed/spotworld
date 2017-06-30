@@ -4,12 +4,12 @@ import MenuItem from 'material-ui/MenuItem';
 export default class SideMenu extends React.Component {
 
     createMarker=()=>{
-        if (!this.props.request.user) return alert('no user');
-        this.props.actions.toggleState("markerMode");
-        this.toggle();
+        if (!this.props.auth.user) return alert('no user');
+        this.props.actions.toggleView("createMarker");
+        this.toggleMenu();
     }
 
-    toggle=()=>{
+    toggleMenu=()=>{
         this.props.actions.toggleView('menu');
     }
 
@@ -23,7 +23,7 @@ export default class SideMenu extends React.Component {
                 width={"30%"}
                 open={isOpen}
                 docked={false}
-                onRequestChange={this.toggle}
+                onRequestChange={this.toggleMenu}
             >
                 <MenuItem onTouchTap={this.createMarker}>Создать метку</MenuItem>
 
