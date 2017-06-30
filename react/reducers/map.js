@@ -23,21 +23,11 @@ export default function ui(state = initialState, action) {
 
 
         case "EDIT_EVENT":
-            var event = state.editEvent ? state.editEvent : new Event(action.payload);
-            debugger;
-            action.payload;
-            var point = new Parse.GeoPoint({latitude: coords.lat, longitude: coords.lng});
-            var event = new Event({
-                relatedUser:Parse.User.current(),
-                coords:point,
-                description:"create marker is work!",
-                startTime:new Date(),
-                endTime:new Date(),
-                tags:['create','first'],
-                img:"http://www.material-ui.com/images/grid-list/water-plant-821293_640.jpg",
-                title:"created marker"
-            });
-            return { ...state, editEvent:action.payload}
+            var newFields = action.payload;
+            var event = state.editEvent ? state.editEvent : new Event(newFields);
+            //TODO update event
+
+            return { ...state, editEvent:event}
 
 
 

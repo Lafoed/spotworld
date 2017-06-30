@@ -10,7 +10,17 @@ export default class MapLeaf extends React.Component {
     mapClick = evt => {
         console.log(evt);
         if (this.props.view.createMarker) {
-            this.props.actions.editEvent({coords:evt.latlng});
+             var event = {
+                relatedUser:Parse.User.current(),
+                coords:point,
+                description:"create marker is work!",
+                startTime:new Date(),
+                endTime:new Date(),
+                tags:['create','first'],
+                img:"http://www.material-ui.com/images/grid-list/water-plant-821293_640.jpg",
+                title:"created marker"
+            };
+            this.props.actions.editEvent(event);
             this.props.actions.saveEvent(this.props.map.editEvent);
             this.props.actions.toggleView("createMarker");
         }
