@@ -6,7 +6,7 @@ import Tags from './Tags'
 import Header from './Header'
 import TimeFilter from './TimeFilter'
 import News from './News'
-import Constructor from './Constructor'
+import Editor from './Editor'
 
 
 import * as reqActions from '../Actions/request'
@@ -33,8 +33,7 @@ VK.init({
 class App extends React.Component {
 
     componentDidMount(){
-        this.props.actions.checkAuth();
-        this.props.actions.getAllEvents();
+
     }
 
     render() {
@@ -47,7 +46,7 @@ class App extends React.Component {
             </Header>
             <News {...this.props}/>
             <Popup {...this.props}/>
-            <Constructor {...this.props}/>
+            <Editor {...this.props}/>
         </div>
     }
 }

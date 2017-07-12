@@ -40,6 +40,10 @@ export default class  UserCard extends React.Component {
         username:''
     }
 
+    componentDidMount(){
+        this.props.actions.checkAuth();
+    }
+
     handleChange (event, index, value){
         return this.setState({value});
     }

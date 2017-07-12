@@ -31,13 +31,13 @@ export default function ui(state = initialState, action) {
 
 
 
-        case "SAVE_MARKER_WAIT":
+        case "SAVE_EVENT_WAIT":
             return {...state}
 
-        case "SAVE_MARKER_OK":
+        case "SAVE_EVENT_OK":
             return { ...state, editEvent:null }
 
-        case "SAVE_MARKER_ERR":
+        case "SAVE_EVENT_ERR":
             console.error(action.payload);
             return {...state}
 

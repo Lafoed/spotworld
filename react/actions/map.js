@@ -48,7 +48,8 @@ export function saveEvent(event){
         dispatch({
             type: "SAVE_EVENT_WAIT"
         });
-        event.save(null,resp=>{
+        debugger;
+        event.save().then(resp=>{
                 dispatch({
                     type: "SAVE_EVENT_OK",
                     payload: resp

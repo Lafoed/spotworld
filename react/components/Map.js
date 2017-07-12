@@ -5,13 +5,16 @@ export default class MapLeaf extends React.Component {
 
     componentDidMount() {
         this.props.actions.getUserCoords();
+        this.props.actions.getAllEvents();
     }
 
     mapClick = evt => {
-        console.log(evt);
-        if (this.props.view.createMarker) {
+        console.log('map click');
+        var coords = evt.latlng;
+        var point = new Parse.GeoPoint({latitude: coords.lat, longitude: coords.lng});
+        if ( this.props.view.createMarker ) {
              var event = {
-                relatedUser:Parse.User.current(),
+                relatedUser:this.props.auth.user,
                 coords:point,
                 description:"create marker is work!",
                 startTime:new Date(),
@@ -21,13 +24,11 @@ export default class MapLeaf extends React.Component {
                 title:"created marker"
             };
             this.props.actions.editEvent(event);
-            this.props.actions.saveEvent(this.props.map.editEvent);
             this.props.actions.toggleView("createMarker");
         }
     }
 
     onViewportChanged = viewport => {
-
         // The viewport got changed by the user, keep track in state
         console.log(viewport);
     }
@@ -53,10 +54,9 @@ export default class MapLeaf extends React.Component {
     render() {
         var { events } = this.props.request;
         var { center, zoom } = this.props.map;
-        console.log('map render');
         return (
             <Map center={[ center.latitude, center.longitude ]}
-                 style={{ position:"fixed", height:document.documentElement.clientHeight, width:"100%" }}
+                 style={{ position:"fixed", height:document.documentElement.clientHeight, width:"100%", cursor: this.props.view.createMarker?"pointer":"default" }}
                  zoom={zoom}
                  onViewportChanged={this.onViewportChanged}
                  onClick={this.mapClick}>

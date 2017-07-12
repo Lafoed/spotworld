@@ -28,25 +28,19 @@ var style = {
 export default class SideMenu extends React.Component {
 
     createMarker=()=>{
-        if (!this.props.auth.user) return alert('no user');
         this.props.actions.toggleView("createMarker");
-        this.toggleMenu();
     }
 
 
     render() {
         var user = this.props.auth.user;
-        return (
+        return user ? (
             <div style={style.panel}>
-                {
-                    user?
-                        <IconButton style={style.btn} onTouchTap={this.createMarker}>
-                            <AddLocation style={style.icon}/>
-                        </IconButton>
-                        : null
-                }
+                <IconButton style={style.btn} onTouchTap={this.createMarker}>
+                    <AddLocation style={style.icon}/>
+                </IconButton>
             </div>
-        )
+        ) : null
 
         // return (
         //     <div>
