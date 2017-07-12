@@ -21,8 +21,7 @@ export default function ui(state = initialState, action) {
             return {...state }
 
         case "LOGIN_VK_OK":
-            console.log(action.payload);
-            return { ...state }
+            return { ...state, user:action.payload }
 
         case "LOGIN_VK_ERR":
             console.error(action.payload);
@@ -34,8 +33,7 @@ export default function ui(state = initialState, action) {
             return {...state }
 
         case "LOGIN_FB_OK":
-            console.log(action.payload);
-            return { ...state }
+            return { ...state, user:action.payload }
 
         case "LOGIN_FB_ERR":
             console.error(action.payload);

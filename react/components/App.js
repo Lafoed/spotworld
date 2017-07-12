@@ -39,12 +39,12 @@ class App extends React.Component {
 
     render() {
         return <div>
+            <Map {...this.props}/>
             <Header {...this.props}>
                 <Menu {...this.props}/>
                 <Tags/>
                 <UserCard {...this.props}/>
             </Header>
-            <Map {...this.props}/>
             <News {...this.props}/>
             <Popup {...this.props}/>
             <Constructor {...this.props}/>

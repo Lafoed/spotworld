@@ -23,9 +23,8 @@ export default class Header extends React.Component{
 
     render(){
         return (
-            <AppBar style={this.style.header} onLeftIconButtonTouchTap={this.newsBtn}>
-                {this.props.children.map( (child,i)=>(child
-                ))}
+            <AppBar style={this.style.header} iconElementLeft={<div style={{display:"relative"}}></div>}>
+                {this.props.children.map( (child,i)=>(child))}
             </AppBar>
         )
     }

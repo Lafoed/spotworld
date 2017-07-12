@@ -6,18 +6,23 @@ export function loginFB() {
             type: "LOGIN_FB_WAIT",
         })
         FB.login(resp=>{
-            console.log(resp);
             let user = new Parse.User();
-            user._linkWith('facebook', resp.authResponse).then((user)=>{
-                dispatch({
-                    type: "LOGIN_VK_OK",
-                    payload: user,
-                })
-            }, err=>{
-                dispatch({
-                    type: "LOGIN_VK_ERR",
-                    payload: user,
-                })
+            var data = new Date(resp.authResponse.expiresIn * 1000 + (new Date()).getTime()).toJSON();
+            user._linkWith( 'facebook', {authData:{
+                "id":resp.authResponse.userID,
+                "access_token":resp.authResponse.accessToken,
+                "expiration_date":data,
+                signedRequest:resp.authResponse.signedRequest,
+            }} ).then((user)=>{
+                    dispatch({
+                        type: "LOGIN_FB_OK",
+                        payload: user,
+                    })
+                }, err=>{
+                    dispatch({
+                        type: "LOGIN_FB_ERR",
+                        payload: err,
+                    })
             });
         })
     }
@@ -28,34 +33,24 @@ export function loginVK() {
         dispatch({
             type: "LOGIN_VK_WAIT",
         })
-        console.log("PARSE LINK SHIT")
-        VK.Auth.login((authData)=>{
-            console.log(authData)
-            console.log('fail to try link user to parser');
-            // let user = new Parse.User();
-            // let fakeAuthData = {
-            //     "twitter": {
-            //         "id": "user's Twitter id number as a string",
-            //         "screen_name": "user's Twitter screen name",
-            //         "consumer_key": "your application's consumer key",
-            //         "consumer_secret": "your application's consumer secret",
-            //         "auth_token": "an authorized Twitter token for the user with your application",
-            //         "auth_token_secret": "the secret associated with the auth_token"
-            //     }
-            // }
-            // user._linkWith('twitter', fakeAuthData).then(function(user){
-            //     debugger;
-            //     dispatch({
-            //         type: "LOGIN_VK_OK",
-            //         payload: user,
-            //     })
-            // }, err=>{
-            //     debugger;
-            //     dispatch({
-            //         type: "LOGIN_VK_ERR",
-            //         payload: user,
-            //     })
-            // });
+        VK.Auth.login((resp)=>{
+            let user = new Parse.User();
+            var dt = new Date("30 July 2017 15:05 UTC");
+            user._linkWith( 'vkontakte', {authData:{
+                "id":resp.session.mid,
+                "access_token":resp.session.sig,
+                "expiration_date":data
+            }} ).then((user)=>{
+                dispatch({
+                    type: "LOGIN_VK_OK",
+                    payload: user,
+                })
+            }, err=>{
+                dispatch({
+                    type: "LOGIN_VK_ERR",
+                    payload: err,
+                })
+            });
 
         })
 
@@ -91,7 +86,6 @@ export function login({username, password}){
         });
     }
 }
-
 
 
 
