@@ -48,8 +48,9 @@ export function saveEvent(event){
         dispatch({
             type: "SAVE_EVENT_WAIT"
         });
-        debugger;
-        event.save().then(resp=>{
+        var Event = Parse.Object.extend("Event");
+        var newEvent = new Event(event);
+        newEvent.save().then(resp=>{
                 dispatch({
                     type: "SAVE_EVENT_OK",
                     payload: resp

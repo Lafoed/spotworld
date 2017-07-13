@@ -5,6 +5,7 @@ import Avatar from 'material-ui/Avatar';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
+import Wait from 'material-ui/CircularProgress';
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 
@@ -81,6 +82,24 @@ export default class  UserCard extends React.Component {
         Parse.User.logOut().then(()=>location.reload(), console.error )
     }
 
+    renderDialogContent=()=>(
+        <div>
+            <TextField floatingLabelText={"login"} onChange={this.textInput.bind(this,'username')}/><br/>
+            <TextField floatingLabelText={"password"} onChange={this.textInput.bind(this,'password')}/><br/>
+            <FlatButton label={"enter"} onTouchTap={this.enter}/>
+            <IconButton
+                key={Math.random()}
+                iconClassName="fa fa-vk"
+                onTouchTap={this.loginVK}
+            />
+            <IconButton
+                key={Math.random()}
+                iconClassName="fa fa-facebook"
+                onTouchTap={this.loginFB}
+            />
+        </div>
+    )
+
     render() {
         var {user} = this.props.auth;
         if (user){
@@ -97,20 +116,8 @@ export default class  UserCard extends React.Component {
                 open={this.state.isDialog}
                 titleStyle={style.title}
                 onRequestClose={this.dialogAction.bind(this,'close')}>
-                    <TextField floatingLabelText={"login"} onChange={this.textInput.bind(this,'username')}/><br/>
-                    <TextField floatingLabelText={"password"} onChange={this.textInput.bind(this,'password')}/><br/>
-                    <FlatButton label={"enter"} onTouchTap={this.enter}/>
-                    <IconButton
-                        key={Math.random()}
-                        iconClassName="fa fa-vk"
-                        onTouchTap={this.loginVK}
-                    />
-                    <IconButton
-                        key={Math.random()}
-                        iconClassName="fa fa-facebook"
-                        onTouchTap={this.loginFB}
-                    />
-            </Dialog>
+                    {this.props.auth.authWait?<Wait/>:this.renderDialogContent()}
+                </Dialog>
             </div>)
             : <IconMenu
                 style={style.menu}

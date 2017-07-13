@@ -5,16 +5,10 @@ import AppBar from 'material-ui/AppBar';
 export default class Header extends React.Component{
     style={
         header:{
-            // maxHeight: "120px",
-            // height: "auto",
-            position: "fixed",
-            // width: "100%",
-            // top: "0px",
-            // padding:"0 12px",
-            // background:"white",
-            // zIndex:100
-        }
-
+            position:"absolute",
+            left:0,
+            top:0,
+        },
     }
 
     newsBtn=()=>{

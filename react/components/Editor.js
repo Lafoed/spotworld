@@ -20,29 +20,15 @@ var style = {
 export default class Editor extends React.Component {
 
     save = event =>{
-        this.props.actions.saveEvent(event);
-        // var { user } = this.props.request;
-        // var { coordsClick } = this.props.ui;
-        // var { title, description, startDate, endDate, startTime, endTime, tags} = event;
-        // var start_time = new Date( this.getFullTime(startDate,startTime).valueOf() );
-        // var end_time = new Date( this.getFullTime(endDate,endTime).valueOf() );
-        // var data = Object.assign({}, {
-        //     start_time:start_time,
-        //     end_time:end_time,
-        //     profile_id:user._id,
-        //     coords : coordsClick,
-        //     title: title,
-        //     description: description,
-        // } );
-        // this.props.actions.saveEvent(data);
-        // this.close();
+        this.props.actions.editEvent( event );
+        setTimeout(()=>this.props.actions.saveEvent( this.props.map.editEvent ),0);
     }
 
     getFullTime = ( date, time )=>moment( date ).hour( moment( time ).get( 'hour' ) ).minute( moment( time ).get( 'minute' ) )
 
     close = ()=>{
         console.log('TODO clear edit event and state')
-        // this.props.actions.editEvent(null);
+        this.props.actions.editEvent(null);
     }
 
     render() {
@@ -61,12 +47,19 @@ export default class Editor extends React.Component {
 
 class Constructor extends React.Component{
 
+    state={
+        startDate:'',
+        endDate:'',
+        startTime:'',
+        endTime:'',
+        tags:[]
+    }
+
     close=()=>{
         this.props.onClose()
     }
 
     save=()=>{
-
         if (this.isValid()){
             this.props.onSave(this.readValues())
         } else {
@@ -75,17 +68,23 @@ class Constructor extends React.Component{
     }
 
     isValid=()=>{
-        var { description, title } = this.readValues();
-        return !!(title && description)
+        var event = this.readValues();
+        return !!( event.title && event.startDate && event.startTime && event.endTime && event.endDate );
     }
 
-    readValues=()=>{
-        var title = this.refs.title.getValue();
-        var description = this.refs.description.getValue();
-        return {
-            title:title,
-            description:description
-        }
+    readValues() {
+        var result = {};
+        Object.keys( this.refs ).forEach( key=> {
+            if ( this.refs[ key ].getValue ) {
+                result[ key ] = this.refs[ key ].getValue();
+            } else {
+                result[key] = this.state[key]
+            }
+        } )
+        return result
+    }
+    onChange(field,smth,date){
+        this.setState({[field]:date})
     }
 
     render(){
@@ -127,6 +126,7 @@ class Constructor extends React.Component{
                     rowsMax={4}
                 /><br />
                 <Tags
+                    ref="tags"
                     tagsListener={(tags)=>this.setState({tags:tags})}
                 />
                 <div  style={{ display:"flex" }}>
@@ -134,27 +134,31 @@ class Constructor extends React.Component{
                         ref="startDate"
                         floatingLabelText="Start Date"
                         autoOk={true}
+                        onChange={this.onChange.bind(this,"startDate")}
                     />
                     <TimePicker
                         ref="startTime"
                         floatingLabelText="Start Time"
                         format={"24hr"}
                         autoOk={true}
+                        onChange={this.onChange.bind(this,"startTime")}
                         hintText="Start time"/>
                 </div>
 
                 <br/>
                 <div  style={{ display:"flex" }}>
                     <Datepicker
-                        ref="startDate"
+                        ref="endDate"
                         floatingLabelText="End Date"
                         autoOk={true}
+                        onChange={this.onChange.bind(this,"endDate")}
                     />
                     <TimePicker
-                        ref="startTime"
+                        ref="endTime"
                         floatingLabelText="End Time"
                         format={"24hr"}
                         autoOk={true}
+                        onChange={this.onChange.bind(this,"endTime")}
                         hintText="End time"/>
                 </div>
 

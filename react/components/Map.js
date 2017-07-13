@@ -6,24 +6,32 @@ export default class MapLeaf extends React.Component {
     componentDidMount() {
         this.props.actions.getUserCoords();
         this.props.actions.getAllEvents();
+        this.checkForUpdates();
+    }
+
+
+
+    checkForUpdates(){
+        this.checkTimer = setTimeout(()=>{
+            this.props.actions.isServerDataChanged();
+            if ( this.props.request.isNeedUpdate ) {
+                this.props.actions.getAllEvents();
+                this.checkForUpdates();
+            } else {
+                this.checkForUpdates();
+            }
+        },3000)
+    }
+
+    componentWillUnmount(){
+        clearTimeout(this.checkTimer);
     }
 
     mapClick = evt => {
-        console.log('map click');
         var coords = evt.latlng;
-        var point = new Parse.GeoPoint({latitude: coords.lat, longitude: coords.lng});
         if ( this.props.view.createMarker ) {
-             var event = {
-                relatedUser:this.props.auth.user,
-                coords:point,
-                description:"create marker is work!",
-                startTime:new Date(),
-                endTime:new Date(),
-                tags:['create','first'],
-                img:"http://www.material-ui.com/images/grid-list/water-plant-821293_640.jpg",
-                title:"created marker"
-            };
-            this.props.actions.editEvent(event);
+            var point = new Parse.GeoPoint({latitude: coords.lat, longitude: coords.lng});
+            this.props.actions.editEvent({coords:point, relatedUser:this.props.auth.user});
             this.props.actions.toggleView("createMarker");
         }
     }

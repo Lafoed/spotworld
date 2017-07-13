@@ -5,7 +5,7 @@ import Paper from 'material-ui/Paper';
 import NextIcon from 'material-ui/svg-icons/image/navigate-next';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 
-const styles = {
+const style = {
     container:{
         zIndex:1000,
         display:"block",
@@ -17,10 +17,14 @@ const styles = {
     },
     description:{
         fontSize:16,
-        textAlign:"center"
     },
     nextIcon:{
         float:"right"
+    },
+    title:{
+        fontWeight:800,
+        margin:12,
+        fontSize:18,
     }
 };
 
@@ -41,18 +45,21 @@ export default class News extends React.Component {
             cellHeight={160}
             cols={3}
         >
-            <GridTile  style={styles.tile}>
+            <GridTile  style={style.tile}>
                     <img src={event.img}/>
             </GridTile >
 
-            <GridTile cols={2} style={styles.description}>
-                <div>Description</div>
-                <div>{moment( event.end_time ).format( 'MM.DD HH:mm' )}</div>
-                <div>{moment( event.start_time ).format( 'MM.DD HH:mm' )}</div>
-                <div>{event.tags.concat( ',' )}</div>
+            <GridTile cols={2} style={style.description}>
+                <div style={style.title}>{event.title}</div>
+                <div>
+                    {moment( event.startTime ).format( 'MM.DD HH:mm' )}
+                    -
+                    {moment( event.endTime ).format( 'MM.DD HH:mm' )}
+                </div>
+                <div>{event.tags.join( ', ' )}</div>
                 <div>{event.title}</div>
                 <div>{event.author}</div>
-                <NextIcon style={styles.nextIcon}/>
+                <NextIcon style={style.nextIcon}/>
             </GridTile>
         </GridList>
 
@@ -62,7 +69,7 @@ export default class News extends React.Component {
     render() {
         var events = this.props.request.events;
         return (
-            <Paper style={styles.container}>
+            <Paper style={style.container}>
                 <GridList
                     cellHeight={160}
                     cols={1}

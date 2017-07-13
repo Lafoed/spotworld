@@ -21,6 +21,26 @@ export function getAllEvents() {
     }
 }
 
+export function isServerDataChanged() {
+    return (dispatch) => {
+        dispatch({
+            type: "CHECK_SERVER_DATA_WAIT",
+        })
+        Event.count().then(
+            count=>dispatch({
+                type: "CHECK_SERVER_DATA_OK",
+                payload: count,
+            }),
+            err=>dispatch({
+                type: "CHECK_SERVER_DATA_ERR",
+                payload: err,
+            })
+        )
+
+    }
+}
+
+
 export function get() {
     return (dispatch) => {
         dispatch({

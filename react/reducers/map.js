@@ -1,7 +1,7 @@
 const initialState = {
     center: { longitude:50, latitude:30 },
     zoom: 11,
-    editEvent:null,
+    editEvent:null
 };
 
 
@@ -23,11 +23,14 @@ export default function ui(state = initialState, action) {
 
 
         case "EDIT_EVENT":
-            var newFields = action.payload;
-            var event = state.editEvent ? state.editEvent : new Event(newFields);
-            //TODO update event
-
-            return { ...state, editEvent:event}
+            var newFields = action.payload
+            if ( newFields === null ){
+                return { ...state, editEvent:null }
+            } else {
+                var newEvent = { ...state.editEvent, ...newFields }
+                console.log(newEvent);
+                return { ...state, editEvent:newEvent }
+            }
 
 
 
@@ -40,6 +43,8 @@ export default function ui(state = initialState, action) {
         case "SAVE_EVENT_ERR":
             console.error(action.payload);
             return {...state}
+
+
 
 
         default:
