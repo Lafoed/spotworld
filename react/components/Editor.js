@@ -69,6 +69,7 @@ class Constructor extends React.Component{
 
     isValid=()=>{
         var event = this.readValues();
+
         return !!( event.title && event.startDate && event.startTime && event.endTime && event.endDate );
     }
 

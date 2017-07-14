@@ -49,6 +49,8 @@ export function saveEvent(event){
             type: "SAVE_EVENT_WAIT"
         });
         var Event = Parse.Object.extend("Event");
+        //default image
+        event.img = "http://www.material-ui.com/images/grid-list/water-plant-821293_640.jpg";
         var newEvent = new Event(event);
         newEvent.save().then(resp=>{
                 dispatch({
