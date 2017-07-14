@@ -4,6 +4,7 @@ import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import DistanceIcon from 'material-ui/svg-icons/communication/location-on';
 
+
 import { GridList, GridTile } from 'material-ui/GridList';
 import Avatar from 'material-ui/Avatar';
 
@@ -101,24 +102,22 @@ export default class NewsItem extends React.Component{
         highLight:false
     }
 
-    renderTags=tags=>{
-        return tags.map(tag=><span style={style.tag}>{tag}</span>)
-    }
+    renderTags=tags=>tags.map( (tag,i)=><span key={i} style={style.tag}>{tag}</span>)
+
 
     renderDescription=description=>{
-        var size = 50;
+        var size = 50
         return description.length > size ? description.slice(0, size) + ' ...' : description
     }
 
-
     renderTime=event=>{
-        var date = event.endDate?
-            <div>{`c ${moment( event.startDate.iso ).format( 'DD.MM.YY' )} по ${moment( event.endDate.iso ).format( 'DD.MM.YY' )}`}</div> :
-            <div>{`c ${moment( event.startDate.iso ).format( 'DD.MM.YY' )}`}</div>
+        var date = event.get("endDate")?
+            <div>{`c ${moment( event.get("startDate").iso ).format( 'DD.MM.YY' )} по ${moment( event.get("endDate").iso ).format( 'DD.MM.YY' )}`}</div> :
+            <div>{`c ${moment( event.get("startDate").iso ).format( 'DD.MM.YY' )}`}</div>
         return (
             <div style={style.time}>
                 <div>
-                    {`${moment( event.startTime.iso ).format( 'HH:mm' )}  - ${moment( event.endTime.iso ).format( 'HH:mm' )}`}
+                    {`${moment( event.get("startTime").iso ).format( 'HH:mm' )}  - ${moment( event.get("endTime").iso ).format( 'HH:mm' )}`}
                 </div>
                 {date}
             </div>
@@ -126,32 +125,29 @@ export default class NewsItem extends React.Component{
     }
 
 
-    renderUser=user=>{
-        return (
-            <div style={style.user}>
-                <Avatar size={30}>
-                    {user.objectId.slice(0,1)}
-                </Avatar>
-                <div>{user.objectId}</div>
-            </div>
-        )
-    }
-    renderDistance=()=>{
-        return (
-            <div style={style.distance}><DistanceIcon style={style.distanceIcon}/><div >12 km</div></div>
-        )
-    }
+    renderUser = user => <div style={style.user}>
+                            <Avatar size={30}>
+                                {user.id.slice( 0, 1 )}
+                            </Avatar>
+                            <div>{user.id}</div>
+                        </div>
 
-    openEventPopup=()=>{
-        this.props.onChooseEvent();
-    }
+
+    renderDistance = () => this.props.distance ?
+                                <div style={style.distance}><DistanceIcon style={style.distanceIcon}/>
+                                    <div >{this.props.distance}</div>
+                                </div> : null
+
+
+    openEventPopup=()=>this.props.onChooseEvent()
+
 
     render = ()=>{
-        var event = this.props.event
+        var event = this.props.event;
         var highLight = this.state.highLight;
         return(
             <GridList
-                onTouchTap={this.openEventPopup}
+                onTouchTap={this.props.navigateToEvent}
                 onMouseEnter={()=>this.setState({highLight:true})}
                 onMouseLeave={()=>this.setState({highLight:false})}
                 style={highLight?style.newsItemHovered:style.newsItem}
@@ -159,21 +155,17 @@ export default class NewsItem extends React.Component{
                 cols={3}
             >
                 <GridTile>
-                    <img style={ highLight && style.img } src={event.img}/>
+                    <img style={ highLight && style.img } src={event.get("img")}/>
                 </GridTile >
 
                 <GridTile cols={2} style={style.infoContainer}>
-                    <div style={highLight?style.titleHovered:style.title}>{event.title}</div>
-                    {this.renderUser(event.relatedUser)}
-                    {this.renderDistance(event.relatedUser)}
-                    <div style={style.tags}> {this.renderTags(event.tags)} </div>
+                    <div onTouchTap={this.openEventPopup} style={highLight?style.titleHovered:style.title}>{event.get("title")}</div>
+                    {this.renderUser(event.get("relatedUser"))}
+                    {this.renderDistance(event.get("relatedUser"))}
+                    <div style={style.tags}> {this.renderTags(event.get("tags"))} </div>
                     {this.renderTime(event)}
-                    <div style={style.description}>{this.renderDescription(event.description)}</div>
-                    <Checkbox
-                        checkedIcon={<ActionFavorite />}
-                        uncheckedIcon={<ActionFavoriteBorder />}
-                        style={style.like}
-                    />
+                    <div style={style.description}>{this.renderDescription(event.get("description"))}</div>
+                    <div style={style.like}>{this.props.like}</div>
                 </GridTile>
             </GridList>
         )

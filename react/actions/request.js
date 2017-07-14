@@ -2,12 +2,16 @@
 
 var Event = new Parse.Query('Event');
 
+
+
+
+
 export function getAllEvents() {
     return (dispatch) => {
         dispatch({
             type: "GET_ALL_EVENTS_WAIT",
         })
-        Event.find(
+        Event.equalTo("likes", Parse.User.current() ).find(
             events=>dispatch({
                 type: "GET_ALL_EVENTS_OK",
                 payload: events,
@@ -39,6 +43,8 @@ export function isServerDataChanged() {
 
     }
 }
+
+
 
 
 export function get() {

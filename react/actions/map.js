@@ -43,6 +43,15 @@ export function editEvent(data){
     }
 }
 
+export function setMapView(data){
+    return (dispatch) => {
+        dispatch({
+            type: "SET_MAP_VIEW",
+            payload:data
+        });
+    }
+}
+
 export function saveEvent(event){
     return (dispatch) => {
         dispatch({

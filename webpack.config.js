@@ -32,6 +32,7 @@ const plugins = [
         'Redux' : 'redux',
         'ReactDom' : 'react-dom',
         '_':'lodash',
+        'geo':'geolib',
         'Parse':'parse'
     }),
     // new HtmlWebpackPlugin({

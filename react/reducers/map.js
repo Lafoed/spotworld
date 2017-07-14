@@ -1,7 +1,8 @@
 const initialState = {
     center: { longitude:50, latitude:30 },
     zoom: 11,
-    editEvent:null
+    editEvent:null,
+    userLocation:null
 };
 
 
@@ -14,7 +15,8 @@ export default function ui(state = initialState, action) {
             return {...state}
 
         case "LOCATION_OK":
-            return { ...state, center: {latitude:action.payload.coords.latitude, longitude:action.payload.coords.longitude- 0.15} }
+            var userLocation =  {latitude:action.payload.coords.latitude, longitude:action.payload.coords.longitude};
+            return { ...state, center: {latitude:action.payload.coords.latitude, longitude:action.payload.coords.longitude- 0.15}, userLocation:userLocation }
 
         case "LOCATION_ERR":
             console.error(action.payload);
@@ -31,6 +33,19 @@ export default function ui(state = initialState, action) {
                 console.log(newEvent);
                 return { ...state, editEvent:newEvent }
             }
+
+
+
+        case "SET_MAP_VIEW":
+            var diff = _.difference(Object.keys(action.payload), Object.keys(state));
+            if (diff.length){
+                console.error('no such map props', diff)
+                return { ...state }
+            } else {
+                return { ...state, ...action.payload }
+            }
+
+
 
 
 

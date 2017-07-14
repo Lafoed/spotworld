@@ -27,7 +27,7 @@ export default function request(state = initialState, action) {
 
         case "GET_ALL_EVENTS_OK":
             var events = action.payload;
-            return {...state, events:events.map(event=>event.toJSON())}
+            return {...state, events:events.map(event=>event)}
 
         case "GET_ALL_EVENTS_ERR":
             console.error(action.payload);

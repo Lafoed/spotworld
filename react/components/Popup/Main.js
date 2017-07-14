@@ -29,7 +29,7 @@ export default class Main extends React.Component {
                 <CardTitle
                     title={event.title}
                     subtitle={`${moment(event.start_time).format("DD MMMM")} : ${moment(event.start_time).format("HH:mm")} - ${moment(event.end_time).format("HH:mm")}`}/>
-                {event.tags.map( (tag,i)=><Chip style={style.chip} onTouchTap={this.chipClick} key={i}>{tag}</Chip>)}
+                {event.get("tags").map( (tag,i)=><Chip style={style.chip} onTouchTap={this.chipClick} key={i}>{tag}</Chip>)}
                 <CardText>{event.description}</CardText>
                 <CardActions>
                     <FlatButton label="Пойду" />

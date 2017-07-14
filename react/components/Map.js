@@ -1,5 +1,5 @@
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import Paper from 'material-ui/Paper'
+import Like from './Like'
 
 export default class MapLeaf extends React.Component {
 
@@ -38,22 +38,21 @@ export default class MapLeaf extends React.Component {
 
     onViewportChanged = viewport => {
         // The viewport got changed by the user, keep track in state
-        console.log(viewport);
+        // this.props.actions.setMapView({zoom:viewport.zoom,center:{latitude:viewport.center[0], longitude:viewport.center[1]}});
     }
     markerClick=console.log;
     popupClick=console.log;
     innerDivClick=console.log;
 
     renderMarker = event=>(
-        <Marker key={event.objectId} position={[ event.coords.latitude, event.coords.longitude ]} onClick={this.markerClick}>
+        <Marker key={event.id} position={[ event.get("coords").latitude, event.get("coords").longitude ]} onClick={this.markerClick}>
             <Popup >
                 <div>
-                    <div>{moment( event.end_time ).format( 'MM.DD HH:mm' )}</div>
-                    <div>{moment( event.start_time ).format( 'MM.DD HH:mm' )}</div>
-                    <div>{event.tags.concat( ',' )}</div>
-                    <div>{event.title}</div>
-                    <div>{event.author}</div>
-                    <img style={{ maxWidth:50 }} src={event.img}/>
+                    <div>{moment( event.get("endTime") ).format( 'MM.DD HH:mm' )}</div>
+                    <div>{moment( event.get("startTime")).format( 'MM.DD HH:mm' )}</div>
+                    <div>{event.get("tags").concat( ',' )}</div>
+                    <div>{event.get("title")}</div>
+                    <img style={{ maxWidth:50 }} src={event.get("img")}/>
                 </div>
             </Popup>
         </Marker>

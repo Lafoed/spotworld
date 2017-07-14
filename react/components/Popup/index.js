@@ -3,6 +3,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Main from './Main'
+import Like from '../Like'
 
 export default class Popup extends React.Component {
 
@@ -31,6 +32,7 @@ export default class Popup extends React.Component {
                     autoScrollBodyContent={true}
                 >
                     <Main event={chosenEvent}/>
+                    <Like/>
                 </Dialog>
         );
     }
