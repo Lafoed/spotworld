@@ -11,7 +11,7 @@ export function getAllEvents() {
         dispatch({
             type: "GET_ALL_EVENTS_WAIT",
         })
-        Event.equalTo("likes", Parse.User.current() ).find(
+        Event.find(
             events=>dispatch({
                 type: "GET_ALL_EVENTS_OK",
                 payload: events,
